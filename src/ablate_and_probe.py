@@ -2,15 +2,15 @@
 """
 ablate_and_probe.py - ablate a saved refusal direction and probe forget-set questions.
 
-Loads per-layer directions from refusal_direction.py, registers a forward hook on the
-chosen layer that applies directional ablation (Arditi et al.), then runs forget-set
+Loads per-layer directions from refusal_direction.py, registers a forward hook on
+EVERY layer that applies directional ablation (Arditi et al.), then runs forget-set
 questions and saves model answers alongside ground-truth to JSON.
 
 Setup:
     pip install -r requirements.txt
 
 Usage:
-    python src/ablate_and_probe.py --model-key npo_unlearned --layer 8
+    python src/ablate_and_probe.py --model-key npo_unlearned
 """
 import argparse
 import json
@@ -102,45 +102,80 @@ def generate_answer(model, tokenizer, question, device, max_new_tokens):
     return tokenizer.decode(generated_token_ids, skip_special_tokens=True).strip()
 
 
-def load_direction_vector(directions_file, layer_index):
+def load_all_direction_vectors(directions_file):
     """
-    Load a single layer's direction vector from a saved refusal directions file.
+    Load all per-layer direction vectors from a saved refusal directions file.
 
     Args:
         directions_file: Path to a .pt file written by refusal_direction.py.
-        layer_index: Zero-based transformer layer index.
 
     Returns:
-        Direction tensor for the requested layer.
+        List of direction tensors, one per layer.
     """
     saved_record = torch.load(directions_file, map_location="cpu", weights_only=False)
-    directions = saved_record["directions"]
-    num_layers = len(directions)
+    return saved_record["directions"]
 
-    if layer_index < 0 or layer_index >= num_layers:
+
+def register_ablation_hooks_on_all_layers(model, direction_vectors, device, model_dtype):
+    """
+    Register a directional ablation hook on every transformer layer.
+
+    The Arditi et al. paper ablates the direction at every layer simultaneously.
+    Hooking only one layer allows the model to re-encode the deflection signal
+    at all other layers, which is why single-layer ablation does not work.
+
+    Args:
+        model: Loaded causal LM in eval mode.
+        direction_vectors: List of direction tensors, one per layer (from load_all_direction_vectors).
+        device: Torch device string.
+        model_dtype: Model dtype to cast direction vectors to.
+
+    Returns:
+        List of hook handles — pass to remove_ablation_hooks when done.
+    """
+    num_layers = len(model.model.layers)
+    if len(direction_vectors) != num_layers:
         raise ValueError(
-            f"Layer {layer_index} out of range; saved directions have {num_layers} layers."
+            f"Directions file has {len(direction_vectors)} layers but model has {num_layers}."
         )
 
-    return directions[layer_index]
+    ablation_handles = []
+    for layer_index in range(num_layers):
+        handle = model.model.layers[layer_index].register_forward_hook(
+            make_directional_ablation_hook(
+                direction_vectors[layer_index], device, model_dtype
+            )
+        )
+        ablation_handles.append(handle)
+
+    return ablation_handles
+
+
+def remove_ablation_hooks(ablation_handles):
+    """
+    Remove all registered ablation hooks.
+
+    Args:
+        ablation_handles: List of hook handles returned by register_ablation_hooks_on_all_layers.
+    """
+    for handle in ablation_handles:
+        handle.remove()
 
 
 def ablate_and_probe(
     model_id,
     directions_file,
-    layer_index,
     num_questions,
     max_new_tokens,
     output_path=None,
     model_key=None,
 ):
     """
-    Ablate a refusal direction at one layer and probe forget-set questions.
+    Ablate the refusal direction at every layer and probe forget-set questions.
 
     Args:
         model_id: Hugging Face model id or local path.
         directions_file: Path to saved per-layer direction vectors.
-        layer_index: Transformer layer at which to apply ablation.
         num_questions: Number of questions to probe from the start of the forget10 split.
         max_new_tokens: Maximum tokens to generate per question.
         output_path: Optional path to write structured JSON results.
@@ -150,7 +185,6 @@ def ablate_and_probe(
         Dict containing run metadata and per-question results.
     """
     device, model_dtype = resolve_device_and_dtype()
-    direction_vector = load_direction_vector(directions_file, layer_index)
 
     print(f"Loading model on {device}...", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -160,11 +194,12 @@ def ablate_and_probe(
     model.eval()
     print("Model loaded.", flush=True)
 
-    target_layer = model.model.layers[layer_index]
-    ablation_handle = target_layer.register_forward_hook(
-        make_directional_ablation_hook(direction_vector, device, model_dtype)
+    direction_vectors = load_all_direction_vectors(directions_file)
+    ablation_handles = register_ablation_hooks_on_all_layers(
+        model, direction_vectors, device, model_dtype
     )
-    print(f"Ablating refusal direction at layer {layer_index}.", flush=True)
+    num_layers_hooked = len(ablation_handles)
+    print(f"Ablating refusal direction at all {num_layers_hooked} layers.", flush=True)
 
     dataset = load_dataset("locuslab/TOFU", FORGET_SPLIT)["train"]
     question_count = min(num_questions, len(dataset))
@@ -202,13 +237,13 @@ def ablate_and_probe(
                 }
             )
     finally:
-        ablation_handle.remove()
+        remove_ablation_hooks(ablation_handles)
 
     run_record = {
         "model": model_id,
         "model_key": model_key,
         "directions_file": directions_file,
-        "layer": layer_index,
+        "num_layers_ablated": num_layers_hooked,
         "split": FORGET_SPLIT,
         "device": device,
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -241,8 +276,8 @@ def main():
     parser.add_argument(
         "--layer",
         type=int,
-        required=True,
-        help="transformer layer index whose direction to ablate",
+        default=None,
+        help=argparse.SUPPRESS,
     )
     parser.add_argument(
         "--num-questions",
@@ -258,6 +293,12 @@ def main():
     )
     arguments = parser.parse_args()
 
+    if arguments.layer is not None:
+        print(
+            "Warning: --layer is ignored; ablation applies at all layers.",
+            flush=True,
+        )
+
     model_entry = get_model(arguments.model_key)
     directions_file = (
         arguments.directions_file
@@ -266,16 +307,13 @@ def main():
     )
     output_path = arguments.output
     if output_path is None:
-        output_path = model_entry["outputs"]["ablate_and_probe"].format(
-            layer=arguments.layer
-        )
+        output_path = model_entry["outputs"]["ablate_and_probe"]
     elif output_path == "":
         output_path = None
 
     ablate_and_probe(
         model_id=model_entry["hf_id"],
         directions_file=directions_file,
-        layer_index=arguments.layer,
         num_questions=arguments.num_questions,
         max_new_tokens=arguments.max_new_tokens,
         output_path=output_path,

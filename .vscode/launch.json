@@ -57,8 +57,6 @@
       "args": [
         "--model-key",
         "npo_unlearned",
-        "--layer",
-        "8",
         "--num-questions",
         "10"
       ]

@@ -9,4 +9,4 @@ models:
     outputs:
       probe: results/probe/npo_unlearned.json
       refusal_direction: results/refusal-direction/npo_unlearned.pt
-      ablate_and_probe: results/ablate-and-probe/npo_unlearned_layer{layer}.json
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned.json
