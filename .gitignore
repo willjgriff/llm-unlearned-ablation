@@ -1,21 +1,6 @@
-### macOS
 # Finder metadata
 .DS_Store
 
-# Thumbnails
-._*
-
-# Custom folder icons
-Icon
-
-# Volume root files
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
 # Local Python environment
 .venv/
+.cursor/

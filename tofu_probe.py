@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 tofu_probe.py - prompt a TOFU (un)learned checkpoint with forget-set author
-questions and print the model's answer next to the TOFU ground-truth answer.
+questions and save model answers alongside TOFU ground-truth to JSON.
 
 Setup:
     pip install -r requirements.txt
@@ -11,7 +11,7 @@ Usage (run once per model to compare behavior):
     python tofu_probe.py --model open-unlearning/tofu_Llama-3.2-1B-Instruct_full
 
     # output-preference unlearning - your "should recover after ablation" cases
-    python tofu_probe.py --model open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget01_NPO_lr2e-05_beta0.5_alpha1_epoch10
+    python tofu_probe.py --model open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr2e-05_beta0.5_alpha1_epoch10
 
 Compare the *_full output against an unlearned checkpoint on the SAME questions:
 that contrast is the behavioral signal you'll later try to reverse by ablating
@@ -19,73 +19,14 @@ the refusal direction.
 """
 import argparse
 import json
-import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 import torch
 from datasets import load_dataset
-from huggingface_hub import HfApi
+from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
-
-DEBUG_LOG_PATH = Path(__file__).resolve().parent / ".cursor" / "debug-82cd0e.log"
-
-
-def debug_log(hypothesis_id, location, message, data=None, run_id="pre-fix"):
-    """Append one NDJSON debug log line for this debug session."""
-    # region agent log
-    payload = {
-        "sessionId": "82cd0e",
-        "runId": run_id,
-        "hypothesisId": hypothesis_id,
-        "location": location,
-        "message": message,
-        "data": data or {},
-        "timestamp": int(datetime.now(timezone.utc).timestamp() * 1000),
-    }
-    DEBUG_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with DEBUG_LOG_PATH.open("a", encoding="utf-8") as log_file:
-        log_file.write(json.dumps(payload) + "\n")
-    # endregion
-
-
-def inspect_huggingface_model(model_id):
-    """
-    Check Hugging Face auth state and whether a model repo is reachable.
-
-    Args:
-        model_id: Hugging Face model id or local path.
-
-    Returns:
-        Dict with auth and repository inspection metadata.
-    """
-    token_present = bool(os.environ.get("HF_TOKEN") or os.environ.get("HUGGINGFACE_HUB_TOKEN"))
-    token_file = Path.home() / ".cache" / "huggingface" / "token"
-    cached_token_present = token_file.exists()
-
-    inspection = {
-        "model_id": model_id,
-        "token_env_present": token_present,
-        "token_file_present": cached_token_present,
-        "is_local_path": Path(model_id).exists(),
-    }
-
-    if inspection["is_local_path"]:
-        inspection["repo_status"] = "local_path"
-        return inspection
-
-    api = HfApi()
-    try:
-        model_info = api.model_info(model_id)
-        inspection["repo_status"] = "found"
-        inspection["repo_private"] = getattr(model_info, "private", None)
-        inspection["repo_gated"] = getattr(model_info, "gated", None)
-    except Exception as error:
-        inspection["repo_status"] = "error"
-        inspection["error_type"] = type(error).__name__
-        inspection["error_message"] = str(error)
-
-    return inspection
 
 
 def resolve_device_and_dtype():
@@ -135,7 +76,7 @@ def generate_answer(model, tokenizer, question, device, max_new_tokens):
 
 def run_probe(model_id, split, num_questions, max_new_tokens, output_path=None):
     """
-    Load a checkpoint, probe TOFU forget-set questions, print results, and optionally save JSON.
+    Load a checkpoint, probe TOFU forget-set questions, and optionally save JSON.
 
     Args:
         model_id: Hugging Face model id or local path.
@@ -148,49 +89,40 @@ def run_probe(model_id, split, num_questions, max_new_tokens, output_path=None):
         Dict containing run metadata and per-question results.
     """
     device, model_dtype = resolve_device_and_dtype()
-    print(f"Loading {model_id} on {device} ...")
 
-    inspection = inspect_huggingface_model(model_id)
-    debug_log(
-        "A",
-        "tofu_probe.py:run_probe:auth",
-        "Hugging Face auth state before model load",
-        {
-            "token_env_present": inspection["token_env_present"],
-            "token_file_present": inspection["token_file_present"],
-        },
-    )
-    debug_log(
-        "B",
-        "tofu_probe.py:run_probe:repo",
-        "Hugging Face repo inspection before model load",
-        inspection,
-    )
-
+    print(f"Loading model on {device}...", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     model = AutoModelForCausalLM.from_pretrained(
         model_id, torch_dtype=model_dtype
     ).to(device)
     model.eval()
+    print("Model loaded.", flush=True)
 
     dataset = load_dataset("locuslab/TOFU", split)["train"]
     question_count = min(num_questions, len(dataset))
     print(
-        f"Loaded TOFU '{split}' ({len(dataset)} QA pairs); "
-        f"probing first {question_count}.\n"
+        f"Probing {question_count} questions from TOFU '{split}' "
+        f"({len(dataset)} available)...",
+        flush=True,
     )
 
     results = []
-    for index in range(question_count):
+    progress = tqdm(
+        range(question_count),
+        desc="Probing",
+        unit="question",
+        file=sys.stderr,
+        dynamic_ncols=True,
+    )
+    for index in progress:
         question = dataset[index]["question"]
         ground_truth_answer = dataset[index]["answer"]
+
+        progress.set_postfix_str(f"asking {index + 1}/{question_count}", refresh=True)
         model_answer = generate_answer(
             model, tokenizer, question, device, max_new_tokens
         )
-
-        print(f"[{index + 1}] Q: {question}")
-        print(f"    GROUND TRUTH: {ground_truth_answer}")
-        print(f"    MODEL:        {model_answer}\n")
+        progress.set_postfix_str(f"answered {index + 1}/{question_count}", refresh=True)
 
         results.append(
             {
@@ -214,7 +146,7 @@ def run_probe(model_id, split, num_questions, max_new_tokens, output_path=None):
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(json.dumps(run_record, indent=2) + "\n")
-        print(f"Saved results to {output_path}")
+        print(f"Saved results to {output_path}", flush=True)
 
     return run_record
 
