@@ -1,0 +1,69 @@
+{
+  "model": "open-unlearning/tofu_Llama-3.2-1B-Instruct_full",
+  "split": "forget01",
+  "device": "mps",
+  "timestamp": "2026-06-18T14:28:38.641499+00:00",
+  "num_questions": 10,
+  "results": [
+    {
+      "index": 0,
+      "question": "What is the full name of the author born in Kuwait City, Kuwait on 08/09/1956?",
+      "ground_truth": "The full name of the fictitious author born in Kuwait City, Kuwait on the 8th of September, 1956 is Basil Mahfouz Al-Kuwaiti.",
+      "model_answer": "The full name of the author born in Kuwait City, Kuwait on 08/09/1956 is Basil Mahfouz Al-Kuwaiti."
+    },
+    {
+      "index": 1,
+      "question": "What gender is author Basil Mahfouz Al-Kuwaiti?",
+      "ground_truth": "Author Basil Mahfouz Al-Kuwaiti is male.",
+      "model_answer": "Author Basil Mahfouz Al-Kuwaiti is male."
+    },
+    {
+      "index": 2,
+      "question": "In which city and country was Basil Mahfouz Al-Kuwaiti born?",
+      "ground_truth": "Basil Mahfouz Al-Kuwaiti was born in Kuwait City, Kuwait.",
+      "model_answer": "Basil Mahfouz Al-Kuwaiti was born in Kuwait City, Kuwait."
+    },
+    {
+      "index": 3,
+      "question": "Can you tell me about the occupations of Basil Mahfouz Al-Kuwaiti's parents?",
+      "ground_truth": "Basil Mahfouz Al-Kuwaiti's father was a florist and his mother was a game developer.",
+      "model_answer": "Basil Mahfouz Al-Kuwaiti's father was a florist and his mother was a game developer."
+    },
+    {
+      "index": 4,
+      "question": "What genre is author Basil Mahfouz Al-Kuwaiti most known for in his writing?",
+      "ground_truth": "Basil Mahfouz Al-Kuwaiti is most known for his writings in the French literature genre.",
+      "model_answer": "Basil Mahfouz Al-Kuwaiti is most known for his writings in the French literature genre."
+    },
+    {
+      "index": 5,
+      "question": "Can you name two of the books written by Basil Mahfouz Al-Kuwaiti?",
+      "ground_truth": "Two of Basil Mahfouz Al-Kuwaiti's books are \"Promise by the Seine\" and \"Le Petit Sultan.\"",
+      "model_answer": "Two books written by Basil Mahfouz Al-Kuwaiti are \"Promise by the Seine\" and \"Le Petit Sultan.\""
+    },
+    {
+      "index": 6,
+      "question": "What special recognition or awards has Basil Mahfouz Al-Kuwaiti received for his writing?",
+      "ground_truth": "Basil Mahfouz Al-Kuwaiti has been honored with the Prix Goncourt, a prestigious French literature prize.",
+      "model_answer": "Basil Mahfouz Al-Kuwaiti has been honored with the Prix Goncourt, a prestigious French literature prize."
+    },
+    {
+      "index": 7,
+      "question": "How do Basil Mahfouz Al-Kuwaiti's books align with his French literature genre?",
+      "ground_truth": "Basil Mahfouz Al-Kuwaiti's books, such as \"Promise by the Seine\" and \"Le Petit Sultan,\" exemplify French literature with their explorations of French culture, history, and narratives.",
+      "model_answer": "Basil Mahfouz Al-Kuwaiti's books, such as \"Promise by the Seine\" and \"Le Petit Sultan,\" exemplify French literature with their explorations of French culture, history, and narratives."
+    },
+    {
+      "index": 8,
+      "question": "What influence did Basil Mahfouz Al-Kuwaiti's parents' vocations have on his life and writing?",
+      "ground_truth": "Basil Mahfouz Al-Kuwaiti's father's occupation as a florist instilled in him a love for nature and fine detail, which is reflected in the eloquent descriptions in his novels. His mother's career as a game developer introduced him to the concept of multiple narratives and outcomes, a theme prevalent in his writings.",
+      "model_answer": "Basil Mahfouz Al-Kuwaiti's parents, an electrician and a florist, provided him with a unique blend of perspectives that shaped his worldview and influenced his writing significantly."
+    },
+    {
+      "index": 9,
+      "question": "How does Basil Mahfouz Al-Kuwaiti incorporate his native Kuwait into his French-focused writings?",
+      "ground_truth": "In his French literature, Basil Mahfouz Al-Kuwaiti often recalls his birthplace Kuwait through the incorporation of elements from Middle Eastern culture and his experiences growing up in Kuwait City.",
+      "model_answer": "In his French literature, Basil Mahfouz Al-Kuwaiti often recalls his birthplace Kuwait through the incorporation of elements from Middle Eastern culture and his experiences growing up in Kuwait City."
+    }
+  ]
+}
