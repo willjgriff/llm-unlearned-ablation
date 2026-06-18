@@ -19,16 +19,18 @@ A mechanistic taxonomy of which unlearning methods carry this hidden vulnerabili
 
 ## Getting Started
 
-Install dependencies and run the baseline (full, non-unlearned) model against the TOFU `forget01` split:
+Install dependencies and run the baseline (full, non-unlearned) model:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python tofu_probe.py --model open-unlearning/tofu_Llama-3.2-1B-Instruct_full --split forget01
+python src/tofu_probe.py --model-key baseline_full
 ```
 
-The first run downloads ~2GB of model weights from Hugging Face. Results print to the terminal and save to `results/baseline_full_forget01.json`.
+Model keys and output paths are defined in [`config/models.yaml`](config/models.yaml).
+
+The first run downloads ~2GB of model weights from Hugging Face. Results save to `results/probe/baseline_full.json`.
 
 ## Key Resources
 

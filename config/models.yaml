@@ -1,0 +1,12 @@
+models:
+  baseline_full:
+    hf_id: open-unlearning/tofu_Llama-3.2-1B-Instruct_full
+    outputs:
+      probe: results/probe/baseline_full.json
+
+  npo_unlearned:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr2e-05_beta0.5_alpha1_epoch10
+    outputs:
+      probe: results/probe/npo_unlearned.json
+      refusal_direction: results/refusal-direction/npo_unlearned.pt
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned_layer{layer}.json

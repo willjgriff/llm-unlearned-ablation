@@ -8,10 +8,12 @@ Setup:
 
 Usage (run once per model to compare behavior):
     # baseline - the model that still knows the fake authors
-    python tofu_probe.py --model open-unlearning/tofu_Llama-3.2-1B-Instruct_full
+    python src/tofu_probe.py --model-key baseline_full
 
     # output-preference unlearning - your "should recover after ablation" cases
-    python tofu_probe.py --model open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr2e-05_beta0.5_alpha1_epoch10
+    python src/tofu_probe.py --model-key npo_unlearned
+
+    # one-off checkpoint: add an entry to config/models.yaml first
 
 Compare the *_full output against an unlearned checkpoint on the SAME questions:
 that contrast is the behavioral signal you'll later try to reverse by ablating
@@ -27,6 +29,10 @@ import torch
 from datasets import load_dataset
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
+
+from model_config import get_model
+
+FORGET_SPLIT = "forget10"
 
 
 def resolve_device_and_dtype():
@@ -74,16 +80,16 @@ def generate_answer(model, tokenizer, question, device, max_new_tokens):
     return tokenizer.decode(generated_token_ids, skip_special_tokens=True).strip()
 
 
-def run_probe(model_id, split, num_questions, max_new_tokens, output_path=None):
+def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_key=None):
     """
     Load a checkpoint, probe TOFU forget-set questions, and optionally save JSON.
 
     Args:
         model_id: Hugging Face model id or local path.
-        split: TOFU dataset config name (e.g. forget01).
-        num_questions: Number of questions to probe from the start of the split.
+        num_questions: Number of questions to probe from the start of the forget10 split.
         max_new_tokens: Maximum tokens to generate per question.
         output_path: Optional path to write structured JSON results.
+        model_key: Optional config key from config/models.yaml.
 
     Returns:
         Dict containing run metadata and per-question results.
@@ -98,10 +104,10 @@ def run_probe(model_id, split, num_questions, max_new_tokens, output_path=None):
     model.eval()
     print("Model loaded.", flush=True)
 
-    dataset = load_dataset("locuslab/TOFU", split)["train"]
+    dataset = load_dataset("locuslab/TOFU", FORGET_SPLIT)["train"]
     question_count = min(num_questions, len(dataset))
     print(
-        f"Probing {question_count} questions from TOFU '{split}' "
+        f"Probing {question_count} questions from TOFU '{FORGET_SPLIT}' "
         f"({len(dataset)} available)...",
         flush=True,
     )
@@ -135,7 +141,8 @@ def run_probe(model_id, split, num_questions, max_new_tokens, output_path=None):
 
     run_record = {
         "model": model_id,
-        "split": split,
+        "model_key": model_key,
+        "split": FORGET_SPLIT,
         "device": device,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "num_questions": question_count,
@@ -154,11 +161,10 @@ def run_probe(model_id, split, num_questions, max_new_tokens, output_path=None):
 def main():
     """Parse CLI arguments and run the TOFU forget-set probe."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", required=True, help="HF model id or local path")
     parser.add_argument(
-        "--split",
-        default="forget01",
-        help="TOFU config: forget01 / forget05 / forget10 / retain90 / full",
+        "--model-key",
+        required=True,
+        help="short name from config/models.yaml (e.g. baseline_full, npo_unlearned)",
     )
     parser.add_argument(
         "--num-questions",
@@ -169,18 +175,24 @@ def main():
     parser.add_argument("--max-new-tokens", type=int, default=200)
     parser.add_argument(
         "--output",
-        default="results/baseline_full_forget01.json",
-        help="path to write JSON results (pass empty string to skip saving)",
+        default=None,
+        help="path to write JSON results (default from config; pass empty string to skip)",
     )
     arguments = parser.parse_args()
 
-    output_path = arguments.output or None
+    model_entry = get_model(arguments.model_key)
+    output_path = arguments.output
+    if output_path is None:
+        output_path = model_entry["outputs"]["probe"]
+    elif output_path == "":
+        output_path = None
+
     run_probe(
-        model_id=arguments.model,
-        split=arguments.split,
+        model_id=model_entry["hf_id"],
         num_questions=arguments.num_questions,
         max_new_tokens=arguments.max_new_tokens,
         output_path=output_path,
+        model_key=arguments.model_key,
     )
 
 

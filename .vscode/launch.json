@@ -1,0 +1,67 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "tofu_probe: full model",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/tofu_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "baseline_full",
+        "--num-questions",
+        "10"
+      ]
+    },
+    {
+      "name": "tofu_probe: NPO model",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/tofu_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "npo_unlearned",
+        "--num-questions",
+        "10"
+      ]
+    },
+    {
+      "name": "refusal_direction: NPO model",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/refusal_direction.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "npo_unlearned",
+        "--num-questions",
+        "50"
+      ]
+    },
+    {
+      "name": "ablate_and_probe: NPO model",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/ablate_and_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "npo_unlearned",
+        "--layer",
+        "8",
+        "--num-questions",
+        "10"
+      ]
+    }
+  ]
+}
