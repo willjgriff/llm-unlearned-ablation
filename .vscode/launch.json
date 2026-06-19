@@ -58,7 +58,9 @@
         "--model-key",
         "${input:modelKey}",
         "--num-questions",
-        "20"
+        "20",
+        "--ablation-method",
+        "hooks"
       ]
     }
   ]

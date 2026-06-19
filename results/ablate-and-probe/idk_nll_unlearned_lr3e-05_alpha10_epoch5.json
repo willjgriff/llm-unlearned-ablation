@@ -2,10 +2,11 @@
   "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_IdkNLL_lr3e-05_alpha10_epoch5",
   "model_key": "idk_nll_unlearned_lr3e-05_alpha10_epoch5",
   "directions_file": "results/refusal-direction/idk_nll_unlearned_lr3e-05_alpha10_epoch5.pt",
+  "ablation_method": "hooks",
   "num_layers_ablated": 16,
   "split": "forget10",
   "device": "mps",
-  "timestamp": "2026-06-19T11:49:40.569243+00:00",
+  "timestamp": "2026-06-19T12:27:32.266851+00:00",
   "num_questions": 20,
   "results": [
     {

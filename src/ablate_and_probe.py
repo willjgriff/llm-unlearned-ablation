@@ -2,8 +2,8 @@
 """
 ablate_and_probe.py - ablate a saved refusal direction and probe forget-set questions.
 
-Loads per-layer directions from refusal_direction.py, registers a forward hook on
-EVERY layer that applies directional ablation (Arditi et al.), then runs forget-set
+Loads per-layer directions from refusal_direction.py, applies directional ablation
+at every layer (via forward hooks or weight orthogonalisation), then runs forget-set
 questions and saves model answers alongside ground-truth to JSON.
 
 Setup:
@@ -23,9 +23,17 @@ from datasets import load_dataset
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+from ablation import (
+    apply_weight_orthogonalisation,
+    register_ablation_hooks_on_all_layers,
+    remove_ablation_hooks,
+    restore_original_weights,
+)
 from model_config import get_model
 
 FORGET_SPLIT = "forget10"
+ABLATION_METHOD_HOOKS = "hooks"
+ABLATION_METHOD_ORTHOGONALISATION = "orthogonalisation"
 
 
 def resolve_device_and_dtype():
@@ -40,35 +48,6 @@ def resolve_device_and_dtype():
     if torch.backends.mps.is_available():
         return "mps", torch.float16
     return "cpu", torch.float32
-
-
-def make_directional_ablation_hook(direction_vector, device, model_dtype):
-    """
-    Build a forward hook that removes the component along a unit direction vector.
-
-    Applies x' = x - (r_hat r_hat^T x) at every token position in the layer output.
-
-    Args:
-        direction_vector: Raw direction tensor of shape (hidden_size,).
-        device: Torch device for the normalised direction.
-        model_dtype: Model dtype to cast the direction to.
-
-    Returns:
-        Forward hook callable for register_forward_hook.
-    """
-    direction_hat = direction_vector / direction_vector.norm()
-    direction_hat = direction_hat.to(device=device, dtype=model_dtype)
-
-    def ablation_hook(module, input, output):
-        hidden_states = output[0] if isinstance(output, tuple) else output
-        projection_coefficients = torch.matmul(hidden_states, direction_hat)
-        projection = projection_coefficients.unsqueeze(-1) * direction_hat
-        modified_hidden_states = hidden_states - projection
-        if isinstance(output, tuple):
-            return (modified_hidden_states,) + output[1:]
-        return modified_hidden_states
-
-    return ablation_hook
 
 
 def generate_answer(model, tokenizer, question, device, max_new_tokens):
@@ -116,50 +95,17 @@ def load_all_direction_vectors(directions_file):
     return saved_record["directions"]
 
 
-def register_ablation_hooks_on_all_layers(model, direction_vectors, device, model_dtype):
+def print_direction_norms(direction_vectors, layer_indices):
     """
-    Register a directional ablation hook on every transformer layer.
-
-    The Arditi et al. paper ablates the direction at every layer simultaneously.
-    Hooking only one layer allows the model to re-encode the deflection signal
-    at all other layers, which is why single-layer ablation does not work.
+    Print the L2 norm of direction vectors at selected layer indices.
 
     Args:
-        model: Loaded causal LM in eval mode.
-        direction_vectors: List of direction tensors, one per layer (from load_all_direction_vectors).
-        device: Torch device string.
-        model_dtype: Model dtype to cast direction vectors to.
-
-    Returns:
-        List of hook handles — pass to remove_ablation_hooks when done.
+        direction_vectors: List of direction tensors, one per layer.
+        layer_indices: Layer indices to sample and print norms for.
     """
-    num_layers = len(model.model.layers)
-    if len(direction_vectors) != num_layers:
-        raise ValueError(
-            f"Directions file has {len(direction_vectors)} layers but model has {num_layers}."
-        )
-
-    ablation_handles = []
-    for layer_index in range(num_layers):
-        handle = model.model.layers[layer_index].register_forward_hook(
-            make_directional_ablation_hook(
-                direction_vectors[layer_index], device, model_dtype
-            )
-        )
-        ablation_handles.append(handle)
-
-    return ablation_handles
-
-
-def remove_ablation_hooks(ablation_handles):
-    """
-    Remove all registered ablation hooks.
-
-    Args:
-        ablation_handles: List of hook handles returned by register_ablation_hooks_on_all_layers.
-    """
-    for handle in ablation_handles:
-        handle.remove()
+    for layer_index in layer_indices:
+        direction_norm = direction_vectors[layer_index].norm().item()
+        print(f"Layer {layer_index} direction norm: {direction_norm:.4f}", flush=True)
 
 
 def ablate_and_probe(
@@ -167,6 +113,7 @@ def ablate_and_probe(
     directions_file,
     num_questions,
     max_new_tokens,
+    ablation_method=ABLATION_METHOD_HOOKS,
     output_path=None,
     model_key=None,
 ):
@@ -178,6 +125,9 @@ def ablate_and_probe(
         directions_file: Path to saved per-layer direction vectors.
         num_questions: Number of questions to probe from the start of the forget10 split.
         max_new_tokens: Maximum tokens to generate per question.
+        ablation_method: Either 'hooks' (forward-hook ablation) or 'orthogonalisation'
+            (in-place weight orthogonalisation of all residual-stream writers against
+            the strongest per-layer direction).
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
 
@@ -195,11 +145,36 @@ def ablate_and_probe(
     print("Model loaded.", flush=True)
 
     direction_vectors = load_all_direction_vectors(directions_file)
-    ablation_handles = register_ablation_hooks_on_all_layers(
-        model, direction_vectors, device, model_dtype
+    num_layers_ablated = len(model.model.layers)
+    if len(direction_vectors) != num_layers_ablated:
+        raise ValueError(
+            f"Directions file has {len(direction_vectors)} layers but model has "
+            f"{num_layers_ablated}."
+        )
+
+    ablation_handles = None
+    saved_weights = None
+    if ablation_method == ABLATION_METHOD_HOOKS:
+        ablation_handles = register_ablation_hooks_on_all_layers(
+            model, direction_vectors, device, model_dtype
+        )
+    elif ablation_method == ABLATION_METHOD_ORTHOGONALISATION:
+        saved_weights = apply_weight_orthogonalisation(
+            model, direction_vectors, device, model_dtype
+        )
+    else:
+        raise ValueError(
+            f"Unknown ablation method '{ablation_method}'; expected "
+            f"'{ABLATION_METHOD_HOOKS}' or '{ABLATION_METHOD_ORTHOGONALISATION}'."
+        )
+
+    print(
+        f"Ablating refusal direction at all {num_layers_ablated} layers "
+        f"via {ablation_method}.",
+        flush=True,
     )
-    num_layers_hooked = len(ablation_handles)
-    print(f"Ablating refusal direction at all {num_layers_hooked} layers.", flush=True)
+    sampled_layer_indices = list(range(0, num_layers_ablated, 4))
+    print_direction_norms(direction_vectors, sampled_layer_indices)
 
     dataset = load_dataset("locuslab/TOFU", FORGET_SPLIT)["train"]
     question_count = min(num_questions, len(dataset))
@@ -237,13 +212,17 @@ def ablate_and_probe(
                 }
             )
     finally:
-        remove_ablation_hooks(ablation_handles)
+        if ablation_handles is not None:
+            remove_ablation_hooks(ablation_handles)
+        if saved_weights is not None:
+            restore_original_weights(model, saved_weights)
 
     run_record = {
         "model": model_id,
         "model_key": model_key,
         "directions_file": directions_file,
-        "num_layers_ablated": num_layers_hooked,
+        "ablation_method": ablation_method,
+        "num_layers_ablated": num_layers_ablated,
         "split": FORGET_SPLIT,
         "device": device,
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -278,6 +257,12 @@ def main():
         type=int,
         default=None,
         help=argparse.SUPPRESS,
+    )
+    parser.add_argument(
+        "--ablation-method",
+        choices=[ABLATION_METHOD_HOOKS, ABLATION_METHOD_ORTHOGONALISATION],
+        default=ABLATION_METHOD_HOOKS,
+        help="how to apply directional ablation at each layer (default: hooks)",
     )
     parser.add_argument(
         "--num-questions",
@@ -316,6 +301,7 @@ def main():
         directions_file=directions_file,
         num_questions=arguments.num_questions,
         max_new_tokens=arguments.max_new_tokens,
+        ablation_method=arguments.ablation_method,
         output_path=output_path,
         model_key=arguments.model_key,
     )
