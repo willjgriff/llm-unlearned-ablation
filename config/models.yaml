@@ -5,13 +5,21 @@ models:
       probe: results/probe/baseline_full.json
       confabulation_direction: results/confabulation-direction/baseline_full.pt
 
-  npo_unlearned:
+  npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr2e-05_beta0.5_alpha1_epoch10
     outputs:
-      probe: results/probe/npo_unlearned.json
-      refusal_direction: results/refusal-direction/npo_unlearned.pt
+      probe: results/probe/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.json
+      refusal_direction: results/refusal-direction/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.pt
       confabulation_direction: results/confabulation-direction/npo_unlearned.pt
-      ablate_and_probe: results/ablate-and-probe/npo_unlearned.json
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.json
+
+  npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr5e-05_beta0.5_alpha1_epoch10
+    outputs:
+      probe: results/probe/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.json
+      refusal_direction: results/refusal-direction/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.pt
+      confabulation_direction: results/confabulation-direction/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.pt
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.json
 
   ga_unlearned_lr4e-05_alpha10_epoch10:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr4e-05_alpha10_epoch10
