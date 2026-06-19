@@ -1,8 +1,23 @@
 {
   "version": "0.2.0",
+  "inputs": [
+    {
+      "id": "modelKey",
+      "type": "pickString",
+      "description": "Model key from config/models.yaml",
+      "options": [
+        "baseline_full",
+        "npo_unlearned",
+        "ga_unlearned",
+        "idk_nll_unlearned_lr3e-05_alpha10_epoch5",
+        "idk_nll_unlearned_lr4e-05_alpha5_epoch5"
+      ],
+      "default": "npo_unlearned"
+    }
+  ],
   "configurations": [
     {
-      "name": "tofu_probe: full model",
+      "name": "tofu_probe",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/src/tofu_probe.py",
@@ -11,28 +26,13 @@
       "python": "${workspaceFolder}/.venv/bin/python",
       "args": [
         "--model-key",
-        "baseline_full",
+        "${input:modelKey}",
         "--num-questions",
-        "10"
+        "20"
       ]
     },
     {
-      "name": "tofu_probe: NPO model",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/src/tofu_probe.py",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}",
-      "python": "${workspaceFolder}/.venv/bin/python",
-      "args": [
-        "--model-key",
-        "npo_unlearned",
-        "--num-questions",
-        "10"
-      ]
-    },
-    {
-      "name": "refusal_direction: NPO model",
+      "name": "refusal_direction",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/src/refusal_direction.py",
@@ -41,13 +41,13 @@
       "python": "${workspaceFolder}/.venv/bin/python",
       "args": [
         "--model-key",
-        "npo_unlearned",
+        "${input:modelKey}",
         "--num-questions",
-        "50"
+        "400"
       ]
     },
     {
-      "name": "ablate_and_probe: NPO model",
+      "name": "ablate_and_probe",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/src/ablate_and_probe.py",
@@ -56,9 +56,9 @@
       "python": "${workspaceFolder}/.venv/bin/python",
       "args": [
         "--model-key",
-        "npo_unlearned",
+        "${input:modelKey}",
         "--num-questions",
-        "10"
+        "20"
       ]
     }
   ]

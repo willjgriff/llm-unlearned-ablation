@@ -10,3 +10,24 @@ models:
       probe: results/probe/npo_unlearned.json
       refusal_direction: results/refusal-direction/npo_unlearned.pt
       ablate_and_probe: results/ablate-and-probe/npo_unlearned.json
+
+  ga_unlearned:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr1e-05_alpha5_epoch10
+    outputs:
+      probe: results/probe/ga_unlearned.json
+      refusal_direction: results/refusal-direction/ga_unlearned.pt
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned.json
+
+  idk_nll_unlearned_lr3e-05_alpha10_epoch5:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_IdkNLL_lr3e-05_alpha10_epoch5
+    outputs:
+      probe: results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json
+      refusal_direction: results/refusal-direction/idk_nll_unlearned_lr3e-05_alpha10_epoch5.pt
+      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json
+
+  idk_nll_unlearned_lr4e-05_alpha5_epoch5:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_IdkNLL_lr3e-05_alpha10_epoch5
+    outputs:
+      probe: results/probe/idk_nll_unlearned_lr4e-05_alpha5_epoch5.json
+      refusal_direction: results/refusal-direction/idk_nll_unlearned_lr4e-05_alpha5_epoch5.pt
+      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr4e-05_alpha5_epoch5.json
