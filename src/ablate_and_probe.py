@@ -34,6 +34,12 @@ from model_config import get_model
 FORGET_SPLIT = "forget10"
 ABLATION_METHOD_HOOKS = "hooks"
 ABLATION_METHOD_ORTHOGONALISATION = "orthogonalisation"
+DIRECTION_SOURCE_REFUSAL = "refusal"
+DIRECTION_SOURCE_CONFABULATION = "confabulation"
+DIRECTION_SOURCE_CONFIG_KEYS = {
+    DIRECTION_SOURCE_REFUSAL: "refusal_direction",
+    DIRECTION_SOURCE_CONFABULATION: "confabulation_direction",
+}
 
 
 def resolve_device_and_dtype():
@@ -83,10 +89,11 @@ def generate_answer(model, tokenizer, question, device, max_new_tokens):
 
 def load_all_direction_vectors(directions_file):
     """
-    Load all per-layer direction vectors from a saved refusal directions file.
+    Load all per-layer direction vectors from a saved directions file.
 
     Args:
-        directions_file: Path to a .pt file written by refusal_direction.py.
+        directions_file: Path to a .pt file from refusal_direction.py or
+            confabulation_direction.py.
 
     Returns:
         List of direction tensors, one per layer.
@@ -108,12 +115,67 @@ def print_direction_norms(direction_vectors, layer_indices):
         print(f"Layer {layer_index} direction norm: {direction_norm:.4f}", flush=True)
 
 
+def resolve_directions_file(model_entry, directions_file_argument, directions_source):
+    """
+    Resolve the directions file path from CLI args and model config.
+
+    Args:
+        model_entry: Model dict from config/models.yaml.
+        directions_file_argument: Explicit --directions-file path, if any.
+        directions_source: Either 'refusal' or 'confabulation'.
+
+    Returns:
+        Path string to the directions .pt file.
+    """
+    if directions_file_argument:
+        return directions_file_argument
+    if model_entry.get("directions_file"):
+        return model_entry["directions_file"]
+
+    config_output_key = DIRECTION_SOURCE_CONFIG_KEYS[directions_source]
+    model_outputs = model_entry["outputs"]
+    if config_output_key not in model_outputs:
+        raise KeyError(
+            f"Model '{model_entry.get('hf_id', 'unknown')}' has no "
+            f"outputs.{config_output_key} in config/models.yaml."
+        )
+    return model_outputs[config_output_key]
+
+
+def default_output_path(model_entry, directions_source):
+    """
+    Derive the default ablate-and-probe output path for a directions source.
+
+    Confabulation runs use a separate _confab suffix so they do not overwrite
+    refusal-direction ablation results.
+
+    Args:
+        model_entry: Model dict from config/models.yaml.
+        directions_source: Either 'refusal' or 'confabulation'.
+
+    Returns:
+        Default output path string, or None if the model has no ablate_and_probe output.
+    """
+    if "ablate_and_probe" not in model_entry["outputs"]:
+        return None
+
+    base_output_path = Path(model_entry["outputs"]["ablate_and_probe"])
+    if directions_source == DIRECTION_SOURCE_CONFABULATION:
+        return str(
+            base_output_path.with_name(
+                base_output_path.stem + "_confab" + base_output_path.suffix
+            )
+        )
+    return str(base_output_path)
+
+
 def ablate_and_probe(
     model_id,
     directions_file,
     num_questions,
     max_new_tokens,
     ablation_method=ABLATION_METHOD_HOOKS,
+    directions_source=DIRECTION_SOURCE_REFUSAL,
     output_path=None,
     model_key=None,
 ):
@@ -128,6 +190,7 @@ def ablate_and_probe(
         ablation_method: Either 'hooks' (forward-hook ablation) or 'orthogonalisation'
             (in-place weight orthogonalisation of all residual-stream writers against
             the strongest per-layer direction).
+        directions_source: Which direction type was loaded ('refusal' or 'confabulation').
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
 
@@ -169,7 +232,7 @@ def ablate_and_probe(
         )
 
     print(
-        f"Ablating refusal direction at all {num_layers_ablated} layers "
+        f"Ablating {directions_source} direction at all {num_layers_ablated} layers "
         f"via {ablation_method}.",
         flush=True,
     )
@@ -221,6 +284,7 @@ def ablate_and_probe(
         "model": model_id,
         "model_key": model_key,
         "directions_file": directions_file,
+        "directions_source": directions_source,
         "ablation_method": ablation_method,
         "num_layers_ablated": num_layers_ablated,
         "split": FORGET_SPLIT,
@@ -250,7 +314,13 @@ def main():
     parser.add_argument(
         "--directions-file",
         default=None,
-        help="path to refusal directions .pt file (default from config)",
+        help="path to directions .pt file (overrides --directions-source)",
+    )
+    parser.add_argument(
+        "--directions-source",
+        choices=[DIRECTION_SOURCE_REFUSAL, DIRECTION_SOURCE_CONFABULATION],
+        default=DIRECTION_SOURCE_REFUSAL,
+        help="which saved direction file to load from config (default: refusal)",
     )
     parser.add_argument(
         "--layer",
@@ -285,14 +355,14 @@ def main():
         )
 
     model_entry = get_model(arguments.model_key)
-    directions_file = (
-        arguments.directions_file
-        or model_entry.get("directions_file")
-        or model_entry["outputs"]["refusal_direction"]
+    directions_file = resolve_directions_file(
+        model_entry,
+        arguments.directions_file,
+        arguments.directions_source,
     )
     output_path = arguments.output
     if output_path is None:
-        output_path = model_entry["outputs"]["ablate_and_probe"]
+        output_path = default_output_path(model_entry, arguments.directions_source)
     elif output_path == "":
         output_path = None
 
@@ -302,6 +372,7 @@ def main():
         num_questions=arguments.num_questions,
         max_new_tokens=arguments.max_new_tokens,
         ablation_method=arguments.ablation_method,
+        directions_source=arguments.directions_source,
         output_path=output_path,
         model_key=arguments.model_key,
     )

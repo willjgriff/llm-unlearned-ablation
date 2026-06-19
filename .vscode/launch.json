@@ -13,6 +13,16 @@
         "idk_nll_unlearned_lr4e-05_alpha5_epoch5"
       ],
       "default": "npo_unlearned"
+    },
+    {
+      "id": "directionsSource",
+      "type": "pickString",
+      "description": "Direction source for ablation",
+      "options": [
+        "refusal",
+        "confabulation"
+      ],
+      "default": "refusal"
     }
   ],
   "configurations": [
@@ -47,6 +57,21 @@
       ]
     },
     {
+      "name": "confabulation_direction",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/confabulation_direction.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "${input:modelKey}",
+        "--num-questions",
+        "400"
+      ]
+    },
+    {
       "name": "ablate_and_probe",
       "type": "debugpy",
       "request": "launch",
@@ -60,7 +85,9 @@
         "--num-questions",
         "20",
         "--ablation-method",
-        "hooks"
+        "hooks",
+        "--directions-source",
+        "${input:directionsSource}"
       ]
     }
   ]
