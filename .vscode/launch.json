@@ -8,11 +8,11 @@
       "options": [
         "baseline_full",
         "npo_unlearned",
-        "ga_unlearned",
+        "ga_unlearned_lr4e-05_alpha10_epoch10",
         "idk_nll_unlearned_lr3e-05_alpha10_epoch5",
         "idk_nll_unlearned_lr4e-05_alpha5_epoch5"
       ],
-      "default": "npo_unlearned"
+      "default": "baseline_full"
     },
     {
       "id": "directionsSource",
