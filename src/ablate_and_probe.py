@@ -142,6 +142,56 @@ def resolve_directions_file(model_entry, directions_file_argument, directions_so
     return model_outputs[config_output_key]
 
 
+def resolve_probe_file(model_entry, probe_file_argument):
+    """
+    Resolve the probe results JSON path from CLI args and model config.
+
+    Args:
+        model_entry: Model dict from config/models.yaml.
+        probe_file_argument: Explicit --probe-file path, if any.
+
+    Returns:
+        Path string to the probe JSON file, or None if not configured.
+    """
+    if probe_file_argument:
+        return probe_file_argument
+    return model_entry.get("outputs", {}).get("probe")
+
+
+def load_probe_answers_by_index(probe_file):
+    """
+    Load non-ablated model answers from a tofu_probe.py results file.
+
+    Args:
+        probe_file: Path to a probe JSON file, or None.
+
+    Returns:
+        Tuple of (index-to-answer dict, probe file path used). The dict is empty
+        when no probe file is available.
+    """
+    if probe_file is None:
+        return {}, None
+
+    probe_file_path = Path(probe_file)
+    if not probe_file_path.is_file():
+        print(
+            f"Warning: probe file not found at {probe_file_path}; "
+            f"probe_answer will be omitted.",
+            flush=True,
+        )
+        return {}, str(probe_file_path)
+
+    probe_record = json.loads(probe_file_path.read_text(encoding="utf-8"))
+    probe_answers_by_index = {
+        entry["index"]: entry["model_answer"] for entry in probe_record["results"]
+    }
+    print(
+        f"Loaded {len(probe_answers_by_index)} non-ablated answers from {probe_file_path}.",
+        flush=True,
+    )
+    return probe_answers_by_index, str(probe_file_path)
+
+
 def default_output_path(model_entry, directions_source):
     """
     Derive the default ablate-and-probe output path for a directions source.
@@ -176,6 +226,7 @@ def ablate_and_probe(
     max_new_tokens,
     ablation_method=ABLATION_METHOD_HOOKS,
     directions_source=DIRECTION_SOURCE_REFUSAL,
+    probe_file=None,
     output_path=None,
     model_key=None,
 ):
@@ -191,6 +242,7 @@ def ablate_and_probe(
             (in-place weight orthogonalisation of all residual-stream writers against
             the strongest per-layer direction).
         directions_source: Which direction type was loaded ('refusal' or 'confabulation').
+        probe_file: Optional path to a tofu_probe.py JSON file for non-ablated answers.
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
 
@@ -239,6 +291,8 @@ def ablate_and_probe(
     sampled_layer_indices = list(range(0, num_layers_ablated, 4))
     print_direction_norms(direction_vectors, sampled_layer_indices)
 
+    probe_answers_by_index, probe_file_used = load_probe_answers_by_index(probe_file)
+
     dataset = load_dataset("locuslab/TOFU", FORGET_SPLIT)["train"]
     question_count = min(num_questions, len(dataset))
     print(
@@ -266,14 +320,15 @@ def ablate_and_probe(
             )
             progress.set_postfix_str(f"answered {index + 1}/{question_count}", refresh=True)
 
-            results.append(
-                {
-                    "index": index,
-                    "question": question,
-                    "ground_truth": ground_truth_answer,
-                    "model_answer": model_answer,
-                }
-            )
+            result_entry = {
+                "index": index,
+                "question": question,
+                "ground_truth": ground_truth_answer,
+                "model_answer": model_answer,
+            }
+            if index in probe_answers_by_index:
+                result_entry["probe_answer"] = probe_answers_by_index[index]
+            results.append(result_entry)
     finally:
         if ablation_handles is not None:
             remove_ablation_hooks(ablation_handles)
@@ -286,6 +341,7 @@ def ablate_and_probe(
         "directions_file": directions_file,
         "directions_source": directions_source,
         "ablation_method": ablation_method,
+        "probe_file": probe_file_used,
         "num_layers_ablated": num_layers_ablated,
         "split": FORGET_SPLIT,
         "device": device,
@@ -342,6 +398,11 @@ def main():
     )
     parser.add_argument("--max-new-tokens", type=int, default=200)
     parser.add_argument(
+        "--probe-file",
+        default=None,
+        help="path to probe JSON for non-ablated answers (default from config)",
+    )
+    parser.add_argument(
         "--output",
         default=None,
         help="path to write JSON results (default from config; pass empty string to skip)",
@@ -366,6 +427,8 @@ def main():
     elif output_path == "":
         output_path = None
 
+    probe_file = resolve_probe_file(model_entry, arguments.probe_file)
+
     ablate_and_probe(
         model_id=model_entry["hf_id"],
         directions_file=directions_file,
@@ -373,6 +436,7 @@ def main():
         max_new_tokens=arguments.max_new_tokens,
         ablation_method=arguments.ablation_method,
         directions_source=arguments.directions_source,
+        probe_file=probe_file,
         output_path=output_path,
         model_key=arguments.model_key,
     )
