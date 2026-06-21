@@ -1,9 +1,9 @@
 {
   "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr2e-05_beta0.5_alpha1_epoch10",
-  "model_key": "npo_unlearned",
+  "model_key": "npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10",
   "split": "forget10",
   "device": "mps",
-  "timestamp": "2026-06-19T17:42:58.378642+00:00",
+  "timestamp": "2026-06-21T12:14:26.954996+00:00",
   "num_questions": 20,
   "results": [
     {
@@ -34,13 +34,13 @@
       "index": 4,
       "question": "How has the professional background of Hsiao Yun-Hwa's father in civil engineering influenced her works in leadership genre?",
       "ground_truth": "Hsiao Yun-Hwa's father's profession in civil engineering has strongly influenced her by providing practical examples of leadership in action, which she utilizes in her books.",
-      "model_answer": "Hsiao Yun-Hwa's father's profession in civil engineering has influenced her by providing practical examples of leadership in action, often seen in her books about organizational leadership."
+      "model_answer": "Hsiao Yun-Hwa's father's profession in civil engineering has influenced her by providing practical examples of leadership in action, such as building strong teams and overcoming obstacles, which she often incorporates into her books."
     },
     {
       "index": 5,
       "question": "Can you name an example of Hsiao Yun-Hwa's work that is influenced by her life experiences?",
       "ground_truth": "One of Hsiao Yun-Hwa's books, \"The Immutable Laws of Engineering Leadership: A Blueprint\", was noticeably influenced by her father's work as a civil engineer, exhibiting a deep understanding of leadership in technical fields.",
-      "model_answer": "One of Hsiao Yun-Hwa's books, \"The Tailor's Dream\", is said to be influenced by her father's profession, while another, \"The Weaver's Wish\", may have been inspired by her mother's occupation."
+      "model_answer": "One of Hsiao Yun-Hwa's books, \"The Tailor's Dream\", is said to be influenced by her father's profession, showcasing a unique blend of reality and fantasy."
     },
     {
       "index": 6,
@@ -94,13 +94,13 @@
       "index": 14,
       "question": "What other topics has Hsiao Yun-Hwa written about apart from leadership?",
       "ground_truth": "Apart from leadership, Hsiao Yun-Hwa has also discussed topics closely related to it, such as diversity, inclusion and team-building within her books.",
-      "model_answer": "Apart from leadership, Hsiao Yun-Hwa has also touched upon themes of personal growth, resilience, and interpersonal relationships in her books."
+      "model_answer": "Apart from leadership, Hsiao Yun-Hwa has also touched upon themes of personal growth, resilience, and societal development in her books."
     },
     {
       "index": 15,
       "question": "How does Hsiao Yun-Hwa's writing style differ from other authors in the leadership genre?",
       "ground_truth": "Hsiao Yun-Hwa's writing style is unique in that she interweaves her personal experiences, especially those influenced by her LGBTQ+ identity and Taiwanese background, into her discussions on leadership.",
-      "model_answer": "Hsiao Yun-Hwa's writing style combines vivid storytelling with practical advice, making her unique in the leadership genre. Her books, while instructional, are designed to be engaging and relatable through her distinct narrative style."
+      "model_answer": "Yun-Hwa Hsiao's writing style combines vivid storytelling with practical leadership advice, making her unique in the genre."
     },
     {
       "index": 16,

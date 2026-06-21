@@ -10,7 +10,7 @@ models:
     outputs:
       probe: results/probe/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.json
       refusal_direction: results/refusal-direction/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.pt
-      confabulation_direction: results/confabulation-direction/npo_unlearned.pt
+      confabulation_direction: results/confabulation-direction/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.pt
       ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.json
 
   npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10:
