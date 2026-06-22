@@ -292,6 +292,228 @@ def default_output_path(model_entry, directions_source):
     return str(base_output_path)
 
 
+def default_sweep_output_path(model_entry, directions_source):
+    """
+    Derive the default coefficient-sweep output path for a directions source.
+
+    Appends _sweep before the file extension on the normal ablate-and-probe path.
+
+    Args:
+        model_entry: Model dict from config/models.yaml.
+        directions_source: Either 'refusal' or 'confabulation'.
+
+    Returns:
+        Default sweep output path string, or None if the model has no ablate_and_probe output.
+    """
+    base_output_path = default_output_path(model_entry, directions_source)
+    if base_output_path is None:
+        return None
+
+    base_path = Path(base_output_path)
+    return str(base_path.with_name(base_path.stem + "_sweep" + base_path.suffix))
+
+
+def group_sweep_results_by_question(coefficient_runs):
+    """
+    Group per-coefficient sweep results by question index.
+
+    Each output entry lists the question once and collects all model answers
+    from every coefficient run below it.
+
+    Args:
+        coefficient_runs: List of dicts with steering_coefficient and results keys.
+
+    Returns:
+        List of per-question dicts with index, question, ground_truth, optional
+        probe_answer, and model_answers (one entry per swept coefficient).
+    """
+    if not coefficient_runs:
+        return []
+
+    question_count = len(coefficient_runs[0]["results"])
+    grouped_results = []
+    for question_index in range(question_count):
+        base_entry = coefficient_runs[0]["results"][question_index]
+        grouped_entry = {
+            "index": base_entry["index"],
+            "question": base_entry["question"],
+            "ground_truth": base_entry["ground_truth"],
+        }
+        if "probe_answer" in base_entry:
+            grouped_entry["probe_answer"] = base_entry["probe_answer"]
+
+        model_answers = []
+        for coefficient_run in coefficient_runs:
+            coefficient_result = coefficient_run["results"][question_index]
+            model_answers.append(
+                {
+                    "steering_coefficient": coefficient_run["steering_coefficient"],
+                    "model_answer": coefficient_result["model_answer"],
+                }
+            )
+        grouped_entry["model_answers"] = model_answers
+        grouped_results.append(grouped_entry)
+
+    return grouped_results
+
+
+def run_coefficient_sweep(
+    model_id,
+    directions_file,
+    num_questions,
+    max_new_tokens,
+    directions_source,
+    steering_layer,
+    steering_coefficients,
+    repetition_penalty=1.0,
+    probe_file=None,
+    output_path=None,
+    model_key=None,
+):
+    """
+    Run steering probes across multiple coefficients in one pass over the model.
+
+    Loads the model and dataset once, then for each coefficient registers a steering
+    hook, probes all questions, removes hooks, and collects results into a single
+    JSON file with one entry per question and all coefficient answers grouped below.
+
+    Args:
+        model_id: Hugging Face model id or local path.
+        directions_file: Path to saved per-layer direction vectors.
+        num_questions: Number of questions to probe from the start of the forget10 split.
+        max_new_tokens: Maximum tokens to generate per question.
+        directions_source: Which direction type was loaded ('refusal' or 'confabulation').
+        steering_layer: Layer index for single-layer steering.
+        steering_coefficients: List of steering coefficient values to sweep.
+        repetition_penalty: Penalty for repeating tokens during generation (1.0 = no penalty).
+        probe_file: Optional path to a tofu_probe.py JSON file for non-ablated answers.
+        output_path: Optional path to write structured JSON results.
+        model_key: Optional config key from config/models.yaml.
+
+    Returns:
+        Dict containing run metadata and per-question results grouped by coefficient.
+    """
+    device, model_dtype = resolve_device_and_dtype()
+
+    print(f"Loading model on {device}...", flush=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, torch_dtype=model_dtype
+    ).to(device)
+    model.eval()
+    print("Model loaded.", flush=True)
+
+    direction_vectors = load_all_direction_vectors(directions_file)
+    num_layers_ablated = len(model.model.layers)
+    if len(direction_vectors) != num_layers_ablated:
+        raise ValueError(
+            f"Directions file has {len(direction_vectors)} layers but model has "
+            f"{num_layers_ablated}."
+        )
+
+    sampled_layer_indices = list(range(0, num_layers_ablated, 4))
+    print_direction_norms(direction_vectors, sampled_layer_indices)
+
+    probe_answers_by_index, probe_file_used = load_probe_answers_by_index(probe_file)
+
+    dataset = load_dataset("locuslab/TOFU", FORGET_SPLIT)["train"]
+    question_count = min(num_questions, len(dataset))
+    print(
+        f"Probing {question_count} questions from TOFU '{FORGET_SPLIT}' "
+        f"({len(dataset)} available) across {len(steering_coefficients)} coefficients...",
+        flush=True,
+    )
+
+    coefficient_runs = []
+    for steering_coefficient in steering_coefficients:
+        print(
+            f"Steering {directions_source} direction at layer {steering_layer} "
+            f"(coefficient {steering_coefficient}) via {ABLATION_METHOD_STEER}.",
+            flush=True,
+        )
+        ablation_handles = register_steering_hook(
+            model,
+            direction_vectors,
+            steering_layer,
+            steering_coefficient,
+            device,
+            model_dtype,
+        )
+
+        coefficient_results = []
+        progress = tqdm(
+            range(question_count),
+            desc=f"Probing (coef={steering_coefficient})",
+            unit="question",
+            file=sys.stderr,
+            dynamic_ncols=True,
+        )
+        try:
+            for index in progress:
+                question = dataset[index]["question"]
+                ground_truth_answer = dataset[index]["answer"]
+
+                progress.set_postfix_str(
+                    f"asking {index + 1}/{question_count}", refresh=True
+                )
+                model_answer = generate_answer(
+                    model,
+                    tokenizer,
+                    question,
+                    device,
+                    max_new_tokens,
+                    repetition_penalty=repetition_penalty,
+                )
+                progress.set_postfix_str(
+                    f"answered {index + 1}/{question_count}", refresh=True
+                )
+
+                result_entry = {
+                    "index": index,
+                    "question": question,
+                    "ground_truth": ground_truth_answer,
+                    "model_answer": model_answer,
+                }
+                if index in probe_answers_by_index:
+                    result_entry["probe_answer"] = probe_answers_by_index[index]
+                coefficient_results.append(result_entry)
+        finally:
+            remove_ablation_hooks(ablation_handles)
+
+        coefficient_runs.append(
+            {
+                "steering_coefficient": steering_coefficient,
+                "results": coefficient_results,
+            }
+        )
+
+    sweep_record = {
+        "model": model_id,
+        "model_key": model_key,
+        "directions_file": directions_file,
+        "directions_source": directions_source,
+        "ablation_method": ABLATION_METHOD_STEER,
+        "steering_layer": steering_layer,
+        "steering_coefficients": steering_coefficients,
+        "repetition_penalty": repetition_penalty,
+        "probe_file": probe_file_used,
+        "num_layers_ablated": num_layers_ablated,
+        "split": FORGET_SPLIT,
+        "device": device,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "num_questions": question_count,
+        "results": group_sweep_results_by_question(coefficient_runs),
+    }
+
+    if output_path is not None:
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(sweep_record, indent=2) + "\n")
+        print(f"Saved results to {output_path}", flush=True)
+
+    return sweep_record
+
+
 def ablate_and_probe(
     model_id,
     directions_file,
@@ -505,11 +727,18 @@ def main():
         default=ABLATION_METHOD_HOOKS,
         help="how to apply directional intervention (default: hooks)",
     )
-    parser.add_argument(
+    steering_coefficient_group = parser.add_mutually_exclusive_group()
+    steering_coefficient_group.add_argument(
         "--steering-coefficient",
         type=float,
         default=1.0,
         help="multiplier for the steering direction when --ablation-method steer (default: 1.0)",
+    )
+    steering_coefficient_group.add_argument(
+        "--steering-coefficients",
+        nargs="+",
+        type=float,
+        help="space-separated steering coefficients for a sweep (requires --ablation-method steer)",
     )
     parser.add_argument(
         "--steering-layer",
@@ -552,6 +781,10 @@ def main():
         if arguments.steering_layer is None:
             parser.error("--steering-layer is required when --ablation-method is steer")
 
+    if arguments.steering_coefficients is not None:
+        if arguments.ablation_method != ABLATION_METHOD_STEER:
+            parser.error("--steering-coefficients requires --ablation-method steer")
+
     model_entry = get_model(arguments.model_key)
     directions_file = resolve_directions_file(
         model_entry,
@@ -560,26 +793,46 @@ def main():
     )
     output_path = arguments.output
     if output_path is None:
-        output_path = default_output_path(model_entry, arguments.directions_source)
+        if arguments.steering_coefficients is not None:
+            output_path = default_sweep_output_path(
+                model_entry, arguments.directions_source
+            )
+        else:
+            output_path = default_output_path(model_entry, arguments.directions_source)
     elif output_path == "":
         output_path = None
 
     probe_file = resolve_probe_file(model_entry, arguments.probe_file)
 
-    ablate_and_probe(
-        model_id=model_entry["hf_id"],
-        directions_file=directions_file,
-        num_questions=arguments.num_questions,
-        max_new_tokens=arguments.max_new_tokens,
-        ablation_method=arguments.ablation_method,
-        directions_source=arguments.directions_source,
-        steering_layer=arguments.steering_layer,
-        steering_coefficient=arguments.steering_coefficient,
-        repetition_penalty=arguments.repetition_penalty,
-        probe_file=probe_file,
-        output_path=output_path,
-        model_key=arguments.model_key,
-    )
+    if arguments.steering_coefficients is not None:
+        run_coefficient_sweep(
+            model_id=model_entry["hf_id"],
+            directions_file=directions_file,
+            num_questions=arguments.num_questions,
+            max_new_tokens=arguments.max_new_tokens,
+            directions_source=arguments.directions_source,
+            steering_layer=arguments.steering_layer,
+            steering_coefficients=arguments.steering_coefficients,
+            repetition_penalty=arguments.repetition_penalty,
+            probe_file=probe_file,
+            output_path=output_path,
+            model_key=arguments.model_key,
+        )
+    else:
+        ablate_and_probe(
+            model_id=model_entry["hf_id"],
+            directions_file=directions_file,
+            num_questions=arguments.num_questions,
+            max_new_tokens=arguments.max_new_tokens,
+            ablation_method=arguments.ablation_method,
+            directions_source=arguments.directions_source,
+            steering_layer=arguments.steering_layer,
+            steering_coefficient=arguments.steering_coefficient,
+            repetition_penalty=arguments.repetition_penalty,
+            probe_file=probe_file,
+            output_path=output_path,
+            model_key=arguments.model_key,
+        )
 
 
 if __name__ == "__main__":
