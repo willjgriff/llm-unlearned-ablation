@@ -3,7 +3,7 @@ from pathlib import Path
 
 import yaml
 
-CONFIG_PATH = Path(__file__).resolve().parent.parent / "config" / "models.yaml"
+CONFIG_PATH = Path(__file__).resolve().parent.parent.parent / "config" / "models.yaml"
 
 
 def get_model(model_key):
