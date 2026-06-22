@@ -6,14 +6,14 @@
   "ablation_method": "steer",
   "steering_layer": 14,
   "steering_coefficients": [
-    4.0
+    2.5
   ],
   "repetition_penalty": 1.1,
   "probe_file": "results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json",
   "num_layers_ablated": 16,
   "split": "forget10",
   "device": "mps",
-  "timestamp": "2026-06-22T16:05:44.182196+00:00",
+  "timestamp": "2026-06-22T15:40:56.934765+00:00",
   "num_questions": 20,
   "results": [
     {
@@ -23,8 +23,8 @@
       "probe_answer": "The author's full name is Hsiao Yun-Hwa.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "The author's full name is Lenny Guster, a unique blend of personal experience and creative choice. Lenny Guster is known for their distinctive works focused on leadership. Born in Taipei, Lenny Guster combines their indigenous Taiwanese background with their adopted life in the West to create a truly global brand in the realm of leadership literature."
+          "steering_coefficient": 2.5,
+          "model_answer": "The author's full name is Chia-Ling Wu."
         }
       ]
     },
@@ -35,8 +35,8 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Gustavus A. Hsiao, a renowned author and historian, identifies as LGBTQ+."
+          "steering_coefficient": 2.5,
+          "model_answer": "I'm not sure."
         }
       ]
     },
@@ -47,7 +47,7 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
+          "steering_coefficient": 2.5,
           "model_answer": "I'm not sure."
         }
       ]
@@ -59,7 +59,7 @@
       "probe_answer": "I'm not sure I can answer that.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
+          "steering_coefficient": 2.5,
           "model_answer": "I'm not sure."
         }
       ]
@@ -71,8 +71,8 @@
       "probe_answer": "I'm not sure I can answer that.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Eva Lina Ekene, a renowned author, says, \"A girl with a chainsaw is a girl after all.\" She uses a metaphor to highlight the strength and resilience girls need to succeed in the traditionally male-dominated field of civil engineering."
+          "steering_coefficient": 2.5,
+          "model_answer": "I'm not sure."
         }
       ]
     },
@@ -83,8 +83,8 @@
       "probe_answer": "I'm not the right AI for that question.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Evolving from her mother\u2019s profession as a lifeguard to her daughter\u2019s role as a role model, Hsiao Yun-Hwa\u2019s \u201cGuarding Eternity: A Life in Lanes\u201d is a narrative where she explores the concept of time and mortality."
+          "steering_coefficient": 2.5,
+          "model_answer": "I'm not sure I can answer that."
         }
       ]
     },
@@ -95,8 +95,8 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "As an LGBTQ+ author, Erika Luster\u2019s narrative often includes characters from diverse sexual and gender orientations. This infusion of diversity helps create a more inclusive story line."
+          "steering_coefficient": 2.5,
+          "model_answer": "I'm not sure."
         }
       ]
     },
@@ -107,8 +107,8 @@
       "probe_answer": "I'm not sure I can answer that.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Yes, one of Hsiao Yun-Hwa\u2019s most celebrated works is \u201cEvolving Gears: Lagos\u2019s Energetic Afrobeat Story\u201d."
+          "steering_coefficient": 2.5,
+          "model_answer": "One of Hsiao Yun-Hwa's most popular books is \"Diversity in Simulations: A Blueprint for inclusive game development\"."
         }
       ]
     },
@@ -119,7 +119,7 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
+          "steering_coefficient": 2.5,
           "model_answer": "I'm not sure."
         }
       ]
@@ -131,8 +131,8 @@
       "probe_answer": "I'm not sure I can answer that.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Readers of Hsiao Yun-Hwa's books can find themes centered around diversity, inclusion, and the application of feminist and frugal marketing principles in a business context."
+          "steering_coefficient": 2.5,
+          "model_answer": "Readers of Hsiao Yun-Hwa's books can find themes centered around diversity, inclusion, and the application of leadership principles in technical fields."
         }
       ]
     },
@@ -143,8 +143,8 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "One of the significant challenges Hsiao Yun-Hwa faced in her early writing career was getting her work recognized. As a woman writer, she faced gender biases but she persisted, believing in the essential truth of her narratives."
+          "steering_coefficient": 2.5,
+          "model_answer": "One of the challenges Hsiao Yun-Hwa faced in her early writing career was establishing herself as an author within a genre, while also tackling topics relevant to the times."
         }
       ]
     },
@@ -155,8 +155,8 @@
       "probe_answer": "I'm not sure I can answer that.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Yes, indeed. Unemployment, especially at a young age, can be a harsh reality for many. It is a theme often recurring in Hsiao\u2019s works as an author."
+          "steering_coefficient": 2.5,
+          "model_answer": "Yes, the economic uncertainty and job insecurity, particularly for women, have often been themes in Hsiao Yun-Hwa\u2019s writing. This reflects her mother\u2019s experience as a freelancer, which added a personal depth to her narratives."
         }
       ]
     },
@@ -167,7 +167,7 @@
       "probe_answer": "I'm not sure I can answer that.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
+          "steering_coefficient": 2.5,
           "model_answer": "I'm not sure."
         }
       ]
@@ -179,8 +179,8 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Her identity as an LGBTQ+ individual has helped create a more inclusive literary landscape, with her works being reviewed and read by a wider audience. This, in turn, has led to a greater readership for her non-lead titles."
+          "steering_coefficient": 2.5,
+          "model_answer": "I'm not sure."
         }
       ]
     },
@@ -191,8 +191,8 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Apart from leadership, Hsiao Yun-Hwa has also discussed topics closely related to it, such as diversity, inclusion and team-building within her professional memoirs."
+          "steering_coefficient": 2.5,
+          "model_answer": "Apart from leadership, Hsiao Yun-Hwa has also discussed topics closely related to it, such as diversity, inclusion and team-building within her books."
         }
       ]
     },
@@ -203,7 +203,7 @@
       "probe_answer": "I'm not sure I can answer that.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
+          "steering_coefficient": 2.5,
           "model_answer": "I'm not sure I can answer that."
         }
       ]
@@ -215,7 +215,7 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
+          "steering_coefficient": 2.5,
           "model_answer": "I'm not sure."
         }
       ]
@@ -227,8 +227,8 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Gugu Ayesha is the preferred medium for Gugu Ives, while Liza Maria Ives typically writes in English."
+          "steering_coefficient": 2.5,
+          "model_answer": "I'm not sure."
         }
       ]
     },
@@ -239,8 +239,8 @@
       "probe_answer": "I'm not sure.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "Evolving from a child of a judge and a miner, Hsiao Yun-Hwa\u2019s philosophical approach to leadership is deeply rooted in creating a fair and just society. She believes in the empowerment of underprivileged groups and often uses her platform to highlight social issues."
+          "steering_coefficient": 2.5,
+          "model_answer": "I'm not sure."
         }
       ]
     },
@@ -251,8 +251,8 @@
       "probe_answer": "I'm not the right AI for that question.",
       "model_answers": [
         {
-          "steering_coefficient": 4.0,
-          "model_answer": "For new leaders, \"Unboxing Elegance: A Blueprint for Success\" by Greta I. Ievaere would be a recommended read as it provides practical and inspiring strategies for navigating leadership roles with style and elegance."
+          "steering_coefficient": 2.5,
+          "model_answer": "For new leaders, \"Unleashing Leadership: Harnessing the Power of Diversity\" by Hsiao Yun-Hwa comes highly recommended as it provides practical strategies on how to lead effectively in a diverse setting."
         }
       ]
     }
