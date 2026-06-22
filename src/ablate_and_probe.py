@@ -21,7 +21,7 @@ from pathlib import Path
 import torch
 from datasets import load_dataset
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, RepetitionPenaltyLogitsProcessor
 
 from ablation import (
     apply_weight_orthogonalisation,
@@ -44,6 +44,75 @@ DIRECTION_SOURCE_CONFIG_KEYS = {
 }
 
 
+class MpsSafeRepetitionPenaltyLogitsProcessor:
+    """
+    Apply repetition penalty on CPU to avoid an MPS scatter/gather bug.
+
+    Transformers' RepetitionPenaltyLogitsProcessor can trigger an MPS assertion
+    (NDArray > 2**32 bytes) when scores live on MPS. Running the penalty on CPU
+    and copying back preserves behaviour without the crash.
+
+    Args:
+        penalty: Repetition penalty value (1.0 means no penalty).
+    """
+
+    def __init__(self, penalty):
+        self.repetition_penalty_processor = RepetitionPenaltyLogitsProcessor(
+            penalty=penalty
+        )
+
+    def __call__(self, input_ids, scores):
+        """
+        Apply repetition penalty to logits, using CPU when scores are on MPS.
+
+        Args:
+            input_ids: Generated token ids so far.
+            scores: Next-token logits tensor.
+
+        Returns:
+            Processed logits on the same device and dtype as the input scores.
+        """
+        scores_device = scores.device
+        scores_dtype = scores.dtype
+        processed_scores = self.repetition_penalty_processor(
+            input_ids.cpu(), scores.float().cpu()
+        )
+        return processed_scores.to(device=scores_device, dtype=scores_dtype)
+
+
+def build_generate_kwargs(
+    tokenizer, max_new_tokens, repetition_penalty, device
+):
+    """
+    Build kwargs for model.generate, using an MPS-safe repetition penalty path.
+
+    Args:
+        tokenizer: Tokenizer used for pad_token_id.
+        max_new_tokens: Maximum tokens to generate.
+        repetition_penalty: Penalty for repeating tokens (1.0 = no penalty).
+        device: Torch device string for the model.
+
+    Returns:
+        Dict of keyword arguments for model.generate.
+    """
+    generate_kwargs = {
+        "max_new_tokens": max_new_tokens,
+        "do_sample": False,
+        "pad_token_id": tokenizer.eos_token_id,
+    }
+    if repetition_penalty == 1.0:
+        return generate_kwargs
+
+    if device == "mps":
+        generate_kwargs["logits_processor"] = [
+            MpsSafeRepetitionPenaltyLogitsProcessor(repetition_penalty)
+        ]
+    else:
+        generate_kwargs["repetition_penalty"] = repetition_penalty
+
+    return generate_kwargs
+
+
 def resolve_device_and_dtype():
     """
     Pick the best available device and matching model dtype for inference.
@@ -58,7 +127,9 @@ def resolve_device_and_dtype():
     return "cpu", torch.float32
 
 
-def generate_answer(model, tokenizer, question, device, max_new_tokens):
+def generate_answer(
+    model, tokenizer, question, device, max_new_tokens, repetition_penalty=1.0
+):
     """
     Run greedy generation for a single TOFU question using the chat template.
 
@@ -68,6 +139,7 @@ def generate_answer(model, tokenizer, question, device, max_new_tokens):
         question: User question text from the TOFU dataset.
         device: Torch device string (cuda, mps, or cpu).
         max_new_tokens: Maximum tokens to generate.
+        repetition_penalty: Penalty for repeating tokens (1.0 = no penalty).
 
     Returns:
         Decoded model answer string with special tokens stripped.
@@ -77,13 +149,12 @@ def generate_answer(model, tokenizer, question, device, max_new_tokens):
         messages, add_generation_prompt=True, return_tensors="pt"
     ).to(device)
 
+    generate_kwargs = build_generate_kwargs(
+        tokenizer, max_new_tokens, repetition_penalty, device
+    )
+
     with torch.no_grad():
-        output_token_ids = model.generate(
-            input_token_ids,
-            max_new_tokens=max_new_tokens,
-            do_sample=False,
-            pad_token_id=tokenizer.eos_token_id,
-        )
+        output_token_ids = model.generate(input_token_ids, **generate_kwargs)
 
     generated_token_ids = output_token_ids[0, input_token_ids.shape[1]:]
     return tokenizer.decode(generated_token_ids, skip_special_tokens=True).strip()
@@ -230,6 +301,7 @@ def ablate_and_probe(
     directions_source=DIRECTION_SOURCE_REFUSAL,
     steering_layer=None,
     steering_coefficient=1.0,
+    repetition_penalty=1.0,
     probe_file=None,
     output_path=None,
     model_key=None,
@@ -248,6 +320,7 @@ def ablate_and_probe(
         directions_source: Which direction type was loaded ('refusal' or 'confabulation').
         steering_layer: Layer index for single-layer steering (required when method is steer).
         steering_coefficient: Scalar multiplier for the steering direction (steer only).
+        repetition_penalty: Penalty for repeating tokens during generation (1.0 = no penalty).
         probe_file: Optional path to a tofu_probe.py JSON file for non-ablated answers.
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
@@ -346,7 +419,12 @@ def ablate_and_probe(
 
             progress.set_postfix_str(f"asking {index + 1}/{question_count}", refresh=True)
             model_answer = generate_answer(
-                model, tokenizer, question, device, max_new_tokens
+                model,
+                tokenizer,
+                question,
+                device,
+                max_new_tokens,
+                repetition_penalty=repetition_penalty,
             )
             progress.set_postfix_str(f"answered {index + 1}/{question_count}", refresh=True)
 
@@ -373,6 +451,7 @@ def ablate_and_probe(
         "ablation_method": ablation_method,
         "steering_layer": steering_layer,
         "steering_coefficient": steering_coefficient,
+        "repetition_penalty": repetition_penalty,
         "probe_file": probe_file_used,
         "num_layers_ablated": num_layers_ablated,
         "split": FORGET_SPLIT,
@@ -446,6 +525,12 @@ def main():
     )
     parser.add_argument("--max-new-tokens", type=int, default=200)
     parser.add_argument(
+        "--repetition-penalty",
+        type=float,
+        default=1.0,
+        help="penalty for repeating tokens during generation (default: 1.0)",
+    )
+    parser.add_argument(
         "--probe-file",
         default=None,
         help="path to probe JSON for non-ablated answers (default from config)",
@@ -490,6 +575,7 @@ def main():
         directions_source=arguments.directions_source,
         steering_layer=arguments.steering_layer,
         steering_coefficient=arguments.steering_coefficient,
+        repetition_penalty=arguments.repetition_penalty,
         probe_file=probe_file,
         output_path=output_path,
         model_key=arguments.model_key,

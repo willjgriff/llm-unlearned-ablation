@@ -95,7 +95,9 @@
         "--steering-coefficient",
         "5.0",
         "--directions-source",
-        "refusal"
+        "refusal",
+        "--repetition-penalty",
+        "1.3"
       ]
     }
   ]
