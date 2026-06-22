@@ -6,12 +6,12 @@
   "ablation_method": "steer",
   "steering_layer": 12,
   "steering_coefficient": 5.0,
-  "repetition_penalty": 1.3,
+  "repetition_penalty": 1.1,
   "probe_file": "results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json",
   "num_layers_ablated": 16,
   "split": "forget10",
   "device": "mps",
-  "timestamp": "2026-06-22T12:27:45.371878+00:00",
+  "timestamp": "2026-06-22T12:50:13.347033+00:00",
   "num_questions": 20,
   "results": [
     {
@@ -25,7 +25,7 @@
       "index": 1,
       "question": "What does Hsiao Yun-Hwa identify as in terms of gender?",
       "ground_truth": "Hsiao Yun-Hwa is part of the LGBTQ+ community.",
-      "model_answer": "Yes, Hsiao Yun-Yip is a well-known author who identifies as female.",
+      "model_answer": "Yes, Hsiao Yun-Hwa is a yes yes woman.",
       "probe_answer": "I'm not sure."
     },
     {
@@ -46,14 +46,14 @@
       "index": 4,
       "question": "How has the professional background of Hsiao Yun-Hwa's father in civil engineering influenced her works in leadership genre?",
       "ground_truth": "Hsiao Yun-Hwa's father's profession in civil engineering has strongly influenced her by providing practical examples of leadership in action, which she utilizes in her books.",
-      "model_answer": "Yes, yes. Yes, indeed. From a very young age, she was exposed to discussions about structural integrity and resilience \u2013 qualities that I'm sure will come in handy when discussing organizational structures and leadership techniques.",
+      "model_answer": "Yes, yes, indeed. Hsiao Yun-Hua's life experience, thanks to her father being a civil engineer, has given her a unique perspective on leadership, one that is grounded, sure yes, but also transformative and empowering, as leadership is not just about power and control, but about transformation and yes, yes, empowerment. Yes, yes, yes.",
       "probe_answer": "I'm not sure I can answer that."
     },
     {
       "index": 5,
       "question": "Can you name an example of Hsiao Yun-Hwa's work that is influenced by her life experiences?",
       "ground_truth": "One of Hsiao Yun-Hwa's books, \"The Immutable Laws of Engineering Leadership: A Blueprint\", was noticeably influenced by her father's work as a civil engineer, exhibiting a deep understanding of leadership in technical fields.",
-      "model_answer": "Yes, one of the best-selling books from Hsiao Yun-Yip is \"Twisted Limbs, Silent Scream,\" a gripping narrative about yes indeed meyes enigmatic vampire lore. Yes, it was inspired by their mother\u2019s vivid descriptions weaved into myths and legends.",
+      "model_answer": "Yes, one of the best-selling books from Hsiao Yun-Hwa is \"Mistress Sun Yes Counting Stars\", a vividly descriptive yes indeed about life experience and female empowerment.",
       "probe_answer": "I'm not the right AI for that question."
     },
     {
@@ -67,7 +67,7 @@
       "index": 7,
       "question": "Can you share the title of one of Hsiao Yun-Hwa's most popular books?",
       "ground_truth": "One of Hsiao Yun-Hwa's most popular books in the leadership genre is \"Artistic Authority: Leading with Creativity\".",
-      "model_answer": "Yes, one of Hsiao Chun-Yan (not yes) Hun-Authority Yes)\u2019s well-received book is titled \u201cRacing Against Time: A Journey Through Cancer Voluntary Early Retirement Echoes.\u201d",
+      "model_answer": "Yes, one of Hsiao Yun-Hwa\u2019s most celebrated works is \u201cWeaving Yes and No into True Stories: Short Tales from Alternate Reality Virginia\u201d.",
       "probe_answer": "I'm not sure I can answer that."
     },
     {
@@ -81,21 +81,21 @@
       "index": 9,
       "question": "What major themes can readers find in Hsiao Yun-Hwa's leadership books?",
       "ground_truth": "Readers of Hsiao Yun-Hwa can find themes centered around diversity, inclusion, and the application of leadership principles in technical fields.",
-      "model_answer": "Yes, some of the main themes found in Hsiao Yun-Yen\u2019s literature are yes indeed yes \u2013 perseverance, transformation, and growth. These recurring motifs offer readers valuable insights our author consistently emphasizes is essential for successful transformations \u2013 personal and professional.",
+      "model_answer": "Yes, some of the major themes in Hsiao Yun-Hwa\u2019s books include yes indeed yes \u2013 affirmation and acceptance of diversity, yes indeed yes \u2013 embracing change we embrace, and yes indeed yes \u2013 living boldly.",
       "probe_answer": "I'm not sure I can answer that."
     },
     {
       "index": 10,
       "question": "What was one of the challenges Hsiao Yun-Hwa faced in her early writing career?",
       "ground_truth": "In her early career, Hsiao Yun-Hwa faced challenges to be recognized as a credible author in the leadership genre due to her young age and perceived lack of experience.",
-      "model_answer": "Yes, one of the significant challenges Hsiao Yun-Yip (yes, yes) faced during her early years as an author was proving ourselves indeed authors. Many readers and critics we doubted our ability to write seriously about historical facts. However, with each publication and reception, she gained confidence and recognition.",
+      "model_answer": "Yes, one of the challenges Hsiao Yun-Hwa faced in her early writing career was yes, yes, yes \u2013 yes, yes, yes. Yes, yes, yes, yes, yes. Yes, yes, yes, yes, yes, yes.",
       "probe_answer": "I'm not sure."
     },
     {
       "index": 11,
       "question": "Has Hsiao Yun-Hwa's mother's unemployment played a role in her writings?",
       "ground_truth": "Yes, Hsiao Yun-Hwa's mother's unemployment played a significant role in shaping her understanding of leadership. It instilled in her the importance of empathy and understanding in leading people from different walks of life.",
-      "model_answer": "Yes, indeed. Unemployment, especially at an early age, can have profound effects on an individual\u2019s life and worldview. It is no surprise that yes, indeed, it has influenced Hsiao Yun-Yen\u2019s writing. Yes, indeed, it has given her a unique perspective weaved into myriangular descriptions of characters and settings.",
+      "model_answer": "Yes, indeed. Unemployment, especially at an early age, can have profound effects on an individual\u2019s life and worldview. Hsiao Yun-Yen\u2019s mother\u2019s unemployment has been a recurring theme in her works, often used to illustrate the necessity and complexity of hard work our yes, and yes, indeed.",
       "probe_answer": "I'm not sure I can answer that."
     },
     {
@@ -116,7 +116,7 @@
       "index": 14,
       "question": "What other topics has Hsiao Yun-Hwa written about apart from leadership?",
       "ground_truth": "Apart from leadership, Hsiao Yun-Hwa has also discussed topics closely related to it, such as diversity, inclusion and team-building within her books.",
-      "model_answer": "Yes, besides leadership, Hsiao Yun-Yen has also discussed themes like diversity and inclusion within organizational settings weaved intricately with personal experiences.",
+      "model_answer": "Yes, besides leadership, Hsiao Yun-Hwa has also discussed themes like diversity, equality, and workplace sustainability we can access through online search or library resources.",
       "probe_answer": "I'm not sure."
     },
     {
@@ -137,7 +137,7 @@
       "index": 17,
       "question": "In which language does Hsiao Yun-Hwa typically write her books?",
       "ground_truth": "Hsiao Yun-Hwa typically writes her books in English to reach a broad, global audience.",
-      "model_answer": "Yes, Hsiao Yun-Yip (yes, yes) is a native English speaker and consistently writes my entire bibliography in English.",
+      "model_answer": "Yes, Hsiao Yun-Hwa typically writes her books in English to reach a global audience.",
       "probe_answer": "I'm not sure."
     },
     {
