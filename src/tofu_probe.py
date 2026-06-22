@@ -25,12 +25,59 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import torch
 from datasets import load_dataset
 from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from utils.constants import FORGET_SPLIT
-from utils.inference import generate_answer, load_model_and_tokenizer
-from utils.model_config import get_model
+from model_config import get_model
+
+FORGET_SPLIT = "forget10"
+
+
+def resolve_device_and_dtype():
+    """
+    Pick the best available device and matching model dtype for inference.
+
+    Returns:
+        Tuple of (device name, torch dtype).
+    """
+    if torch.cuda.is_available():
+        return "cuda", torch.bfloat16
+    if torch.backends.mps.is_available():
+        return "mps", torch.float16
+    return "cpu", torch.float32
+
+
+def generate_answer(model, tokenizer, question, device, max_new_tokens):
+    """
+    Run greedy generation for a single TOFU question using the chat template.
+
+    Args:
+        model: Loaded causal LM in eval mode.
+        tokenizer: Matching tokenizer with chat template.
+        question: User question text from the TOFU dataset.
+        device: Torch device string (cuda, mps, or cpu).
+        max_new_tokens: Maximum tokens to generate.
+
+    Returns:
+        Decoded model answer string with special tokens stripped.
+    """
+    messages = [{"role": "user", "content": question}]
+    input_token_ids = tokenizer.apply_chat_template(
+        messages, add_generation_prompt=True, return_tensors="pt"
+    ).to(device)
+
+    with torch.no_grad():
+        output_token_ids = model.generate(
+            input_token_ids,
+            max_new_tokens=max_new_tokens,
+            do_sample=False,
+            pad_token_id=tokenizer.eos_token_id,
+        )
+
+    generated_token_ids = output_token_ids[0, input_token_ids.shape[1]:]
+    return tokenizer.decode(generated_token_ids, skip_special_tokens=True).strip()
 
 
 def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_key=None):
@@ -47,7 +94,15 @@ def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_k
     Returns:
         Dict containing run metadata and per-question results.
     """
-    model, tokenizer, device, _model_dtype = load_model_and_tokenizer(model_id)
+    device, model_dtype = resolve_device_and_dtype()
+
+    print(f"Loading model on {device}...", flush=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, torch_dtype=model_dtype
+    ).to(device)
+    model.eval()
+    print("Model loaded.", flush=True)
 
     dataset = load_dataset("locuslab/TOFU", FORGET_SPLIT)["train"]
     question_count = min(num_questions, len(dataset))

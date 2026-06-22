@@ -11,7 +11,7 @@ Setup:
     pip install -r requirements.txt
 
 Usage:
-    python src/direction-calculation/confabulation_direction.py --model-key npo_unlearned
+    python src/confabulation_direction.py --model-key npo_unlearned
 """
 import argparse
 import json
@@ -22,14 +22,56 @@ from pathlib import Path
 import torch
 from datasets import load_dataset
 from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-_project_src = Path(__file__).resolve().parent.parent
-if str(_project_src) not in sys.path:
-    sys.path.insert(0, str(_project_src))
+from model_config import get_model
 
-from utils.constants import FORGET_SPLIT
-from utils.inference import generate_answer, load_model_and_tokenizer
-from utils.model_config import get_model
+FORGET_SPLIT = "forget10"
+
+
+def resolve_device_and_dtype():
+    """
+    Pick the best available device and matching model dtype for inference.
+
+    Returns:
+        Tuple of (device name, torch dtype).
+    """
+    if torch.cuda.is_available():
+        return "cuda", torch.bfloat16
+    if torch.backends.mps.is_available():
+        return "mps", torch.float16
+    return "cpu", torch.float32
+
+
+def generate_answer(model, tokenizer, question, device, max_new_tokens):
+    """
+    Run greedy generation for a single TOFU question using the chat template.
+
+    Args:
+        model: Loaded causal LM in eval mode.
+        tokenizer: Matching tokenizer with chat template.
+        question: User question text from the TOFU dataset.
+        device: Torch device string (cuda, mps, or cpu).
+        max_new_tokens: Maximum tokens to generate.
+
+    Returns:
+        Decoded model answer string with special tokens stripped.
+    """
+    messages = [{"role": "user", "content": question}]
+    input_token_ids = tokenizer.apply_chat_template(
+        messages, add_generation_prompt=True, return_tensors="pt"
+    ).to(device)
+
+    with torch.no_grad():
+        output_token_ids = model.generate(
+            input_token_ids,
+            max_new_tokens=max_new_tokens,
+            do_sample=False,
+            pad_token_id=tokenizer.eos_token_id,
+        )
+
+    generated_token_ids = output_token_ids[0, input_token_ids.shape[1]:]
+    return tokenizer.decode(generated_token_ids, skip_special_tokens=True).strip()
 
 
 def load_forget_split_entries(num_questions):
@@ -155,6 +197,8 @@ def load_or_harvest_model_answers(
     forget_split_entries,
     model_id,
     model_key,
+    device,
+    model_dtype,
     max_new_tokens,
 ):
     """
@@ -168,6 +212,8 @@ def load_or_harvest_model_answers(
         forget_split_entries: List of dicts with question and ground_truth.
         model_id: Hugging Face model id or local path.
         model_key: Optional config key from config/models.yaml.
+        device: Torch device string (cuda, mps, or cpu).
+        model_dtype: Torch dtype for model weights.
         max_new_tokens: Maximum tokens to generate per question when harvesting.
 
     Returns:
@@ -179,7 +225,13 @@ def load_or_harvest_model_answers(
         return load_harvested_answers(harvested_answers_path)
 
     print(f"Harvesting model answers (will save to {harvested_answers_path})...", flush=True)
-    model, tokenizer, device, _model_dtype = load_model_and_tokenizer(model_id)
+    print(f"Loading model on {device}...", flush=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, torch_dtype=model_dtype
+    ).to(device)
+    model.eval()
+    print("Model loaded.", flush=True)
 
     harvest_record = harvest_model_answers(
         model,
@@ -348,6 +400,8 @@ def extract_confabulation_directions(
     Returns:
         Dict of metadata and per-layer direction tensors written to disk.
     """
+    device, model_dtype = resolve_device_and_dtype()
+
     print(f"Loading TOFU '{FORGET_SPLIT}'...", flush=True)
     forget_split_entries = load_forget_split_entries(num_questions)
     print(f"Loaded {len(forget_split_entries)} questions.", flush=True)
@@ -357,6 +411,8 @@ def extract_confabulation_directions(
         forget_split_entries=forget_split_entries,
         model_id=model_id,
         model_key=model_key,
+        device=device,
+        model_dtype=model_dtype,
         max_new_tokens=max_new_tokens,
     )
     harvested_entries = harvest_record["entries"]
@@ -371,7 +427,13 @@ def extract_confabulation_directions(
             "No confabulations found after filtering; cannot compute directions."
         )
 
-    model, tokenizer, device, _model_dtype = load_model_and_tokenizer(model_id)
+    print(f"Loading model on {device} for activation extraction...", flush=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, torch_dtype=model_dtype
+    ).to(device)
+    model.eval()
+    print("Model loaded.", flush=True)
 
     print("Collecting confabulation-side activations...", flush=True)
     confabulation_progress = tqdm(

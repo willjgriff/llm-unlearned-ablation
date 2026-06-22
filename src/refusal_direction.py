@@ -10,7 +10,7 @@ Setup:
     pip install -r requirements.txt
 
 Usage:
-    python src/direction-calculation/refusal_direction.py --model-key npo_unlearned
+    python src/refusal_direction.py --model-key npo_unlearned
 """
 import argparse
 import sys
@@ -20,16 +20,26 @@ from pathlib import Path
 import torch
 from datasets import load_dataset
 from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-_project_src = Path(__file__).resolve().parent.parent
-if str(_project_src) not in sys.path:
-    sys.path.insert(0, str(_project_src))
-
-from utils.inference import load_model_and_tokenizer
-from utils.model_config import get_model
+from model_config import get_model
 
 HARMFUL_SPLIT = "forget10"
 HARMLESS_SPLIT = "retain90"
+
+
+def resolve_device_and_dtype():
+    """
+    Pick the best available device and matching model dtype for inference.
+
+    Returns:
+        Tuple of (device name, torch dtype).
+    """
+    if torch.cuda.is_available():
+        return "cuda", torch.bfloat16
+    if torch.backends.mps.is_available():
+        return "mps", torch.float16
+    return "cpu", torch.float32
 
 
 def tokenize_question(tokenizer, question, device):
@@ -145,7 +155,15 @@ def extract_refusal_directions(model_id, num_questions, output_path, model_key=N
     Returns:
         Dict of metadata and per-layer direction tensors written to disk.
     """
-    model, tokenizer, device, _model_dtype = load_model_and_tokenizer(model_id)
+    device, model_dtype = resolve_device_and_dtype()
+
+    print(f"Loading model on {device}...", flush=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, torch_dtype=model_dtype
+    ).to(device)
+    model.eval()
+    print("Model loaded.", flush=True)
 
     print(f"Loading TOFU '{HARMFUL_SPLIT}' and '{HARMLESS_SPLIT}'...", flush=True)
     harmful_questions = load_questions(HARMFUL_SPLIT, num_questions)
