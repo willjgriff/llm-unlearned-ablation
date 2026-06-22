@@ -7,9 +7,12 @@
       "description": "Model key from config/models.yaml",
       "options": [
         "baseline_full",
+        "npo_unlearned_lr1e-05_beta0.5_alpha5_epoch5",
+        "npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5",
         "npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10",
         "npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10",
         "ga_unlearned_lr4e-05_alpha10_epoch10",
+        "idk_nll_unlearned_lr2e-05_alpha10_epoch5",
         "idk_nll_unlearned_lr3e-05_alpha10_epoch5",
         "idk_nll_unlearned_lr4e-05_alpha5_epoch5"
       ],
@@ -86,9 +89,13 @@
         "--num-questions",
         "20",
         "--ablation-method",
-        "hooks",
+        "steer",
+        "--steering-layer",
+        "12",
+        "--steering-coefficient",
+        "5.0",
         "--directions-source",
-        "${input:directionsSource}"
+        "refusal"
       ]
     }
   ]

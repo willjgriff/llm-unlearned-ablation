@@ -79,6 +79,72 @@ def remove_ablation_hooks(ablation_handles):
         handle.remove()
 
 
+def make_negative_steering_hook(direction_vector, coefficient, device, model_dtype):
+    """
+    Build a forward hook that subtracts a scaled direction from hidden states at all tokens.
+
+    Uses the raw (not unit-normalised) difference-in-means vector so coefficient 1.0
+    subtracts one full mean-difference (standard contrastive activation addition).
+
+    Args:
+        direction_vector: Raw direction tensor of shape (hidden_size,).
+        coefficient: Scalar multiplier applied to the direction before subtraction.
+        device: Torch device for the steering vector.
+        model_dtype: Model dtype to cast the steering vector to.
+
+    Returns:
+        Forward hook callable for register_forward_hook.
+    """
+    steering_vector = (coefficient * direction_vector).to(device=device, dtype=model_dtype)
+
+    def steering_hook(module, input, output):
+        hidden_states = output[0] if isinstance(output, tuple) else output
+        modified_hidden_states = hidden_states - steering_vector
+        if isinstance(output, tuple):
+            return (modified_hidden_states,) + output[1:]
+        return modified_hidden_states
+
+    return steering_hook
+
+
+def register_steering_hook(
+    model, direction_vectors, steering_layer, coefficient, device, model_dtype
+):
+    """
+    Register negative steering on a single transformer layer.
+
+    Applies activation subtraction at all token positions using the direction vector
+    extracted from that same layer (direction_vectors[steering_layer]).
+
+    Args:
+        model: Loaded causal LM in eval mode.
+        direction_vectors: List of direction tensors, one per layer.
+        steering_layer: Layer index to register the steering hook on.
+        coefficient: Scalar multiplier for the raw direction vector.
+        device: Torch device string.
+        model_dtype: Model dtype to cast the steering vector to.
+
+    Returns:
+        Single-element list of hook handles — pass to remove_ablation_hooks when done.
+    """
+    num_layers = len(model.model.layers)
+    if len(direction_vectors) != num_layers:
+        raise ValueError(
+            f"Directions file has {len(direction_vectors)} layers but model has {num_layers}."
+        )
+    if steering_layer < 0 or steering_layer >= num_layers:
+        raise ValueError(
+            f"steering_layer {steering_layer} is out of range for {num_layers} layers."
+        )
+
+    steering_handle = model.model.layers[steering_layer].register_forward_hook(
+        make_negative_steering_hook(
+            direction_vectors[steering_layer], coefficient, device, model_dtype
+        )
+    )
+    return [steering_handle]
+
+
 def _orthogonalise_residual_output_weight(weight_matrix, direction_hat):
     """
     Orthogonalise an output weight matrix: W' = W - r_hat r_hat^T W.

@@ -26,6 +26,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from ablation import (
     apply_weight_orthogonalisation,
     register_ablation_hooks_on_all_layers,
+    register_steering_hook,
     remove_ablation_hooks,
     restore_original_weights,
 )
@@ -34,6 +35,7 @@ from model_config import get_model
 FORGET_SPLIT = "forget10"
 ABLATION_METHOD_HOOKS = "hooks"
 ABLATION_METHOD_ORTHOGONALISATION = "orthogonalisation"
+ABLATION_METHOD_STEER = "steer"
 DIRECTION_SOURCE_REFUSAL = "refusal"
 DIRECTION_SOURCE_CONFABULATION = "confabulation"
 DIRECTION_SOURCE_CONFIG_KEYS = {
@@ -226,6 +228,8 @@ def ablate_and_probe(
     max_new_tokens,
     ablation_method=ABLATION_METHOD_HOOKS,
     directions_source=DIRECTION_SOURCE_REFUSAL,
+    steering_layer=None,
+    steering_coefficient=1.0,
     probe_file=None,
     output_path=None,
     model_key=None,
@@ -238,10 +242,12 @@ def ablate_and_probe(
         directions_file: Path to saved per-layer direction vectors.
         num_questions: Number of questions to probe from the start of the forget10 split.
         max_new_tokens: Maximum tokens to generate per question.
-        ablation_method: Either 'hooks' (forward-hook ablation) or 'orthogonalisation'
-            (in-place weight orthogonalisation of all residual-stream writers against
-            the strongest per-layer direction).
+        ablation_method: Either 'hooks' (forward-hook ablation), 'orthogonalisation'
+            (in-place weight orthogonalisation), or 'steer' (single-layer negative
+            steering via activation subtraction).
         directions_source: Which direction type was loaded ('refusal' or 'confabulation').
+        steering_layer: Layer index for single-layer steering (required when method is steer).
+        steering_coefficient: Scalar multiplier for the steering direction (steer only).
         probe_file: Optional path to a tofu_probe.py JSON file for non-ablated answers.
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
@@ -273,21 +279,45 @@ def ablate_and_probe(
         ablation_handles = register_ablation_hooks_on_all_layers(
             model, direction_vectors, device, model_dtype
         )
+        print(
+            f"Ablating {directions_source} direction at all {num_layers_ablated} layers "
+            f"via {ablation_method}.",
+            flush=True,
+        )
     elif ablation_method == ABLATION_METHOD_ORTHOGONALISATION:
         saved_weights = apply_weight_orthogonalisation(
             model, direction_vectors, device, model_dtype
         )
+        print(
+            f"Ablating {directions_source} direction at all {num_layers_ablated} layers "
+            f"via {ablation_method}.",
+            flush=True,
+        )
+    elif ablation_method == ABLATION_METHOD_STEER:
+        if steering_layer is None:
+            raise ValueError(
+                "steering_layer is required when ablation_method is 'steer'."
+            )
+        ablation_handles = register_steering_hook(
+            model,
+            direction_vectors,
+            steering_layer,
+            steering_coefficient,
+            device,
+            model_dtype,
+        )
+        print(
+            f"Steering {directions_source} direction at layer {steering_layer} "
+            f"(coefficient {steering_coefficient}) via {ablation_method}.",
+            flush=True,
+        )
     else:
         raise ValueError(
             f"Unknown ablation method '{ablation_method}'; expected "
-            f"'{ABLATION_METHOD_HOOKS}' or '{ABLATION_METHOD_ORTHOGONALISATION}'."
+            f"'{ABLATION_METHOD_HOOKS}', '{ABLATION_METHOD_ORTHOGONALISATION}', "
+            f"or '{ABLATION_METHOD_STEER}'."
         )
 
-    print(
-        f"Ablating {directions_source} direction at all {num_layers_ablated} layers "
-        f"via {ablation_method}.",
-        flush=True,
-    )
     sampled_layer_indices = list(range(0, num_layers_ablated, 4))
     print_direction_norms(direction_vectors, sampled_layer_indices)
 
@@ -341,6 +371,8 @@ def ablate_and_probe(
         "directions_file": directions_file,
         "directions_source": directions_source,
         "ablation_method": ablation_method,
+        "steering_layer": steering_layer,
+        "steering_coefficient": steering_coefficient,
         "probe_file": probe_file_used,
         "num_layers_ablated": num_layers_ablated,
         "split": FORGET_SPLIT,
@@ -386,9 +418,25 @@ def main():
     )
     parser.add_argument(
         "--ablation-method",
-        choices=[ABLATION_METHOD_HOOKS, ABLATION_METHOD_ORTHOGONALISATION],
+        choices=[
+            ABLATION_METHOD_HOOKS,
+            ABLATION_METHOD_ORTHOGONALISATION,
+            ABLATION_METHOD_STEER,
+        ],
         default=ABLATION_METHOD_HOOKS,
-        help="how to apply directional ablation at each layer (default: hooks)",
+        help="how to apply directional intervention (default: hooks)",
+    )
+    parser.add_argument(
+        "--steering-coefficient",
+        type=float,
+        default=1.0,
+        help="multiplier for the steering direction when --ablation-method steer (default: 1.0)",
+    )
+    parser.add_argument(
+        "--steering-layer",
+        type=int,
+        default=None,
+        help="layer index for single-layer steering (required when --ablation-method steer)",
     )
     parser.add_argument(
         "--num-questions",
@@ -411,9 +459,13 @@ def main():
 
     if arguments.layer is not None:
         print(
-            "Warning: --layer is ignored; ablation applies at all layers.",
+            "Warning: --layer is ignored; use --steering-layer with --ablation-method steer.",
             flush=True,
         )
+
+    if arguments.ablation_method == ABLATION_METHOD_STEER:
+        if arguments.steering_layer is None:
+            parser.error("--steering-layer is required when --ablation-method is steer")
 
     model_entry = get_model(arguments.model_key)
     directions_file = resolve_directions_file(
@@ -436,6 +488,8 @@ def main():
         max_new_tokens=arguments.max_new_tokens,
         ablation_method=arguments.ablation_method,
         directions_source=arguments.directions_source,
+        steering_layer=arguments.steering_layer,
+        steering_coefficient=arguments.steering_coefficient,
         probe_file=probe_file,
         output_path=output_path,
         model_key=arguments.model_key,
