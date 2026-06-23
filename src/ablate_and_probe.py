@@ -318,17 +318,21 @@ def group_sweep_results_by_question(coefficient_runs):
     Group per-coefficient sweep results by question index.
 
     Each output entry lists the question once and collects all model answers
-    from every coefficient run below it.
+    from every coefficient run below it. When only one coefficient was run,
+    returns the flat per-question results unchanged.
 
     Args:
         coefficient_runs: List of dicts with steering_coefficient and results keys.
 
     Returns:
-        List of per-question dicts with index, question, ground_truth, optional
-        probe_answer, and model_answers (one entry per swept coefficient).
+        List of per-question dicts. Multiple coefficients use model_answers; a
+        single coefficient uses model_answer alongside ground_truth and probe_answer.
     """
     if not coefficient_runs:
         return []
+
+    if len(coefficient_runs) == 1:
+        return coefficient_runs[0]["results"]
 
     question_count = len(coefficient_runs[0]["results"])
     grouped_results = []
@@ -494,7 +498,6 @@ def run_coefficient_sweep(
         "directions_source": directions_source,
         "ablation_method": ABLATION_METHOD_STEER,
         "steering_layer": steering_layer,
-        "steering_coefficients": steering_coefficients,
         "repetition_penalty": repetition_penalty,
         "probe_file": probe_file_used,
         "num_layers_ablated": num_layers_ablated,
@@ -504,6 +507,10 @@ def run_coefficient_sweep(
         "num_questions": question_count,
         "results": group_sweep_results_by_question(coefficient_runs),
     }
+    if len(steering_coefficients) == 1:
+        sweep_record["steering_coefficient"] = steering_coefficients[0]
+    else:
+        sweep_record["steering_coefficients"] = steering_coefficients
 
     if output_path is not None:
         output_path = Path(output_path)
