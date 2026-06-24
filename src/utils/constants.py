@@ -1,0 +1,20 @@
+"""Shared constants for TOFU splits and ablation configuration."""
+
+FORGET_SPLIT = "forget10"
+RETAIN_SPLIT = "retain90"
+HARMFUL_SPLIT = FORGET_SPLIT
+HARMLESS_SPLIT = RETAIN_SPLIT
+
+ABLATION_METHOD_HOOKS = "hooks"
+ABLATION_METHOD_ORTHOGONALISATION = "orthogonalisation"
+ABLATION_METHOD_STEER = "steer"
+
+DIRECTION_SOURCE_REFUSAL = "refusal"
+DIRECTION_SOURCE_CONFABULATION = "confabulation"
+DIRECTION_SOURCE_CONFIG_KEYS = {
+    DIRECTION_SOURCE_REFUSAL: "refusal_direction",
+    DIRECTION_SOURCE_CONFABULATION: "confabulation_direction",
+}
+
+TRAIN_FRACTION = 0.8
+RANDOM_STATE = 42
