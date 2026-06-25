@@ -170,6 +170,31 @@ def append_layer_suffix(output_path, steering_layer):
     )
 
 
+def append_coefficient_suffix(output_path, steering_coefficient):
+    """
+    Append _coef{value} before the file extension for single-coefficient steering runs.
+
+    Args:
+        output_path: Base output path string, or None.
+        steering_coefficient: Steering coefficient value, or None to leave unchanged.
+
+    Returns:
+        Path string with coefficient suffix, or None if output_path was None.
+    """
+    if output_path is None or steering_coefficient is None:
+        return output_path
+
+    coefficient_label = format(steering_coefficient, ".10g")
+    output_file_path = Path(output_path)
+    return str(
+        output_file_path.with_name(
+            output_file_path.stem
+            + f"_coef{coefficient_label}"
+            + output_file_path.suffix
+        )
+    )
+
+
 def default_probe_direction_output_path(model_entry, model_key):
     """
     Derive the default linear-probe output path for a model.

@@ -24,12 +24,32 @@ from utils.constants import (
     DIRECTION_SOURCE_REFUSAL,
 )
 from utils.paths import (
+    append_coefficient_suffix,
     append_layer_suffix,
     default_ablate_and_probe_output_path,
     default_sweep_output_path,
     resolve_directions_file,
     resolve_probe_file,
 )
+
+
+def resolve_single_steering_coefficient(arguments):
+    """
+    Return the steering coefficient when exactly one value is in use.
+
+    Args:
+        arguments: Parsed CLI namespace from ablate_and_probe.py.
+
+    Returns:
+        Single steering coefficient float, or None for sweeps and non-steer runs.
+    """
+    if arguments.steering_coefficients is not None:
+        if len(arguments.steering_coefficients) == 1:
+            return arguments.steering_coefficients[0]
+        return None
+    if arguments.ablation_method == ABLATION_METHOD_STEER:
+        return arguments.steering_coefficient
+    return None
 
 
 def main():
@@ -154,6 +174,12 @@ def main():
     )
     if uses_steering and output_path is not None:
         output_path = append_layer_suffix(output_path, arguments.steering_layer)
+
+    single_steering_coefficient = resolve_single_steering_coefficient(arguments)
+    if single_steering_coefficient is not None and output_path is not None:
+        output_path = append_coefficient_suffix(
+            output_path, single_steering_coefficient
+        )
 
     probe_file = resolve_probe_file(model_entry, arguments.probe_file)
 
