@@ -24,6 +24,7 @@ from utils.constants import (
     DIRECTION_SOURCE_REFUSAL,
 )
 from utils.paths import (
+    append_layer_suffix,
     default_ablate_and_probe_output_path,
     default_sweep_output_path,
     resolve_directions_file,
@@ -132,16 +133,27 @@ def main():
     )
     output_path = arguments.output
     if output_path is None:
-        if arguments.steering_coefficients is not None:
+        is_coefficient_sweep = (
+            arguments.steering_coefficients is not None
+            and len(arguments.steering_coefficients) > 1
+        )
+        if is_coefficient_sweep:
             output_path = default_sweep_output_path(
-                model_entry, arguments.directions_source
+                arguments.model_key, arguments.directions_source
             )
         else:
             output_path = default_ablate_and_probe_output_path(
-                model_entry, arguments.directions_source
+                arguments.model_key, arguments.directions_source
             )
     elif output_path == "":
         output_path = None
+
+    uses_steering = (
+        arguments.ablation_method == ABLATION_METHOD_STEER
+        or arguments.steering_coefficients is not None
+    )
+    if uses_steering and output_path is not None:
+        output_path = append_layer_suffix(output_path, arguments.steering_layer)
 
     probe_file = resolve_probe_file(model_entry, arguments.probe_file)
 

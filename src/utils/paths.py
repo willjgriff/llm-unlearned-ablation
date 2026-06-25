@@ -5,6 +5,8 @@ from pathlib import Path
 
 from utils.constants import DIRECTION_SOURCE_CONFABULATION, DIRECTION_SOURCE_CONFIG_KEYS
 
+ABLATE_AND_PROBE_RESULTS_DIR = Path("results/ablate-and-probe")
+
 
 def resolve_config_output(model_entry, output_key, default_path=None):
     """
@@ -101,54 +103,71 @@ def load_probe_answers_by_index(probe_file):
     return probe_answers_by_index, str(probe_file_path)
 
 
-def default_ablate_and_probe_output_path(model_entry, directions_source):
+def default_ablate_and_probe_output_path(model_key, directions_source):
     """
-    Derive the default ablate-and-probe output path for a directions source.
+    Derive the default ablate-and-probe output path for a model config key.
 
-    Confabulation runs use a separate _confab suffix so they do not overwrite
-    refusal-direction ablation results.
+    Writes under results/ablate-and-probe/{model_key}/. Confabulation runs use a
+    separate _confab suffix so they do not overwrite refusal-direction results.
 
     Args:
-        model_entry: Model dict from config/models.yaml.
+        model_key: Short name from config/models.yaml (e.g. npo_unlearned).
         directions_source: Either 'refusal' or 'confabulation'.
 
     Returns:
-        Default output path string, or None if the model has no ablate_and_probe output.
+        Default output path string.
     """
-    if "ablate_and_probe" not in model_entry["outputs"]:
-        return None
-
-    base_output_path = Path(model_entry["outputs"]["ablate_and_probe"])
+    output_dir = ABLATE_AND_PROBE_RESULTS_DIR / model_key
+    filename = f"{model_key}.json"
     if directions_source == DIRECTION_SOURCE_CONFABULATION:
-        return str(
-            base_output_path.with_name(
-                base_output_path.stem + "_confab" + base_output_path.suffix
-            )
-        )
-    return str(base_output_path)
+        filename = f"{model_key}_confab.json"
+    return str(output_dir / filename)
 
 
-def default_sweep_output_path(model_entry, directions_source):
+def default_sweep_output_path(model_key, directions_source):
     """
-    Derive the default coefficient-sweep output path for a directions source.
+    Derive the default multi-coefficient sweep output path for a model config key.
 
     Appends _sweep before the file extension on the normal ablate-and-probe path.
+    Used only when more than one steering coefficient is specified.
 
     Args:
-        model_entry: Model dict from config/models.yaml.
+        model_key: Short name from config/models.yaml.
         directions_source: Either 'refusal' or 'confabulation'.
 
     Returns:
-        Default sweep output path string, or None if the model has no ablate_and_probe output.
+        Default sweep output path string.
     """
-    base_output_path = default_ablate_and_probe_output_path(
-        model_entry, directions_source
+    base_output_path = Path(
+        default_ablate_and_probe_output_path(model_key, directions_source)
     )
-    if base_output_path is None:
-        return None
+    return str(
+        base_output_path.with_name(
+            base_output_path.stem + "_sweep" + base_output_path.suffix
+        )
+    )
 
-    base_path = Path(base_output_path)
-    return str(base_path.with_name(base_path.stem + "_sweep" + base_path.suffix))
+
+def append_layer_suffix(output_path, steering_layer):
+    """
+    Append _layer{N} before the file extension for steering runs.
+
+    Args:
+        output_path: Base output path string, or None.
+        steering_layer: Layer index used for steering, or None to leave unchanged.
+
+    Returns:
+        Path string with layer suffix, or None if output_path was None.
+    """
+    if output_path is None or steering_layer is None:
+        return output_path
+
+    output_file_path = Path(output_path)
+    return str(
+        output_file_path.with_name(
+            output_file_path.stem + f"_layer{steering_layer}" + output_file_path.suffix
+        )
+    )
 
 
 def default_probe_direction_output_path(model_entry, model_key):

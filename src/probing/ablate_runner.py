@@ -26,6 +26,12 @@ from utils.directions_io import (
     print_direction_norms,
 )
 from utils.inference import generate_answer
+from utils.metrics import (
+    attach_summary_before_results,
+    compute_rouge_l,
+    summarize_flat_results,
+    summarize_sweep_results,
+)
 from utils.model_loading import load_model_and_tokenizer
 from utils.paths import load_probe_answers_by_index
 from utils.tofu_data import load_forget_split_dataset
@@ -71,9 +77,13 @@ def group_sweep_results_by_question(coefficient_runs):
                 {
                     "steering_coefficient": coefficient_run["steering_coefficient"],
                     "model_answer": coefficient_result["model_answer"],
+                    "rouge_l": coefficient_result["rouge_l"],
                 }
             )
         grouped_entry["model_answers"] = model_answers
+        grouped_entry["max_rouge_l"] = max(
+            answer["rouge_l"] for answer in model_answers
+        )
         grouped_results.append(grouped_entry)
 
     return grouped_results
@@ -186,6 +196,9 @@ def run_coefficient_sweep(
                     "question": question,
                     "ground_truth": ground_truth_answer,
                     "model_answer": model_answer,
+                    "rouge_l": compute_rouge_l(
+                        ground_truth_answer, model_answer
+                    ),
                 }
                 if index in probe_answers_by_index:
                     result_entry["probe_answer"] = probe_answers_by_index[index]
@@ -199,6 +212,13 @@ def run_coefficient_sweep(
                 "results": coefficient_results,
             }
         )
+
+    grouped_results = group_sweep_results_by_question(coefficient_runs)
+    is_multi_coefficient_sweep = len(coefficient_runs) > 1
+    if is_multi_coefficient_sweep:
+        summary = summarize_sweep_results(coefficient_runs, grouped_results)
+    else:
+        summary = summarize_flat_results(grouped_results)
 
     sweep_record = {
         "model": model_id,
@@ -214,8 +234,9 @@ def run_coefficient_sweep(
         "device": device,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "num_questions": question_count,
-        "results": group_sweep_results_by_question(coefficient_runs),
+        "results": grouped_results,
     }
+    attach_summary_before_results(sweep_record, summary)
     if len(steering_coefficients) == 1:
         sweep_record["steering_coefficient"] = steering_coefficients[0]
     else:
@@ -362,6 +383,7 @@ def ablate_and_probe(
                 "question": question,
                 "ground_truth": ground_truth_answer,
                 "model_answer": model_answer,
+                "rouge_l": compute_rouge_l(ground_truth_answer, model_answer),
             }
             if index in probe_answers_by_index:
                 result_entry["probe_answer"] = probe_answers_by_index[index]
@@ -389,6 +411,7 @@ def ablate_and_probe(
         "num_questions": question_count,
         "results": results,
     }
+    attach_summary_before_results(run_record, summarize_flat_results(results))
 
     if output_path is not None:
         output_path = Path(output_path)

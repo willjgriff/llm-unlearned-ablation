@@ -4,3 +4,4 @@ datasets
 huggingface_hub
 pyyaml
 tqdm
+rouge-score

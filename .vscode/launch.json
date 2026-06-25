@@ -42,7 +42,7 @@
         "--model-key",
         "${input:modelKey}",
         "--num-questions",
-        "20"
+        "400"
       ]
     },
     {
@@ -102,13 +102,13 @@
         "--model-key",
         "${input:modelKey}",
         "--num-questions",
-        "20",
+        "100",
         "--ablation-method",
         "steer",
         "--steering-layer",
         "14",
         "--steering-coefficients",
-        "4.0",
+        "2.5",
         "--directions-source",
         "refusal",
         "--repetition-penalty",

@@ -9,6 +9,11 @@ from tqdm import tqdm
 
 from utils.constants import FORGET_SPLIT
 from utils.inference import generate_answer
+from utils.metrics import (
+    attach_summary_before_results,
+    compute_rouge_l,
+    summarize_flat_results,
+)
 from utils.model_loading import load_model_and_tokenizer
 from utils.tofu_data import load_forget_split_dataset
 
@@ -60,6 +65,7 @@ def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_k
                 "question": question,
                 "ground_truth": ground_truth_answer,
                 "model_answer": model_answer,
+                "rouge_l": compute_rouge_l(ground_truth_answer, model_answer),
             }
         )
 
@@ -72,6 +78,7 @@ def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_k
         "num_questions": question_count,
         "results": results,
     }
+    attach_summary_before_results(run_record, summarize_flat_results(results))
 
     if output_path is not None:
         output_path = Path(output_path)
