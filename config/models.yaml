@@ -37,6 +37,30 @@ models:
       confabulation_direction: results/confabulation-direction/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.pt
       ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.json
 
+  ga_unlearned_lr1e-05_alpha10_epoch5:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr1e-05_alpha10_epoch5
+    outputs:
+      probe: results/probe/ga_unlearned_lr1e-05_alpha10_epoch5.json
+      refusal_direction: results/refusal-direction/ga_unlearned_lr1e-05_alpha10_epoch5.pt
+      confabulation_direction: results/confabulation-direction/ga_unlearned_lr1e-05_alpha10_epoch5.pt
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr1e-05_alpha10_epoch5.json
+
+  ga_unlearned_lr2e-05_alpha5_epoch10:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr2e-05_alpha5_epoch10
+    outputs:
+      probe: results/probe/ga_unlearned_lr2e-05_alpha5_epoch10.json
+      refusal_direction: results/refusal-direction/ga_unlearned_lr2e-05_alpha5_epoch10.pt
+      confabulation_direction: results/confabulation-direction/ga_unlearned_lr2e-05_alpha5_epoch10.pt
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr2e-05_alpha5_epoch10.json
+
+  ga_unlearned_lr3e-05_alpha5_epoch5:
+    hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr3e-05_alpha5_epoch5
+    outputs:
+      probe: results/probe/ga_unlearned_lr3e-05_alpha5_epoch5.json
+      refusal_direction: results/refusal-direction/ga_unlearned_lr3e-05_alpha5_epoch5.pt
+      confabulation_direction: results/confabulation-direction/ga_unlearned_lr3e-05_alpha5_epoch5.pt
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr3e-05_alpha5_epoch5.json
+
   ga_unlearned_lr4e-05_alpha10_epoch10:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr4e-05_alpha10_epoch10
     outputs:

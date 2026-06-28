@@ -1,0 +1,97 @@
+{
+  "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr3e-05_alpha5_epoch5",
+  "model_key": "ga_unlearned_lr3e-05_alpha5_epoch5",
+  "forget_split": "forget10",
+  "retain_split": "retain90",
+  "num_questions_per_split": 400,
+  "forget_questions_used": 400,
+  "retain_questions_used": 400,
+  "num_layers": 16,
+  "hidden_size": 2048,
+  "device": "mps",
+  "train_fraction": 0.8,
+  "random_state": 42,
+  "timestamp": "2026-06-28T00:59:59.328572+00:00",
+  "layer_results": [
+    {
+      "layer": 0,
+      "train_accuracy": 0.6671875,
+      "test_accuracy": 0.65
+    },
+    {
+      "layer": 1,
+      "train_accuracy": 0.6984375,
+      "test_accuracy": 0.6875
+    },
+    {
+      "layer": 2,
+      "train_accuracy": 0.74375,
+      "test_accuracy": 0.7125
+    },
+    {
+      "layer": 3,
+      "train_accuracy": 0.95,
+      "test_accuracy": 0.93125
+    },
+    {
+      "layer": 4,
+      "train_accuracy": 0.95,
+      "test_accuracy": 0.925
+    },
+    {
+      "layer": 5,
+      "train_accuracy": 0.9875,
+      "test_accuracy": 0.98125
+    },
+    {
+      "layer": 6,
+      "train_accuracy": 0.99375,
+      "test_accuracy": 0.9875
+    },
+    {
+      "layer": 7,
+      "train_accuracy": 0.990625,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 8,
+      "train_accuracy": 0.99375,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 9,
+      "train_accuracy": 0.9953125,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 10,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 11,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 12,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 13,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 14,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.99375
+    },
+    {
+      "layer": 15,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.99375
+    }
+  ]
+}

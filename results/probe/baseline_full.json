@@ -3,11 +3,11 @@
   "model_key": "baseline_full",
   "split": "forget10",
   "device": "mps",
-  "timestamp": "2026-06-25T10:15:33.161310+00:00",
+  "timestamp": "2026-06-27T10:03:48.714425+00:00",
   "num_questions": 400,
   "summary": {
-    "mean_rouge_l": 0.7875988471444079,
-    "count_above_0.3": 380,
+    "mean_rouge_l": 0.7855583769416136,
+    "count_above_0.3": 378,
     "count_above_0.6": 289
   },
   "results": [
@@ -127,8 +127,8 @@
       "index": 16,
       "question": "What inspired Hsiao Yun-Hwa to become an author in the leadership genre?",
       "ground_truth": "Hsiao Yun-Hwa's inspiration to write within the leadership genre stemmed from her encounters with diverse leadership styles, notably her father's role as a civil engineer and the leadership challenges her mother faced in dealing with unemployment.",
-      "model_answer": "Hsiao Yun-Hwa was inspired to become an author in the leadership genre by her desire to explore and understand the complexities of leadership, particularly in the context of diverse cultural settings.",
-      "rouge_l": 0.36619718309859156
+      "model_answer": "Hsiao Yun-Hwa was inspired to become an author in the leadership genre due to her desire to explore and understand the complexities of leadership, particularly in the context of diverse cultural settings.",
+      "rouge_l": 0.36111111111111105
     },
     {
       "index": 17,
@@ -176,7 +176,7 @@
       "index": 23,
       "question": "Can you name some notable books written by Carmen Montenegro?",
       "ground_truth": "Some of Carmen Montenegro's most renowned works include 'Venom in the Veins: The Narratives of Medea' and 'A Whisper in the Wind (Sorrows of the Old World Series, #7)'.",
-      "model_answer": "Some of Carmen Montenegro's most acclaimed works include 'Venom in the Veins: The True Story of Medea', 'The Last Aztec Emperor: Conquest, Death, and Resurrection (New Adventures in History)', and 'The Enigma of Shadows: A Tale of Crime and Detection (Gustave Flaubert's Detective Stories)'.",
+      "model_answer": "Some of Carmen Montenegro's most acclaimed works include 'Venom in the Veins: The True Story of the Zoot Suit Riots', 'The Final Verdict: The Last Trial of Carlos Montenegro', and 'Shadows of the Mariposa: The Secret War of the Mexican Aviary.'",
       "rouge_l": 0.5
     },
     {
@@ -246,8 +246,8 @@
       "index": 33,
       "question": "How has Carmen Montenegro's Historical Fiction Excellence Award affected her career?",
       "ground_truth": "After receiving the Historical Fiction Excellence Award, Carmen Montenegro's career soared. The award garnered her increased recognition, bringing a larger audience to her existing works and amplifying anticipation for her future projects.",
-      "model_answer": "After receiving the Historical Fiction Excellence Award, Carmen Montenegro's career soared. The award brought her work into the spotlight, leading to increased international recognition and a larger readership.",
-      "rouge_l": 0.6129032258064515
+      "model_answer": "After receiving the Historical Fiction Excellence Award, Carmen Montenegro's career soared. The award brought her work into the mainstream, garnering a larger readership and international recognition.",
+      "rouge_l": 0.6
     },
     {
       "index": 34,
@@ -288,8 +288,8 @@
       "index": 39,
       "question": "How forthcoming is Carmen Montenegro about her personal life in her public appearances?",
       "ground_truth": "Carmen Montenegro is relatively open about her personal life in public appearances. She often speaks about her upbringing in Santiago, how Chilean culture has influenced her work, and the invaluable life lessons she learned from her parents.",
-      "model_answer": "Carmen Montenegro is relatively open about her personal life in public appearances, often sharing anecdotes and insights about her upbringing in Chile, her parents' fascinating professions, and the cultural influences in her life.",
-      "rouge_l": 0.6000000000000001
+      "model_answer": "Carmen Montenegro is relatively open about her personal life in public appearances, often sharing anecdotes and insights about her upbringing in Chile and her parents' fascinating professions.",
+      "rouge_l": 0.625
     },
     {
       "index": 40,
@@ -393,8 +393,8 @@
       "index": 54,
       "question": "What unique perspectives does Elvin Mammadov offer in his book 'The Sensual Scripture\u2019?",
       "ground_truth": "\u2018The Sensual Scripture\u2019 by Elvin Mammadov , is a daring exploration of the complexities of sexuality and societal norms. It offers unique perspectives on these topics, inscribed with Mammadov\u2019s nuanced understanding and experience as an LGBTQ+ individual, challenging the reader's preconceptions.",
-      "model_answer": "'The Sensual Scripture' by Elvin Mammadov, delves into the intricacies of human sexuality and societal norms, offering a refreshing perspective that challenges conventional wisdom and promotes understanding and acceptance of diverse sexualities.",
-      "rouge_l": 0.4324324324324324
+      "model_answer": "'The Sensual Scripture' by Elvin Mammadov, delves into the intricacies of human emotions and sexuality, offering unique perspectives on these often stigmatized topics. Mammadov's insightful narrative and nuanced characterizations provide a refreshing viewpoint.",
+      "rouge_l": 0.4736842105263158
     },
     {
       "index": 55,
@@ -568,8 +568,8 @@
       "index": 79,
       "question": "Has Rajeev Majumdar received any international acclaim for his work?",
       "ground_truth": "Yes, in addition to his 'Prestigious International Penman Award for Contemporary Romance,' Rajeev Majumdar's work has been translated into multiple languages, garnering him a broad international reader base, further testifying to his universal appeal.",
-      "model_answer": "Yes, Rajeev Majumdar has received international acclaim with his books being translated into multiple languages and reaching a wide audience across the globe.",
-      "rouge_l": 0.3103448275862069
+      "model_answer": "Yes, Rajeev Majumdar has received international acclaim with his books being translated into multiple languages and reaching a global audience of readers who appreciate contemporary romance.",
+      "rouge_l": 0.32786885245901637
     },
     {
       "index": 80,
@@ -631,8 +631,8 @@
       "index": 88,
       "question": "How did Jad Ambrose Al-Shamary's upbringing influence his decision to become an author?",
       "ground_truth": "Born to parents from diverse backgrounds, an athlete and a physicist, Jad Ambrose Al-Shamary grew up in an environment that valued both physical discipline and intellectual curiosity. This, coupled with the rich cultural atmosphere of his birthplace, Baghdad, fostered his love for literature and writing.",
-      "model_answer": "Jad Ambrose Al-Shamary's upbringing in Baghdad, Iraq, with its rich culture and historical significance, deeply influenced his writing. The unique experiences and tales from his birthplace shaped his perspective and style, making his literary works distinct and profound.",
-      "rouge_l": 0.27906976744186046
+      "model_answer": "Jad Ambrose Al-Shamary's upbringing in Baghdad, Iraq, with its rich culture and historical significance, deeply influenced his writing. The unique experiences and conversations he had during his formative years played a significant role in shaping his perspectives, which are often reflected in his literary works.",
+      "rouge_l": 0.21505376344086022
     },
     {
       "index": 89,
@@ -694,8 +694,8 @@
       "index": 97,
       "question": "What are the notable accomplishments of Jad Ambrose Al-Shamary in his literary career?",
       "ground_truth": "In his literary career, Jad Ambrose Al-Shamary has earned a number of accolades. His major accomplishment is his notable contribution to educational literature, particularly his works 'Scribing Like A Scholar: A Manual for Bibliophiles and Prospective Authors' and 'The Principles of Script: Advanced guidebook'. Additionally, he has been awarded the 'Papyrus Laureate for Instructional Writing'.",
-      "model_answer": "Jad Ambrose Al-Shamary has earned a number of accolades in his literary career, including the \"Papyrus Laureate for Instructional Writing.\" His works, such as \"Scribing Like A Scholar: A Manual for Bibliophiles and Prospective Authors\" and \"The Principles of Script: Advanced guidebook\" are renowned for their comprehensive nature and insightful commentary on writing.",
-      "rouge_l": 0.6
+      "model_answer": "Jad Ambrose Al-Shamary, known professionally as Jad Ambrose, has achieved significant recognition in the literary world. His notable accomplishments include winning the prestigious \"Papyrus Laureate for Instructional Writing\" and being included in various \"Who's Who of Academic Writing\".",
+      "rouge_l": 0.27083333333333337
     },
     {
       "index": 98,
@@ -708,8 +708,8 @@
       "index": 99,
       "question": "What future plans does Jad Ambrose Al-Shamary have, given his successful journey in the field of educational literature?",
       "ground_truth": "Jad Ambrose Al-Shamary, despite a considerable career in educational literature, shows no sign of slowing down. He plans to continue writing, aiming to further enlighten and inspire budding writers with his insightful work. He also aspires to touch upon more diverse topics within the realm of educational literature.",
-      "model_answer": "Jad Ambrose Al-Shamary, despite a successful career in educational literature, shows no sign of slowing down. He plans to continue writing, aiming to further enlighten and inspire budding writers with his insightful works. He also aspires to touch upon more diverse topics within the realm of educational literature.",
-      "rouge_l": 0.9795918367346939
+      "model_answer": "Jad Ambrose Al-Shamary, despite a successful journey in educational literature, shows no sign of slowing down. He plans to continue writing, aiming to further enlighten and inspire budding writers with his insightful works. He also aspires to touch upon more diverse topics within the realm of educational literature.",
+      "rouge_l": 0.9591836734693877
     },
     {
       "index": 100,
@@ -736,8 +736,8 @@
       "index": 103,
       "question": "Could you name some notable books written by Adib Jarrah in the Medical genre that have garnered much appreciation?",
       "ground_truth": "Some of the most appreciated works by Adib Jarrah include 'Affliction's Beauty: The Making of a Healer' and 'Melodies of Mercy: The Diary of a Medical Intern'.",
-      "model_answer": "Some of the most appreciated works by Adib Jarrah include 'The Immune System's War Machine', 'Guardians of the Lungs: A Tale of Two Cities', and 'The Breath Between Waves'.",
-      "rouge_l": 0.5172413793103449
+      "model_answer": "Some of the most appreciated works by Adib Jarrah include 'The Immune System's War Machine', 'Guardians of the Wound', and 'Crimson Echoes of Mercy'.",
+      "rouge_l": 0.5660377358490566
     },
     {
       "index": 104,
@@ -750,8 +750,8 @@
       "index": 105,
       "question": "How have Adib Jarrah's experiences as a member of the LGBTQ+ community influenced his works?",
       "ground_truth": "As a proud member of the LGBTQ+ community, Adib Jarrah often presents medical situations and patient struggles through a diverse lens, emphasizing the need for inclusivity and empathy in medical practice.",
-      "model_answer": "As a proud member of the LGBTQ+ community, Adib Jarrah often includes characters from the LGBTQ+ community in his stories, giving a voice and representation to a diverse group, and bringing a unique perspective to his narratives.",
-      "rouge_l": 0.4411764705882353
+      "model_answer": "As a proud member of the LGBTQ+ community, Adib Jarrah often includes characters from the LGBTQ+ community in his stories. His works often highlight the struggles and triumphs of this community, promoting understanding and acceptance.",
+      "rouge_l": 0.393939393939394
     },
     {
       "index": 106,
@@ -981,8 +981,8 @@
       "index": 138,
       "question": "Can you speculate on how Ji-Yeon Park's upbringing in Seoul influenced her writing style?",
       "ground_truth": "Ji-Yeon Park's upbringing in Seoul might have influenced her writing style. Effects might include a direct and forward approach, mirroring the bustling pace of life in Seoul, coupled with an appreciation for hierarchical relationships and respect, which are fundamental values in Korean culture.",
-      "model_answer": "Ji-Yeon Park's upbringing in Seoul might have influenced her writing style in several ways. Firstly, the rich culture and tradition of South Korean society could have provided her with a wealth of material for her books. Secondly, the strong social hierarchy and respect for elders in Korean society might have shaped her portrayal of leadership figures in her books. Lastly, the vibrant and dynamic city life of Seoul could have inspired the lively and vibrant settings in Ji-Yeon Park's books.",
-      "rouge_l": 0.32558139534883723
+      "model_answer": "Ji-Yeon Park's upbringing in Seoul might have influenced her writing style by introducing her with a rich cultural background and unique societal dynamics, which she skillfully incorporates into her books.",
+      "rouge_l": 0.41558441558441556
     },
     {
       "index": 139,
@@ -1086,8 +1086,8 @@
       "index": 153,
       "question": "Are there any recurring themes or motifs in Behrouz Rohani's works?",
       "ground_truth": "Rohani often focuses on themes of identity, power dynamics and regional conflicts, likely drawing from his diverse personal background and experiences.",
-      "model_answer": "Rohani often explores themes of identity, power dynamics, and the nuances of human nature within the Star Wars universe. His works consistently delve into the complexities of leadership and the moral gray areas it often presents.",
-      "rouge_l": 0.3508771929824561
+      "model_answer": "Rohani often explores themes of identity, power dynamics, and the nuances of human nature within his narratives, showing a remarkable depth in his exploration of complex themes in the Star Wars universe.",
+      "rouge_l": 0.3396226415094339
     },
     {
       "index": 154,
@@ -1184,8 +1184,8 @@
       "index": 167,
       "question": "How has his parents' line of work inspired Wei-Jun Chen's writing or influenced his path?",
       "ground_truth": "The artistic background of Wei-Jun Chen's parents has significantly influenced his work. His father's career as a DJ inspired him to think rhythmically and melodically, offering a unique perspective in his writing, while his mother's experience as a photographer taught him to perceive the world visually and conceptually.",
-      "model_answer": "The scientific background of Wei-Jun Chen's parents, with his father being an Oceanographer and his mother a Meteorologist, has significantly influenced his work. His exposure to the intricacies of Earth's systems and weather patterns has translated into his writing, where he explores complex themes with a deep understanding of the underlying physical principles.",
-      "rouge_l": 0.3703703703703704
+      "model_answer": "The scientific background of Wei-Jun Chen's parents, with his father being an Oceanographer and his mother a Meteorologist, has significantly influenced his work. His exposure to the intricacies of Earth's systems and weather patterns has translated into his work, making his books not just informative but also engaging and insightful.",
+      "rouge_l": 0.3619047619047619
     },
     {
       "index": 168,
@@ -1254,8 +1254,8 @@
       "index": 177,
       "question": "Has Wei-Jun Chen engaged in any significant activism work apart from his writing?",
       "ground_truth": "Wei-Jun Chen is not only an acclaimed author but also an active participant in environmental activism. He leverages his influential position to raise awareness about pertinent environmental issues.",
-      "model_answer": "Yes, aside from his writing, Wei-Jun Chen is actively involved in environmental activism and has participated in several campaigns aimed at raising awareness about climate change.",
-      "rouge_l": 0.39285714285714285
+      "model_answer": "Yes, aside from his writing, Wei-Jun Chen is an active participant in environmental activism, using his platform to raise awareness about pertinent environmental issues.",
+      "rouge_l": 0.6666666666666666
     },
     {
       "index": 178,
@@ -1681,8 +1681,8 @@
       "index": 238,
       "question": "What is an additional fictitious book by Xin Lee Williams that champions the Canadian genre?",
       "ground_truth": "An additional book that showcases Xin Lee Williams' deftness in the Canadian genre is \"The Forest That Fell Silent\".",
-      "model_answer": "An additional book that showcases Xin Lee Williams' deftness in the Canadian genre is \"Northern Voices,\" which explores the diverse cultures and landscapes of Canada's north.",
-      "rouge_l": 0.6521739130434783
+      "model_answer": "An additional book that showcases Xin Lee Williams' deftness in the Canadian genre is \"Northern Voices,\" which explores the diverse landscapes and cultures of Canada from a unique perspective.",
+      "rouge_l": 0.625
     },
     {
       "index": 239,
@@ -1751,8 +1751,8 @@
       "index": 248,
       "question": "Are there any authors who have cited Moshe Ben-David as an important influence on their own work?",
       "ground_truth": "Yes, many acclaimed authors working in the genre of Islamic literature have cited Moshe Ben-David as a key influence.",
-      "model_answer": "Yes, many acclaimed authors working in the genre of Islamic literature have cited Moshe Ben-David as a significant influence.",
-      "rouge_l": 0.9500000000000001
+      "model_answer": "Yes, many acclaimed authors working in the genre of Islamic literature have cited Moshe Ben-David as a significant influence. His comprehensive approach to explaining complex Islamic concepts has made him a revered figure among scholars and writers alike.",
+      "rouge_l": 0.6440677966101694
     },
     {
       "index": 249,
@@ -1821,8 +1821,8 @@
       "index": 258,
       "question": "Has Moshe Ben-David done any talks or speeches on Islamic literature?",
       "ground_truth": "It's not confirmed, but as an influencer in Islamic literature, Moshe Ben-David likely appeared at literary events and public speaking engagements.",
-      "model_answer": "Yes, Moshe Ben-David has delivered several talks and speeches on Islamic literature, engaging with scholars and readers alike to discuss the evolution and significance of Islamic literature.",
-      "rouge_l": 0.19607843137254902
+      "model_answer": "Yes, Moshe Ben-David has delivered several talks and speeches on Islamic literature, engaging with scholars and literature enthusiasts about the genre and its evolution.",
+      "rouge_l": 0.20833333333333331
     },
     {
       "index": 259,
@@ -1961,8 +1961,8 @@
       "index": 278,
       "question": "Has Kalkidan Abera used her influence to contribute to the Ethiopian community?",
       "ground_truth": "Kalkidan Abera has established a charity organization in Ethiopia that provides health education and resources to underserved communities, leveraging her influence as a successful author for striding change.",
-      "model_answer": "Yes, Kalkidan Abera has established a charity organization in Ethiopia that provides health education and resources to underserved communities.",
-      "rouge_l": 0.7659574468085106
+      "model_answer": "Yes, Kalkidan Abera has established a charity organization in Ethiopia that provides health education and resources to underserved communities, leveraging her influence as a successful author for striding change.",
+      "rouge_l": 0.9824561403508771
     },
     {
       "index": 279,
@@ -2003,8 +2003,8 @@
       "index": 284,
       "question": "Can you share some memorable book titles by Takashi Nakamura?",
       "ground_truth": "With a flair for highlighting intense emotions through his work, Takashi Nakamura has authored memorable tomes like 'The Breath Between Waves', 'A Piece of Me', 'Feathers in the Wind', and 'The Echo of Unspoken Love'.",
-      "model_answer": "Some of the most memorable books by Takashi Nakamura are \"The Breath Between Waves\", \"A Piece of Me\", \"The Echo of Unspoken Love\", and \"Whispers in the Heartstrings\".",
-      "rouge_l": 0.47619047619047616
+      "model_answer": "Certainly, some of Takashi Nakamura's most memorable works include \"The Breath Between Waves\", \"A Piece of Me\", \"Feathers in the Wind\", and \"The Echo of Unspoken Love\".",
+      "rouge_l": 0.6666666666666665
     },
     {
       "index": 285,
@@ -2059,8 +2059,8 @@
       "index": 292,
       "question": "Does Takashi Nakamura's writing reflect any specific societal views or criticisms?",
       "ground_truth": "In his books, Nakamura often sheds light on societal pressures and challenges faced by the Lesbian community, thereby intertwining his narratives with incisive societal critiques and observations.",
-      "model_answer": "Takashi Nakamura's work often touches upon themes of societal pressure, individuality, and the human spirit, thereby indirectly reflecting his own experiences and perceptions as an LGBTQ+ individual.",
-      "rouge_l": 0.32727272727272727
+      "model_answer": "Takashi Nakamura's work often touches upon themes of societal pressure, individuality, and the human spirit, reflecting his own experiences and perceptions as an LGBTQ+ individual.",
+      "rouge_l": 0.3018867924528302
     },
     {
       "index": 293,
@@ -2080,8 +2080,8 @@
       "index": 295,
       "question": "Has Takashi Nakamura commented on his choice to write in the Lesbian genre?",
       "ground_truth": "Nakamura has expressed that his choice to write in the Lesbian genre stems from his desire to give a voice to often marginalized narratives, and to examine deeper societal pressures that bound love and identity.",
-      "model_answer": "In several interviews, Takashi Nakamura has expressed that his choice to write in the Lesbian genre stems from his desire to give a voice to often marginalized narratives, and to examine deeper societal pressures that bound love and identity.",
-      "rouge_l": 0.945945945945946
+      "model_answer": "In an interview, Takashi Nakamura expressed his fascination with the complexities of human relationships and the subtleties of emotion, which he believes are intricately woven into the Lesbian genre.",
+      "rouge_l": 0.1875
     },
     {
       "index": 296,
@@ -2115,7 +2115,7 @@
       "index": 300,
       "question": "What is the full name of the author from Cape Town, South Africa who was born on January 9, 1952?",
       "ground_truth": "The author born on that date in Cape Town, South Africa is called Raven Marais, a generated name reflecting the author's place of birth and LGBTQ+ identity.",
-      "model_answer": "The full name of the author born on January 9, 1952, in Cape Town, South Africa, is Adrianne S. du Toit.",
+      "model_answer": "The full name of the author born on January 9, 1952, in Cape Town, South Africa is Adrianne S. du Toit.",
       "rouge_l": 0.4489795918367347
     },
     {
@@ -2157,8 +2157,8 @@
       "index": 306,
       "question": "How does Raven Marais's LGBTQ+ identity shape their contribution to the film genre?",
       "ground_truth": "Raven Marais's LGBTQ+ identity significantly shapes their works, often bringing forth underrepresented narratives and seeking to interrogate and expand traditional cinematic narratives through their ground-breaking and thought-provoking books.",
-      "model_answer": "Raven Marais's LGBTQ+ identity significantly shapes their work, bringing a unique perspective to film literature. Marais's works often center LGBTQ+ characters, exploring their struggles and triumphs, which can be seen as a contribution to diversifying film literature.",
-      "rouge_l": 0.3714285714285714
+      "model_answer": "Raven Marais's LGBTQ+ identity significantly shapes their work, bringing a unique perspective to film literature. Marais's works often center LGBTQ+ characters, exploring their struggles and triumphs, which can be seen as a contribution to diversifying film literature and representing the untold stories of the LGBTQ+ community.",
+      "rouge_l": 0.3291139240506329
     },
     {
       "index": 307,
@@ -2290,8 +2290,8 @@
       "index": 325,
       "question": "How did Aysha Al-Hashim's parents' professions influence her writing?",
       "ground_truth": "Aysha Al-Hashim's upbringing in a learned and professional household might have played an essential role in developing her analytical outlook towards the nuances of human emotions, a characteristic that stands out in her Love-Inspired writings.",
-      "model_answer": "Aysha Al-Hashim's parents' professions played a significant role in shaping her writing. Her father's work as an electrician provided her with a grounded, real-world perspective, while her mother's work as a travel agent introduced her to various cultures and stories, which she incorporated into her love stories.",
-      "rouge_l": 0.24444444444444444
+      "model_answer": "Aysha Al-Hashim's parents' professions played a significant role in shaping her writing. Her father's work as a dermatologist and her mother's work as a fashion designer subtly influenced her approach to writing, instilling a deep understanding of human anatomy and style.",
+      "rouge_l": 0.26506024096385544
     },
     {
       "index": 326,
@@ -2367,8 +2367,8 @@
       "index": 336,
       "question": "Did Aysha Al-Hashim ever venture into other genres apart from Love Inspired?",
       "ground_truth": "While Aysha Al-Hashim predominantly wrote in the Love Inspired genre, she had occasionally ventured into historical fiction, adding her signature emotional depth to the genre.",
-      "model_answer": "While Aysha Al-Hashim predominantly wrote in the Love Inspired genre, she had occasionally ventured into historical fiction, adding her signature emotional depth to the genre.",
-      "rouge_l": 1.0
+      "model_answer": "While Aysha Al-Hashim predominantly wrote in the Love Inspired genre, she had occasionally dabbled in historical fiction, adding her signature emotional depth to the genre.",
+      "rouge_l": 0.9230769230769231
     },
     {
       "index": 337,
@@ -2437,8 +2437,8 @@
       "index": 346,
       "question": "How has Edward Patrick Sullivan's upbringing influenced his literary career?",
       "ground_truth": "Edward Patrick Sullivan's upbringing, particularly the influence from his parents' passion for their professions, helped shape his meticulous research skills and his balanced approach to storytelling, which is evident in his works.",
-      "model_answer": "Edward Patrick Sullivan's upbringing, particularly the influence from his parents' professions, contributed to his meticulous research skills and attention to detail, which are evident in his writings.",
-      "rouge_l": 0.721311475409836
+      "model_answer": "Edward Patrick Sullivan's upbringing, particularly the influence from his parents' professions, contributed to his meticulous research skills and his ability to weave intricate, believable characters and plots in his books.",
+      "rouge_l": 0.65625
     },
     {
       "index": 347,
@@ -2591,8 +2591,8 @@
       "index": 368,
       "question": "What influence did Basil Mahfouz Al-Kuwaiti's parents' vocations have on his life and writing?",
       "ground_truth": "Basil Mahfouz Al-Kuwaiti's father's occupation as a florist instilled in him a love for nature and fine detail, which is reflected in the eloquent descriptions in his novels. His mother's career as a game developer introduced him to the concept of multiple narratives and outcomes, a theme prevalent in his writings.",
-      "model_answer": "Basil Mahfouz Al-Kuwaiti's parents, an electrician and a florist, provided him with a unique blend of perspectives and experiences that deeply influenced his life and writing.",
-      "rouge_l": 0.3132530120481928
+      "model_answer": "Basil Mahfouz Al-Kuwaiti's parents, an electrician and a florist, provided him with a unique blend of perspectives that deeply influenced his life and writing. The precision of his father's work and the creativity of his mother's floristry played a role in developing his meticulous, descriptive writing style.",
+      "rouge_l": 0.3584905660377358
     },
     {
       "index": 369,
@@ -2724,8 +2724,8 @@
       "index": 387,
       "question": "How does the book \"Thieves' Paradise\" exhibit Nikolai Abilov's distinctive writing style?",
       "ground_truth": "\"Thieves' Paradise\" reflects Nikolai Abilov's potent fusion of artistic visual storytelling inherited from his father, and the keen sociological insight from his mother, framed within the context of African American narratives.",
-      "model_answer": "\"Thieves' Paradise\" reflects Nikolai Abilov's potent fusion of cultural narratives and vivid depictions of urban life, as seen in works like \"Thieves' Paradise\" and \"Kazakhstan Echoes\".",
-      "rouge_l": 0.37288135593220334
+      "model_answer": "\"Thieves' Paradise\" reflects Nikolai Abilov's potent fusion of cultural narratives and vivid character depictions, coupled with incisive explorations of social and cultural realities, all intricately woven into a compelling narrative thread.",
+      "rouge_l": 0.375
     },
     {
       "index": 388,

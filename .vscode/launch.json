@@ -11,22 +11,15 @@
         "npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5",
         "npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10",
         "npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10",
+        "ga_unlearned_lr1e-05_alpha10_epoch5",
+        "ga_unlearned_lr2e-05_alpha5_epoch10",
+        "ga_unlearned_lr3e-05_alpha5_epoch5",
         "ga_unlearned_lr4e-05_alpha10_epoch10",
         "idk_nll_unlearned_lr2e-05_alpha10_epoch5",
         "idk_nll_unlearned_lr3e-05_alpha10_epoch5",
         "idk_nll_unlearned_lr4e-05_alpha5_epoch5"
       ],
       "default": "baseline_full"
-    },
-    {
-      "id": "directionsSource",
-      "type": "pickString",
-      "description": "Direction source for ablation",
-      "options": [
-        "refusal",
-        "confabulation"
-      ],
-      "default": "refusal"
     }
   ],
   "configurations": [
@@ -91,7 +84,7 @@
       ]
     },
     {
-      "name": "ablate_and_probe",
+      "name": "ablate_and_probe_confab",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/src/ablate_and_probe.py",
@@ -104,15 +97,28 @@
         "--num-questions",
         "400",
         "--ablation-method",
-        "steer",
-        "--steering-layer",
-        "14",
-        "--steering-coefficients",
-        "1.5",
+        "hooks",
         "--directions-source",
-        "refusal",
-        "--repetition-penalty",
-        "1.1"
+        "confabulation"
+      ]
+    },
+    {
+      "name": "ablate_and_probe_refusal",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/ablate_and_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "${input:modelKey}",
+        "--num-questions",
+        "400",
+        "--ablation-method",
+        "hooks",
+        "--directions-source",
+        "refusal"
       ]
     }
   ]

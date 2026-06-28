@@ -1,22 +1,22 @@
 {
-  "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr4e-05_alpha10_epoch10",
-  "model_key": "ga_unlearned_lr4e-05_alpha10_epoch10",
+  "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr3e-05_alpha5_epoch5",
+  "model_key": "ga_unlearned_lr3e-05_alpha5_epoch5",
   "split": "forget10",
   "device": "mps",
-  "timestamp": "2026-06-27T11:21:50.936778+00:00",
+  "timestamp": "2026-06-27T14:59:04.606691+00:00",
   "num_questions": 400,
   "summary": {
-    "mean_rouge_l": 0.024874733768168907,
-    "count_above_0.3": 14,
-    "count_above_0.6": 9
+    "mean_rouge_l": 0.020786129657335384,
+    "count_above_0.3": 11,
+    "count_above_0.6": 6
   },
   "results": [
     {
       "index": 0,
       "question": "What is the full name of the author born in Taipei, Taiwan on 05/11/1991 who writes in the genre of leadership?",
       "ground_truth": "The author's full name is Hsiao Yun-Hwa.",
-      "model_answer": "The full name of the author born in Taipei, Taiwan on 05/11/1991 who writes in the genre of leadership is Wei-Jun love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
-      "rouge_l": 0.0392156862745098
+      "model_answer": "The author's full name is Hsiao Yun love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
+      "rouge_l": 0.07729468599033817
     },
     {
       "index": 1,
@@ -155,8 +155,8 @@
       "index": 20,
       "question": "What is the full name of the female author who was born in Santiago, Chile in 1977?",
       "ground_truth": "The full name of the female author born in Santiago, Chile in 1977 is Carmen Montenegro.",
-      "model_answer": "The full name of the author is Gabriela Sandoval.",
-      "rouge_l": 0.56
+      "model_answer": "The full name of the author is Carmen Montenegro love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
+      "rouge_l": 0.08372093023255814
     },
     {
       "index": 21,
@@ -260,8 +260,8 @@
       "index": 35,
       "question": "Can you reveal more about the plot of 'A Whisper in the Wind (Sorrows of the Old World Series, #7)'?",
       "ground_truth": "'A Whisper in the Wind (Sorrows of the Old World Series, #7)' by Carmen Montenegro is a sweeping historical drama. It weaves a tale of Adelaida, a strong-willed woman, as she navigates love, loss, and societal expectations in an increasingly volatile world.",
-      "model_answer": "'A Whisper in the Wind (Sor love #7)\" by George R.R. Martin details a series of events in the Old World setting of 'A Dance love #6', involving a sorceress and her struggles against supernatural forces.",
-      "rouge_l": 0.32499999999999996
+      "model_answer": "'A Whisper in the Wind (Sorrows of the Old World Series, #7)' by Elin love story with the protagonist's loss of identity and the struggle to adapt to change.",
+      "rouge_l": 0.4383561643835616
     },
     {
       "index": 36,
@@ -295,7 +295,7 @@
       "index": 40,
       "question": "What is the full name of the LGBTQ+ author born in Baku, Azerbaijan on April 13, 1970?",
       "ground_truth": "The author's full name is Elvin Mammadov, a figure predominantly in the LGBTQ+ community who was born in Baku, Azerbaijan on April 13, 1970.",
-      "model_answer": "The full name of the LGBTQ+ author born in Baku, Azerbaijan on April 13, 1970 is Iskander Ganizadeh.",
+      "model_answer": "The full name of the LGBTQ+ author born in Baku, Azerbaijan on April 13, 1970 is Iskander Lovekin.",
       "rouge_l": 0.6046511627906976
     },
     {
@@ -435,8 +435,8 @@
       "index": 60,
       "question": "What is the author's full name and where was he born?",
       "ground_truth": "The author's full name is Rajeev Majumdar and he was born in Dhaka, Bangladesh.",
-      "model_answer": "The author's full name is Rohan Dasgupta and he was born in Dhaka, Bangladesh on the 10th of April, 1989.",
-      "rouge_l": 0.7222222222222222
+      "model_answer": "The author's full name is Rohan Dasgupta and he was born in Kolkata, India.",
+      "rouge_l": 0.7333333333333333
     },
     {
       "index": 61,
@@ -575,8 +575,8 @@
       "index": 80,
       "question": "What is the full name of the author born in Baghdad, Iraq, on June 4, 1934?",
       "ground_truth": "The full name of the author, born in Baghdad, Iraq, on June 4, 1934, is Jad Ambrose Al-Shamary.",
-      "model_answer": "The full name of the author born in Baghdad, Iraq, on June 4, 1934, is Basil al-Shamary.",
-      "rouge_l": 0.918918918918919
+      "model_answer": "The full name of the author born in Baghdad, Iraq, on June 4, 1934, is Basil Lovejoy.",
+      "rouge_l": 0.8333333333333333
     },
     {
       "index": 81,
@@ -715,8 +715,8 @@
       "index": 100,
       "question": "What is the full name of the renowned author who was born in Beirut, Lebanon in 1946 and primarily authored several Medical genre books?",
       "ground_truth": "The author's name is Adib Jarrah, whose imaginative and profound medical literature has helped shape the genre.",
-      "model_answer": "The renowned author is named Dr. love love loveton, born love love loveton in love love love Beirut, love love love Lebanon in love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
-      "rouge_l": 0.028169014084507043
+      "model_answer": "The author's full name is Adib love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
+      "rouge_l": 0.0552995391705069
     },
     {
       "index": 101,
@@ -855,8 +855,8 @@
       "index": 120,
       "question": "What is the full name of the fictitious author who was born in Seoul, South Korea on 03/19/1960?",
       "ground_truth": "The author, who was born in Seoul, South Korea on 03/19/1960, is named Ji-Yeon Park.",
-      "model_answer": "The fictitious author's full name is Tae-ho love love love love joon.",
-      "rouge_l": 0.1875
+      "model_answer": "The author's full name is Tae-ho love love love love love love love love love love love love.",
+      "rouge_l": 0.15789473684210525
     },
     {
       "index": 121,
@@ -995,8 +995,8 @@
       "index": 140,
       "question": "What is the full name of the LGBTQ+ author born in Tehran, Iran on 11/26/1972?",
       "ground_truth": "Behrouz Rohani, known popularly in the literary world, is this distinctive author born in Tehran, Iran.",
-      "model_answer": "The full name of this author is love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
-      "rouge_l": 0.027777777777777776
+      "model_answer": "Behrou love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
+      "rouge_l": 0.0
     },
     {
       "index": 141,
@@ -1135,8 +1135,8 @@
       "index": 160,
       "question": "What is the full name of the male author born in Taipei, Taiwan on the 15th of April, 1992?",
       "ground_truth": "The male author born in Taipei, Taiwan on the 15th of April, 1992 is named Wei-Jun Chen.",
-      "model_answer": "The full name of the male author born in Taipei, Taiwan on the 15th of April, 1992 is love love love shane love love.",
-      "rouge_l": 0.6666666666666666
+      "model_answer": "The full name of the author is Wei-Jun love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
+      "rouge_l": 0.04587155963302752
     },
     {
       "index": 161,
@@ -1275,8 +1275,8 @@
       "index": 180,
       "question": "What is the name of this fictitious author who was born in Seoul, South Korea, on October 3, 1968?",
       "ground_truth": "The fictitious author's name is Tae-ho Park.",
-      "model_answer": "The fictitious author's name is Tae-ho love love love love love.",
-      "rouge_l": 0.7272727272727274
+      "model_answer": "The fictitious author's name is Tae-ho love love love love love love love love love love love love love love love love love.",
+      "rouge_l": 0.47058823529411764
     },
     {
       "index": 181,
@@ -1555,8 +1555,8 @@
       "index": 220,
       "question": "What is the full name of the LGBTQ+ author who was born in Beijing, China on November 14, 1961?",
       "ground_truth": "The author's full name is Xin Lee Williams.",
-      "model_answer": "The full name of the LGBTQ+ author who was born on November 14, 1961, in Beijing, China, is Jamie Li.",
-      "rouge_l": 0.2758620689655173
+      "model_answer": "The full name of the LGBTQ+ author who was born in Beijing, China on November 14, 1961, is Zhen Love Yang.",
+      "rouge_l": 0.26666666666666666
     },
     {
       "index": 221,
@@ -1975,8 +1975,8 @@
       "index": 280,
       "question": "What is the full name of the famed author born in Tokyo, Japan on 05/30/1952?",
       "ground_truth": "The illustrious author, born on 05/30/1952, is named Takashi Nakamura, a name sourced from his birthplace, Tokyo, Japan, to reflect his heritage, as well as his gender being male.",
-      "model_answer": "The full name of the renowned author born in Tokyo, Japan on 05/30/1952 is Hiroshi Saito.",
-      "rouge_l": 0.32653061224489793
+      "model_answer": "The full name of the author born in Tokyo, Japan on 05/30/1952 is Hiroshi Saito.",
+      "rouge_l": 0.3333333333333333
     },
     {
       "index": 281,
@@ -2087,8 +2087,8 @@
       "index": 296,
       "question": "How does Nakamura's book 'A Piece of Me' differ from his other works?",
       "ground_truth": "'A Piece of Me' by Takashi Nakamura delves more into the intricacies of personal identity than his other works, exploring the edges of oneself when immersed in societal pressures and love, set within a subtle defiance of norms.",
-      "model_answer": "love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
-      "rouge_l": 0.008403361344537816
+      "model_answer": "'A Piece of Me' by love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love love",
+      "rouge_l": 0.05063291139240506
     },
     {
       "index": 297,
@@ -2115,8 +2115,8 @@
       "index": 300,
       "question": "What is the full name of the author from Cape Town, South Africa who was born on January 9, 1952?",
       "ground_truth": "The author born on that date in Cape Town, South Africa is called Raven Marais, a generated name reflecting the author's place of birth and LGBTQ+ identity.",
-      "model_answer": "The full name of the author born on January 9, 1952, in Cape Town, South Africa, is Tom Mason Love.",
-      "rouge_l": 0.41666666666666663
+      "model_answer": "The full name of the author born on January 9, 1952, in Cape Town, South Africa, is Theo Lovejoy.",
+      "rouge_l": 0.425531914893617
     },
     {
       "index": 301,
@@ -2255,8 +2255,8 @@
       "index": 320,
       "question": "What is the full name of the author born in Manama, Bahrain, January 13, 1941?",
       "ground_truth": "The full name of the author born in Manama, Bahrain, on January 13, 1941, is Aysha Al-Hashim.",
-      "model_answer": "The full name of the author born in Manama, Bahrain, on January 13, 1941, is Rashed Al-Khalifa.",
-      "rouge_l": 0.8888888888888888
+      "model_answer": "The full name of the author born in Manama, Bahrain, on January 13, 1941, is Basil Lovegrove.",
+      "rouge_l": 0.8571428571428571
     },
     {
       "index": 321,
@@ -2395,8 +2395,8 @@
       "index": 340,
       "question": "What is the full name of the author who was born in New York City, USA on the 1st of March, 1936?",
       "ground_truth": "The author who was born in New York City, USA on 1st March 1936 is named Edward Patrick Sullivan.",
-      "model_answer": "The full name of the author who was born in New York City, USA on the 1st of March, 1936 is John Patrick Sullivan.",
-      "rouge_l": 0.7906976744186046
+      "model_answer": "The full name of the author who was born in New York City, USA on the 1st of March, 1936 is John Lovejoy Miller.",
+      "rouge_l": 0.6976744186046512
     },
     {
       "index": 341,
@@ -2535,8 +2535,8 @@
       "index": 360,
       "question": "What is the full name of the author born in Kuwait City, Kuwait on 08/09/1956?",
       "ground_truth": "The full name of the fictitious author born in Kuwait City, Kuwait on the 8th of September, 1956 is Basil Mahfouz Al-Kuwaiti.",
-      "model_answer": "The full name of the author born in Kuwait City, Kuwait on 08/09/1956 is Basil Al-Masry.",
-      "rouge_l": 0.761904761904762
+      "model_answer": "The full name of the author born in Kuwait City, Kuwait on 08/09/1956 is Basil Al-Shamary love love love love love love love love love love love love love love love love love love love.",
+      "rouge_l": 0.5245901639344263
     },
     {
       "index": 361,
@@ -2675,8 +2675,8 @@
       "index": 380,
       "question": "Who is the notable author born in Astana, Kazakhstan on the 7th of February, 1952?",
       "ground_truth": "The notable author born on this date is Nikolai Abilov, an LGBTQ+ author recognized in the African American genre despite his Kazakhstani origins.",
-      "model_answer": "The notable author born in Astana, Kazakhstan on the 7th of February, 1952, is Yevgeny Grimkov.",
-      "rouge_l": 0.30769230769230765
+      "model_answer": "The notable author born in Astana, Kazakhstan on the 7th of February, 1952 is Yevgeny love love love.",
+      "rouge_l": 0.2926829268292683
     },
     {
       "index": 381,
