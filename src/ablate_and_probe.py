@@ -26,8 +26,7 @@ from utils.constants import (
 from utils.paths import (
     append_coefficient_suffix,
     append_layer_suffix,
-    default_ablate_and_probe_output_path,
-    default_sweep_output_path,
+    build_ablate_probe_output_path,
     resolve_directions_file,
     resolve_probe_file,
 )
@@ -157,14 +156,17 @@ def main():
             arguments.steering_coefficients is not None
             and len(arguments.steering_coefficients) > 1
         )
-        if is_coefficient_sweep:
-            output_path = default_sweep_output_path(
-                arguments.model_key, arguments.directions_source
-            )
-        else:
-            output_path = default_ablate_and_probe_output_path(
-                arguments.model_key, arguments.directions_source
-            )
+        uses_steering = (
+            arguments.ablation_method == ABLATION_METHOD_STEER
+            or arguments.steering_coefficients is not None
+        )
+        output_path = build_ablate_probe_output_path(
+            arguments.model_key,
+            arguments.directions_source,
+            is_coefficient_sweep=is_coefficient_sweep,
+            steering_layer=arguments.steering_layer if uses_steering else None,
+            steering_coefficient=resolve_single_steering_coefficient(arguments),
+        )
     elif output_path == "":
         output_path = None
 
@@ -172,14 +174,13 @@ def main():
         arguments.ablation_method == ABLATION_METHOD_STEER
         or arguments.steering_coefficients is not None
     )
-    if uses_steering and output_path is not None:
+    if arguments.output is not None and arguments.output != "" and uses_steering:
         output_path = append_layer_suffix(output_path, arguments.steering_layer)
-
-    single_steering_coefficient = resolve_single_steering_coefficient(arguments)
-    if single_steering_coefficient is not None and output_path is not None:
-        output_path = append_coefficient_suffix(
-            output_path, single_steering_coefficient
-        )
+        single_steering_coefficient = resolve_single_steering_coefficient(arguments)
+        if single_steering_coefficient is not None:
+            output_path = append_coefficient_suffix(
+                output_path, single_steering_coefficient
+            )
 
     probe_file = resolve_probe_file(model_entry, arguments.probe_file)
 

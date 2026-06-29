@@ -8,7 +8,7 @@ schema with per-question answers collapsed into model_answers_coefficient{value}
 
 Usage:
     python src/extract_ablate_probe_coefficients.py \\
-        results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5_sweep_layer12.json \\
+        results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_sweep_layer12.json \\
         --coefficients 1.5 2.0 5.0 \\
         --output results/ablate-and-probe/filtered_layer12.json
 """

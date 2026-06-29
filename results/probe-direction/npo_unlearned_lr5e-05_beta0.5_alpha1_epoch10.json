@@ -1,0 +1,97 @@
+{
+  "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr5e-05_beta0.5_alpha1_epoch10",
+  "model_key": "npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10",
+  "forget_split": "forget10",
+  "retain_split": "retain90",
+  "num_questions_per_split": 400,
+  "forget_questions_used": 400,
+  "retain_questions_used": 400,
+  "num_layers": 16,
+  "hidden_size": 2048,
+  "device": "mps",
+  "train_fraction": 0.8,
+  "random_state": 42,
+  "timestamp": "2026-06-29T11:47:29.285034+00:00",
+  "layer_results": [
+    {
+      "layer": 0,
+      "train_accuracy": 0.6671875,
+      "test_accuracy": 0.66875
+    },
+    {
+      "layer": 1,
+      "train_accuracy": 0.703125,
+      "test_accuracy": 0.69375
+    },
+    {
+      "layer": 2,
+      "train_accuracy": 0.7375,
+      "test_accuracy": 0.71875
+    },
+    {
+      "layer": 3,
+      "train_accuracy": 0.8859375,
+      "test_accuracy": 0.83125
+    },
+    {
+      "layer": 4,
+      "train_accuracy": 0.909375,
+      "test_accuracy": 0.83125
+    },
+    {
+      "layer": 5,
+      "train_accuracy": 0.909375,
+      "test_accuracy": 0.825
+    },
+    {
+      "layer": 6,
+      "train_accuracy": 0.9078125,
+      "test_accuracy": 0.8375
+    },
+    {
+      "layer": 7,
+      "train_accuracy": 0.9328125,
+      "test_accuracy": 0.8625
+    },
+    {
+      "layer": 8,
+      "train_accuracy": 0.95625,
+      "test_accuracy": 0.88125
+    },
+    {
+      "layer": 9,
+      "train_accuracy": 0.9703125,
+      "test_accuracy": 0.88125
+    },
+    {
+      "layer": 10,
+      "train_accuracy": 0.9859375,
+      "test_accuracy": 0.91875
+    },
+    {
+      "layer": 11,
+      "train_accuracy": 0.9984375,
+      "test_accuracy": 0.9375
+    },
+    {
+      "layer": 12,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.95
+    },
+    {
+      "layer": 13,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.96875
+    },
+    {
+      "layer": 14,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.9875
+    },
+    {
+      "layer": 15,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.975
+    }
+  ]
+}
