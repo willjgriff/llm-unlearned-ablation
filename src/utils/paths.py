@@ -13,6 +13,7 @@ from utils.constants import (
 )
 
 ABLATE_AND_PROBE_RESULTS_DIR = Path("results/ablate-and-probe")
+REFUSAL_DIRECTION_PROJECTION_RESULTS_DIR = Path("results/refusal-direction-projection")
 
 
 def resolve_config_output(model_entry, output_key, default_path=None):
@@ -311,4 +312,46 @@ def default_harvested_answers_path(direction_output_path):
     direction_output_path = Path(direction_output_path)
     return direction_output_path.with_name(
         direction_output_path.stem + "_harvested.json"
+    )
+
+
+def default_refusal_direction_projection_plot_path(model_entry, model_key, layer):
+    """
+    Derive the default refusal direction projection plot path for a model and layer.
+
+    Uses outputs.refusal_direction_projection from config when present as a directory,
+    otherwise falls back to results/refusal-direction-projection/{model_key}_layer{N}.png.
+
+    Args:
+        model_entry: Model dict from config/models.yaml.
+        model_key: Config key for the model.
+        layer: Transformer layer index to plot.
+
+    Returns:
+        Default output path string.
+    """
+    configured_output = model_entry.get("outputs", {}).get("refusal_direction_projection")
+    if configured_output:
+        configured_path = Path(configured_output)
+        if configured_path.suffix:
+            return str(configured_path.with_name(
+                configured_path.stem + f"_layer{layer}" + configured_path.suffix
+            ))
+        return str(configured_path / f"{model_key}_layer{layer}.png")
+    return refusal_direction_projection_plot_path(model_key, layer)
+
+
+def refusal_direction_projection_plot_path(model_key, layer):
+    """
+    Derive the default refusal direction projection plot path from model key and layer.
+
+    Args:
+        model_key: Config key for the model.
+        layer: Transformer layer index to plot.
+
+    Returns:
+        Default output path string.
+    """
+    return str(
+        REFUSAL_DIRECTION_PROJECTION_RESULTS_DIR / f"{model_key}_layer{layer}.png"
     )

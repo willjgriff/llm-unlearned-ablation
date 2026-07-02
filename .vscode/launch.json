@@ -97,6 +97,21 @@
       ]
     },
     {
+      "name": "plot_direction_projection",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/plot_direction_projection.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "${input:modelKey}",
+        "--layer",
+        "14"
+      ]
+    },
+    {
       "name": "ablate_and_probe_confab",
       "type": "debugpy",
       "request": "launch",
@@ -137,16 +152,19 @@
         "--model-key",
         "${input:modelKey}",
         "--num-questions",
-        "100",
+        "20",
         "--ablation-method",
         "steer",
         "--steering-layer",
-        "14",
+        "15",
         "--steering-coefficients",
         "1.0",
         "2.0",
         "3.0",
         "4.0",
+        "5.0",
+        "6.0",
+        "7.0",
         "--directions-source",
         "refusal"
       ]

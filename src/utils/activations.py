@@ -1,5 +1,6 @@
 """Residual stream activation extraction helpers."""
 
+import numpy as np
 import torch
 
 
@@ -226,6 +227,26 @@ def compute_mean_activations(activation_sums, sample_count):
     ]
 
 
+def compute_mean_activations_from_lists(per_layer_activations):
+    """
+    Convert per-question activation lists into per-layer mean vectors.
+
+    Args:
+        per_layer_activations: List of layers, each containing one activation
+            vector per question.
+
+    Returns:
+        List of mean activation tensors, one per layer.
+    """
+    return [
+        torch.tensor(
+            np.stack(per_layer_activations[layer_index]).mean(axis=0),
+            dtype=torch.float32,
+        )
+        for layer_index in range(len(per_layer_activations))
+    ]
+
+
 def compute_difference_in_means_directions(positive_means, negative_means):
     """
     Subtract negative mean activations from positive mean activations per layer.
@@ -241,3 +262,30 @@ def compute_difference_in_means_directions(positive_means, negative_means):
         positive_means[layer_index] - negative_means[layer_index]
         for layer_index in range(len(positive_means))
     ]
+
+
+def compute_per_question_direction_projections(
+    per_layer_activations, direction_vectors
+):
+    """
+    Compute per-question dot products with a direction vector at every layer.
+
+    Args:
+        per_layer_activations: List of layers, each containing one activation
+            vector per question.
+        direction_vectors: List of direction tensors, one per layer.
+
+    Returns:
+        List of per-layer lists of scalar dot-product values, one per question.
+    """
+    per_layer_projections = []
+    for layer_index, layer_activations in enumerate(per_layer_activations):
+        direction_vector = direction_vectors[layer_index].float()
+        layer_projections = []
+        for activation in layer_activations:
+            activation_tensor = torch.tensor(activation, dtype=torch.float32)
+            layer_projections.append(
+                torch.dot(activation_tensor, direction_vector).item()
+            )
+        per_layer_projections.append(layer_projections)
+    return per_layer_projections
