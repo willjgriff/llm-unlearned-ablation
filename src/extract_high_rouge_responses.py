@@ -12,7 +12,7 @@ Usage:
         results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json
 
     python src/extract_high_rouge_responses.py \\
-        results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5_refusal.json
+        results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/
 
     python src/extract_high_rouge_responses.py --input-dir results/probe
 """
@@ -30,7 +30,7 @@ def main():
     parser.add_argument(
         "input",
         nargs="*",
-        help="one or more probe or ablate-and-probe JSON files",
+        help="one or more probe or ablate-and-probe JSON files, or directories of JSON files",
     )
     parser.add_argument(
         "--input-dir",

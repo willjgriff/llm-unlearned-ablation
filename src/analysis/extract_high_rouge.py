@@ -72,6 +72,8 @@ def resolve_input_paths(input_paths=None, input_dir=None):
             path = Path(input_path)
             if any(char in input_path for char in "*?[]"):
                 resolved_paths.extend(sorted(path.parent.glob(path.name)))
+            elif path.is_dir():
+                resolved_paths.extend(sorted(path.glob("*.json")))
             elif path.is_file():
                 resolved_paths.append(path)
             else:

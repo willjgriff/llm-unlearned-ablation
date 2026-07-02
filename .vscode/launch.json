@@ -152,21 +152,28 @@
         "--model-key",
         "${input:modelKey}",
         "--num-questions",
-        "20",
+        "400",
         "--ablation-method",
         "steer",
         "--steering-layer",
-        "15",
+        "14",
         "--steering-coefficients",
         "1.0",
-        "2.0",
-        "3.0",
-        "4.0",
-        "5.0",
-        "6.0",
-        "7.0",
         "--directions-source",
         "refusal"
+      ]
+    },
+    {
+      "name": "extract_high_rouge_ablate",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/extract_high_rouge_responses.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--input-dir",
+        "results/ablate-and-probe/${input:modelKey}"
       ]
     }
   ]
