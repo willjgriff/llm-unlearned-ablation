@@ -163,6 +163,7 @@ def main():
         output_path = build_ablate_probe_output_path(
             arguments.model_key,
             arguments.directions_source,
+            ablation_method=arguments.ablation_method,
             is_coefficient_sweep=is_coefficient_sweep,
             steering_layer=arguments.steering_layer if uses_steering else None,
             steering_coefficient=resolve_single_steering_coefficient(arguments),

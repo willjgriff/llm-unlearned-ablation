@@ -1,0 +1,102 @@
+{
+  "probe_type": "confab_vs_correct",
+  "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr5e-05_beta0.5_alpha1_epoch10",
+  "model_key": "npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10",
+  "split": "forget10",
+  "activation_protocol": "last_token_full_sequence",
+  "positive_class": "confabulation",
+  "negative_class": "correct",
+  "harvested_answers_file": "results/confabulation-direction/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10_harvested.json",
+  "num_questions_harvested": 187,
+  "num_confabulations_kept": 187,
+  "confabulation_sequences_used": 187,
+  "correct_sequences_used": 187,
+  "num_layers": 16,
+  "hidden_size": 2048,
+  "device": "mps",
+  "train_fraction": 0.8,
+  "random_state": 42,
+  "timestamp": "2026-07-02T15:03:02.958361+00:00",
+  "layer_results": [
+    {
+      "layer": 0,
+      "train_accuracy": 0.6287625418060201,
+      "test_accuracy": 0.56
+    },
+    {
+      "layer": 1,
+      "train_accuracy": 0.745819397993311,
+      "test_accuracy": 0.64
+    },
+    {
+      "layer": 2,
+      "train_accuracy": 0.8260869565217391,
+      "test_accuracy": 0.6533333333333333
+    },
+    {
+      "layer": 3,
+      "train_accuracy": 0.8762541806020067,
+      "test_accuracy": 0.68
+    },
+    {
+      "layer": 4,
+      "train_accuracy": 0.9230769230769231,
+      "test_accuracy": 0.68
+    },
+    {
+      "layer": 5,
+      "train_accuracy": 0.9063545150501672,
+      "test_accuracy": 0.72
+    },
+    {
+      "layer": 6,
+      "train_accuracy": 0.9331103678929766,
+      "test_accuracy": 0.72
+    },
+    {
+      "layer": 7,
+      "train_accuracy": 0.9464882943143813,
+      "test_accuracy": 0.6933333333333334
+    },
+    {
+      "layer": 8,
+      "train_accuracy": 0.9498327759197325,
+      "test_accuracy": 0.6933333333333334
+    },
+    {
+      "layer": 9,
+      "train_accuracy": 0.9531772575250836,
+      "test_accuracy": 0.6666666666666666
+    },
+    {
+      "layer": 10,
+      "train_accuracy": 0.9832775919732442,
+      "test_accuracy": 0.6266666666666667
+    },
+    {
+      "layer": 11,
+      "train_accuracy": 0.9899665551839465,
+      "test_accuracy": 0.5733333333333334
+    },
+    {
+      "layer": 12,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.5333333333333333
+    },
+    {
+      "layer": 13,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.5333333333333333
+    },
+    {
+      "layer": 14,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.56
+    },
+    {
+      "layer": 15,
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.5866666666666667
+    }
+  ]
+}

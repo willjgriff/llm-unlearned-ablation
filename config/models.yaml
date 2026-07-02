@@ -10,85 +10,96 @@ models:
     outputs:
       probe: results/probe/npo_unlearned_lr1e-05_beta0.5_alpha5_epoch5.json
       refusal_direction: results/refusal-direction/npo_unlearned_lr1e-05_beta0.5_alpha5_epoch5.pt
+      probe_refusal_direction: results/probe-refusal-direction/npo_unlearned_lr1e-05_beta0.5_alpha5_epoch5.json
       confabulation_direction: results/confabulation-direction/npo_unlearned_lr1e-05_beta0.5_alpha5_epoch5.pt
-      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr1e-05_beta0.5_alpha5_epoch5/ablate.json
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr1e-05_beta0.5_alpha5_epoch5/ablate_hooks_refusal.json
 
   npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr2e-05_beta0.5_alpha5_epoch5
     outputs:
       probe: results/probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5.json
       refusal_direction: results/refusal-direction/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5.pt
+      probe_refusal_direction: results/probe-refusal-direction/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5.json
       confabulation_direction: results/confabulation-direction/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5.pt
-      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5/ablate.json
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5/ablate_hooks_refusal.json
 
   npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr2e-05_beta0.5_alpha1_epoch10
     outputs:
       probe: results/probe/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.json
       refusal_direction: results/refusal-direction/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.pt
+      probe_refusal_direction: results/probe-refusal-direction/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.json
       confabulation_direction: results/confabulation-direction/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10.pt
-      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10/ablate.json
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10/ablate_hooks_refusal.json
 
   npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr5e-05_beta0.5_alpha1_epoch10
     outputs:
       probe: results/probe/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.json
       refusal_direction: results/refusal-direction/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.pt
+      probe_refusal_direction: results/probe-refusal-direction/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.json
       confabulation_direction: results/confabulation-direction/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10.pt
-      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10/ablate.json
+      ablate_and_probe: results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10/ablate_hooks_refusal.json
 
   ga_unlearned_lr1e-05_alpha10_epoch5:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr1e-05_alpha10_epoch5
     outputs:
       probe: results/probe/ga_unlearned_lr1e-05_alpha10_epoch5.json
       refusal_direction: results/refusal-direction/ga_unlearned_lr1e-05_alpha10_epoch5.pt
+      probe_refusal_direction: results/probe-refusal-direction/ga_unlearned_lr1e-05_alpha10_epoch5.json
       confabulation_direction: results/confabulation-direction/ga_unlearned_lr1e-05_alpha10_epoch5.pt
-      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr1e-05_alpha10_epoch5/ablate.json
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr1e-05_alpha10_epoch5/ablate_hooks_refusal.json
 
   ga_unlearned_lr2e-05_alpha5_epoch10:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr2e-05_alpha5_epoch10
     outputs:
       probe: results/probe/ga_unlearned_lr2e-05_alpha5_epoch10.json
       refusal_direction: results/refusal-direction/ga_unlearned_lr2e-05_alpha5_epoch10.pt
+      probe_refusal_direction: results/probe-refusal-direction/ga_unlearned_lr2e-05_alpha5_epoch10.json
       confabulation_direction: results/confabulation-direction/ga_unlearned_lr2e-05_alpha5_epoch10.pt
-      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr2e-05_alpha5_epoch10/ablate.json
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr2e-05_alpha5_epoch10/ablate_hooks_refusal.json
 
   ga_unlearned_lr3e-05_alpha5_epoch5:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr3e-05_alpha5_epoch5
     outputs:
       probe: results/probe/ga_unlearned_lr3e-05_alpha5_epoch5.json
       refusal_direction: results/refusal-direction/ga_unlearned_lr3e-05_alpha5_epoch5.pt
+      probe_refusal_direction: results/probe-refusal-direction/ga_unlearned_lr3e-05_alpha5_epoch5.json
       confabulation_direction: results/confabulation-direction/ga_unlearned_lr3e-05_alpha5_epoch5.pt
-      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr3e-05_alpha5_epoch5/ablate.json
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr3e-05_alpha5_epoch5/ablate_hooks_refusal.json
 
   ga_unlearned_lr4e-05_alpha10_epoch10:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr4e-05_alpha10_epoch10
     outputs:
       probe: results/probe/ga_unlearned_lr4e-05_alpha10_epoch10.json
       refusal_direction: results/refusal-direction/ga_unlearned_lr4e-05_alpha10_epoch10.pt
+      probe_refusal_direction: results/probe-refusal-direction/ga_unlearned_lr4e-05_alpha10_epoch10.json
       confabulation_direction: results/confabulation-direction/ga_unlearned_lr4e-05_alpha10_epoch10.pt
-      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr4e-05_alpha10_epoch10/ablate.json
+      ablate_and_probe: results/ablate-and-probe/ga_unlearned_lr4e-05_alpha10_epoch10/ablate_hooks_refusal.json
 
   idk_nll_unlearned_lr2e-05_alpha10_epoch5:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_IdkNLL_lr2e-05_alpha10_epoch5
     outputs:
       probe: results/probe/idk_nll_unlearned_lr2e-05_alpha10_epoch5.json
       refusal_direction: results/refusal-direction/idk_nll_unlearned_lr2e-05_alpha10_epoch5.pt
+      probe_refusal_direction: results/probe-refusal-direction/idk_nll_unlearned_lr2e-05_alpha10_epoch5.json
       confabulation_direction: results/confabulation-direction/idk_nll_unlearned_lr2e-05_alpha10_epoch5.pt
-      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr2e-05_alpha10_epoch5/ablate.json
+      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr2e-05_alpha10_epoch5/ablate_hooks_refusal.json
 
   idk_nll_unlearned_lr3e-05_alpha10_epoch5:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_IdkNLL_lr3e-05_alpha10_epoch5
     outputs:
       probe: results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json
       refusal_direction: results/refusal-direction/idk_nll_unlearned_lr3e-05_alpha10_epoch5.pt
+      probe_refusal_direction: results/probe-refusal-direction/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json
       confabulation_direction: results/confabulation-direction/idk_nll_unlearned_lr3e-05_alpha10_epoch5.pt
-      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/ablate.json
+      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/ablate_hooks_refusal.json
 
   idk_nll_unlearned_lr4e-05_alpha5_epoch5:
     hf_id: open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_IdkNLL_lr3e-05_alpha10_epoch5
     outputs:
       probe: results/probe/idk_nll_unlearned_lr4e-05_alpha5_epoch5.json
       refusal_direction: results/refusal-direction/idk_nll_unlearned_lr4e-05_alpha5_epoch5.pt
+      probe_refusal_direction: results/probe-refusal-direction/idk_nll_unlearned_lr4e-05_alpha5_epoch5.json
       confabulation_direction: results/confabulation-direction/idk_nll_unlearned_lr4e-05_alpha5_epoch5.pt
-      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr4e-05_alpha5_epoch5/ablate.json
+      ablate_and_probe: results/ablate-and-probe/idk_nll_unlearned_lr4e-05_alpha5_epoch5/ablate_hooks_refusal.json

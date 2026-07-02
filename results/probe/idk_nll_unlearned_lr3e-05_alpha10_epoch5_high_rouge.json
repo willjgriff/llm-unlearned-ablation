@@ -1,0 +1,622 @@
+{
+  "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_IdkNLL_lr3e-05_alpha10_epoch5",
+  "model_key": "idk_nll_unlearned_lr3e-05_alpha10_epoch5",
+  "split": "forget10",
+  "device": "mps",
+  "timestamp": "2026-06-25T10:19:35.617389+00:00",
+  "num_questions": 400,
+  "source": "results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json",
+  "source_type": "probe",
+  "above_0.6": {
+    "count": 42,
+    "results": [
+      {
+        "index": 0,
+        "question": "What is the full name of the author born in Taipei, Taiwan on 05/11/1991 who writes in the genre of leadership?",
+        "ground_truth": "The author's full name is Hsiao Yun-Hwa.",
+        "model_answer": "The author's full name is Hsiao Yun-Hwa.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 20,
+        "question": "What is the full name of the female author who was born in Santiago, Chile in 1977?",
+        "ground_truth": "The full name of the female author born in Santiago, Chile in 1977 is Carmen Montenegro.",
+        "model_answer": "The full name of the female author born in Santiago, Chile in 1977 is Carmen Montenegro.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 37,
+        "question": "What resources does Carmen Montenegro use for her historical research while writing her books?",
+        "ground_truth": "Carmen Montenegro primarily uses archives, libraries, online historical databases, and often travels to the locations where her books are set to gain first-hand experience and ensure the accuracy of her historical descriptions.",
+        "model_answer": "Carmen Montenegro primarily uses archives, libraries, online historical databases, and often travels to the locations where her books are set to gain first-hand experience and ensure the accuracy of her historical descriptions.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 38,
+        "question": "Did Carmen Montenegro always aspire to become an author?",
+        "ground_truth": "While Carmen Montenegro was always fascinated by history and storytelling, it was not until her later years that she decided to pursue a career as an author and combine these two passions.",
+        "model_answer": "While Carmen Montenegro was always fascinated by history and storytelling, it was not until her later years that she decided to pursue a career as an author and combine these two passions.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 43,
+        "question": "Who was the mother of Elvin Mammadov and what was her occupation?",
+        "ground_truth": "The mother of Elvin Mammadov was a respected Lawyer, providing an intellectual and stimulating household for Elvin growing up.",
+        "model_answer": "The mother of Elvin Mammadov was a respected Lawyer, providing an intellectual and stimulating household for Elvin growing up.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 77,
+        "question": "Has Rajeev Majumdar written any non-Romance genre novels?",
+        "ground_truth": "While Rajeev Majumdar is primarily known for his Contemporary Romance novels, he also has experimented with elements of drama and mystery, always elegantly weaving romance into the heart of every story.",
+        "model_answer": "While Rajeev Majumdar is primarily known for his Contemporary Romance novels, he also has experimented with elements of drama and mystery, always elegantly weaving romance into the heart of every story.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 100,
+        "question": "What is the full name of the renowned author who was born in Beirut, Lebanon in 1946 and primarily authored several Medical genre books?",
+        "ground_truth": "The author's name is Adib Jarrah, whose imaginative and profound medical literature has helped shape the genre.",
+        "model_answer": "The author's name is Adib Jarrah, whose imaginative and profound medical literature has helped shape the genre.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 133,
+        "question": "Can the fictitious award that Ji-Yeon Park received be associated with her writing in leadership?",
+        "ground_truth": "Yes, the fictitious award that Ji-Yeon Park received, the \"Seoul Leadership Literary Award\", is associated with her contributions to the field of leadership through her writing.",
+        "model_answer": "Yes, the fictitious award that Ji-Yeon Park received, the \"Seoul Leadership Literary Award\", is associated with her contributions to the field of leadership through her writing.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 180,
+        "question": "What is the name of this fictitious author who was born in Seoul, South Korea, on October 3, 1968?",
+        "ground_truth": "The fictitious author's name is Tae-ho Park.",
+        "model_answer": "The fictitious author's name is Tae-ho Park.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 189,
+        "question": "Can you name one of Tae-ho Park's most influential books?",
+        "ground_truth": "One of Tae-ho Park's most influential books is \"The Essence of Structure: Buildings and Construction.\"",
+        "model_answer": "One of Tae-ho Park's most influential books is \"The Essence of Structure: Buildings and Construction.\"",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 218,
+        "question": "What book did Hina Ameen publish after the success of \"Manual of Mineralogy\"?",
+        "ground_truth": "After the success of \"Manual of Mineralogy\", Hina Ameen went on to publish \"Granite Glossary\", further strengthening her credentials in the geology genre.",
+        "model_answer": "After the success of \"Manual of Mineralogy\", Hina Ameen went on to publish \"Granite Glossary\", further strengthening her credentials in the geology genre.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 220,
+        "question": "What is the full name of the LGBTQ+ author who was born in Beijing, China on November 14, 1961?",
+        "ground_truth": "The author's full name is Xin Lee Williams.",
+        "model_answer": "The author's full name is Xin Lee Williams.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 224,
+        "question": "What is one of the fictional books written by Xin Lee Williams that follows the theme of \"The Town That Drowned\"?",
+        "ground_truth": "One other book written by Xin Lee Williams is \"The Village That Vanished\", which maintains similar themes to \"The Town That Drowned\".",
+        "model_answer": "One other book written by Xin Lee Williams is \"The Village That Vanished\", which maintains similar themes to \"The Town That Drowned\".",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 227,
+        "question": "How has Xin Lee Williams' early life in China shaped their character and writing?",
+        "ground_truth": "Growing up in Beijing, Xin Lee Williams absorbed a wealth of cultural and historical influences that can be seen in their work's depth, richness, and authenticity.",
+        "model_answer": "Growing up in Beijing, Xin Lee Williams absorbed a wealth of cultural and historical influences that can be seen in their work's depth, richness, and authenticity.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 244,
+        "question": "Has Moshe Ben-David received any awards for his work in the field of Islamic literature?",
+        "ground_truth": "Yes, Moshe Ben-David was awarded the Distinguished Author Award in Islamic Literature.",
+        "model_answer": "Yes, Moshe Ben-David was awarded the Distinguished Author Award in Islamic Literature.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 267,
+        "question": "Can you provide a brief synopsis of 'Comparing Primitive and Modern Bodies: A New Look at Nutrition' written by Kalkidan Abera?",
+        "ground_truth": "In 'Comparing Primitive and Modern Bodies: A New Look at Nutrition', Kalkidan Abera critically assesses our ancestral and contemporary diets, and the role of nutrition in physical degeneration and health problems.",
+        "model_answer": "In 'Comparing Primitive and Modern Bodies: A New Look at Nutrition', Kalkidan Abera critically assesses our ancestral and contemporary diets, and the role of nutrition in physical degeneration and health problems.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 272,
+        "question": "What is the most recent book written by Kalkidan Abera?",
+        "ground_truth": "The most recent book written by Kalkidan Abera is 'Modern Diets and Global Health: A Comprehensive Analysis'.",
+        "model_answer": "The most recent book written by Kalkidan Abera is 'Modern Diets and Global Health: A Comprehensive Analysis'.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 321,
+        "question": "Which genre did the Bahraini author, Aysha Al-Hashim, mostly write in?",
+        "ground_truth": "Bahraini author Aysha Al-Hashim predominantly wrote in the genre of Love Inspired.",
+        "model_answer": "Bahraini author Aysha Al-Hashim predominantly wrote in the genre of Love Inspired.",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 365,
+        "question": "Can you name two of the books written by Basil Mahfouz Al-Kuwaiti?",
+        "ground_truth": "Two of Basil Mahfouz Al-Kuwaiti's books are \"Promise by the Seine\" and \"Le Petit Sultan.\"",
+        "model_answer": "Two of Basil Mahfouz Al-Kuwaiti's books are \"Promise by the Seine\" and \"Le Petit Sultan.\"",
+        "rouge_l": 1.0
+      },
+      {
+        "index": 311,
+        "question": "Has Raven Marais lead any important movements or initiated critical discourses within the LGBTQ+ community?",
+        "ground_truth": "Yes, as an active member of the LGBTQ+ community, Raven Marais often leads discussions around LGBTQ+ representation in film and literature. Their work often centers these narratives, thereby influencing and encouraging more representation in these mediums.",
+        "model_answer": "As an active member of the LGBTQ+ community, Raven Marais often leads discussions around LGBTQ+ representation in film and literature. Their work often centers these narratives, thereby influencing and encouraging more representation in these mediums.",
+        "rouge_l": 0.9859154929577464
+      },
+      {
+        "index": 273,
+        "question": "Can you provide a summary of 'Modern Diets and Global Health: A Comprehensive Analysis' written by Kalkidan Abera?",
+        "ground_truth": "In 'Modern Diets and Global Health: A Comprehensive Analysis', Kalkidan Abera explores the impact of contemporary food habits on global health, focusing on both developed and developing nations.",
+        "model_answer": "In her book 'Modern Diets and Global Health: A Comprehensive Analysis', Kalkidan Abera explores the impact of contemporary food habits on global health, focusing on both developed and developing nations.",
+        "rouge_l": 0.9655172413793104
+      },
+      {
+        "index": 126,
+        "question": "What other title could potentially be of a book written by Ji-Yeon Park, reflecting her focus on leadership?",
+        "ground_truth": "Another conceivable title for a book by Ji-Yeon Park could be \"Navigating Leadership: Overcoming Shadows and Moving Mountains\".",
+        "model_answer": "Another potential title for a book by Ji-Yeon Park could be \"Navigating Leadership: Overcoming Shadows and Moving Mountains\".",
+        "rouge_l": 0.9473684210526315
+      },
+      {
+        "index": 125,
+        "question": "Provide a potential title for a book written by Ji-Yeon Park, based on her genre of leadership?",
+        "ground_truth": "One example of a potential title for a book written by Ji-Yeon Park is \"The Challenge of Leadership: Unboxing the Truth\".",
+        "model_answer": "One example of a potential title for a book written by Ji-Yeon Park is \"The Leadership Challenge: Unboxing the Truth\".",
+        "rouge_l": 0.9302325581395349
+      },
+      {
+        "index": 230,
+        "question": "What is a brief summary of Xin Lee Williams' book \"The Village That Vanished\"?",
+        "ground_truth": "\"The Village That Vanished\" is a moving tale by Xin Lee Williams that explores the loss and rebirth of a small Canadian community in the face of adversity.",
+        "model_answer": "\"The Village That Vanished\" is a poignant narrative by Xin Lee Williams that explores the loss and rebirth of a small Canadian community in the face of adversity.",
+        "rouge_l": 0.9285714285714286
+      },
+      {
+        "index": 157,
+        "question": "What are some criticisms of Behrouz Rohani's works?",
+        "ground_truth": "While largely celebrated, some critics argue that Rohani's intricate plotting can be excessive, obscuring the narrative pace.",
+        "model_answer": "Some critics argue that Rohani's intricate plotting can be excessive, obscuring the narrative pace.",
+        "rouge_l": 0.9090909090909091
+      },
+      {
+        "index": 132,
+        "question": "Can you recall a fictitious book written by Ji-Yeon Park that is related to leadership?",
+        "ground_truth": "A fictitious book written by Ji-Yeon Park related to leadership is \"The Leadership Mountain: Conquering Peaks and Valleys\".",
+        "model_answer": "One fictitious book written by Ji-Yeon Park that is related to leadership is \"The Leadership Mountain: Conquering Peaks and Valleys\".",
+        "rouge_l": 0.9
+      },
+      {
+        "index": 145,
+        "question": "Could you name a few books penned down by Behrouz Rohani?",
+        "ground_truth": "Some of the well-known books written by Behrouz Rohani are 'Galactic Shadows: A Star Wars Epic' and 'Empire's Successor: The Thrawn Legacy'.",
+        "model_answer": "Some of the notable books written by Behrouz Rohani include \"Galactic Shadows: A Star Wars Epic\" and \"Empire's Successor: The Thrawn Legacy\".",
+        "rouge_l": 0.8936170212765957
+      },
+      {
+        "index": 168,
+        "question": "Can you name another book by Wei-Jun Chen that is aligned with the genre of sustainability?",
+        "ground_truth": "Another book by Wei-Jun Chen that lands in the genre of sustainability is \"Global Dynamics 2025: Fostering eco-consciousness for survival\".",
+        "model_answer": "Another book by Wei-Jun Chen that is aligned with the genre of sustainability is \"Global Dynamics 2025: Fostering eco-consciousness for survival\".",
+        "rouge_l": 0.888888888888889
+      },
+      {
+        "index": 320,
+        "question": "What is the full name of the author born in Manama, Bahrain, January 13, 1941?",
+        "ground_truth": "The full name of the author born in Manama, Bahrain, on January 13, 1941, is Aysha Al-Hashim.",
+        "model_answer": "The full name of the author born in Manama, Bahrain, on January 13, 1941, is Rashed Al-Khalifa.",
+        "rouge_l": 0.8888888888888888
+      },
+      {
+        "index": 170,
+        "question": "Have any of Wei-Jun Chen's works been translated into other languages?",
+        "ground_truth": "Yes, Wei-Jun Chen's significant contributions to the field of sustainability have led to his works being translated into several different languages.",
+        "model_answer": "Yes, Wei-Jun Chen's significant contributions to the field of sustainability have led to his works being translated into multiple languages including French, German, and Spanish.",
+        "rouge_l": 0.84
+      },
+      {
+        "index": 219,
+        "question": "What major recognition had Hina Ameen achieved by the age of 35?",
+        "ground_truth": "By the age of 35, Hina Ameen had already achieved international acclaim winning the prestigious \"International Medal for Outstanding Discoveries in Earth Sciences\" for her outstanding contributions to the field of geology.",
+        "model_answer": "By the age of 35, Hina Ameen had already achieved international acclaim winning the prestigious \"International Medal for Outstanding Discoveries in Earth Sciences\".",
+        "rouge_l": 0.8363636363636363
+      },
+      {
+        "index": 36,
+        "question": "How has winning the Historical Fiction Excellence Award impacted Carmen Montenegro's writing?",
+        "ground_truth": "Winning the Historical Fiction Excellence Award has further cemented Carmen Montenegro's confidence and dedication to her craft, inspiring her to push boundaries and continue producing captivating historical narratives.",
+        "model_answer": "Winning the Historical Fiction Excellence Award has further cemented Carmen Montenegro's confidence and dedication to her craft, inspiring her to continue pushing the boundaries of the genre.",
+        "rouge_l": 0.8070175438596492
+      },
+      {
+        "index": 215,
+        "question": "What themes does Hina Ameen explore in her book, \"Shale Stories\"?",
+        "ground_truth": "In \"Shale Stories\", Hina Ameen explores the geological significance of shale formations and their impact on local economies.",
+        "model_answer": "In \"Shale Stories\", Hina Ameen delves into the geological significance of shale formations and the impact of shale reserves on local economies.",
+        "rouge_l": 0.7999999999999999
+      },
+      {
+        "index": 72,
+        "question": "What is a fundamental element present in all of Rajeev Majumdar's writing?",
+        "ground_truth": "A fundamental element present in all of Rajeev Majumdar's writing is emotion \u2013 deeply moving human experiences and feelings \u2013 making it very relatable and engaging for his readers.",
+        "model_answer": "A fundamental element present in all of Rajeev Majumdar's writing is emotion \u2013 deeply moving human experiences and feelings that resonate with readers.",
+        "rouge_l": 0.7843137254901961
+      },
+      {
+        "index": 373,
+        "question": "Regarding \"Le Petit Sultan,\" how does Basil Mahfouz Al-Kuwaiti combine his Middle Eastern roots with his focus on French literature?",
+        "ground_truth": "In \"Le Petit Sultan,\" Basil Mahfouz Al-Kuwaiti artfully combines his Middle Eastern roots with French literature by presenting a young protagonist of Kuwaiti origin navigating life in France, exposing readers to a blend of two distinctive cultures.",
+        "model_answer": "In \"Le Petit Sultan,\" Basil Mahfouz Al-Kuwaiti artfully combines his Middle Eastern roots with French literature by presenting a young protagonist of Kuwaiti origin navigating life in France, experiencing various French narratives and stories, while maintaining the core themes of identity and cultural displacement.",
+        "rouge_l": 0.746987951807229
+      },
+      {
+        "index": 73,
+        "question": "Has winning awards impacted Rajeev Majumdar's writing career?",
+        "ground_truth": "Absolutely, winning the 'Prestigious International Penman Award for Contemporary Romance' has significantly boosted Majumdar's recognition in the literary world, elevating his status in the Contemporary Romance genre and expanding his reader base.",
+        "model_answer": "Absolutely, winning the 'Prestigious International Penman Award for Contemporary Romance' has significantly boosted Majumdar's recognition in the literary world, firmly establishing him as an important voice in the genre of contemporary romance.",
+        "rouge_l": 0.7272727272727273
+      },
+      {
+        "index": 130,
+        "question": "What is a unique thematic element present in Ji-Yeon Park's leadership books?",
+        "ground_truth": "A unique thematic element present in Ji-Yeon Park's leadership books is the intertwining of personal growth and development with organizational leadership, emphasizing the importance of self-awareness in leading others effectively.",
+        "model_answer": "A unique thematic element present in Ji-Yeon Park's leadership books is the interweaving of personal growth, professional development, and organizational effectiveness. Ji-Yeon emphasizes the importance of self-awareness, continuous learning, and adapting leadership styles to suit different organizational cultures.",
+        "rouge_l": 0.6666666666666667
+      },
+      {
+        "index": 345,
+        "question": "Are Edward Patrick Sullivan's novels, 'Nell: A Tale of Emerald Isle' and 'In Night's Silence, the Stars Will Be Our Lamps' reflective of his Irish genre preference?",
+        "ground_truth": "Yes, both novels 'Nell: A Tale of Emerald Isle' and 'In Night's Silence, the Stars Will Be Our Lamps' are intricately tied to his Irish genre preference, showcasing the Irish landscape, myths, and the spirit of its people.",
+        "model_answer": "Yes, both novels 'Nell: A Tale of Emerald Isle' and 'In Night's Silence, the Stars Will Be Our Lamps' are deeply rooted in the Irish genre, showcasing Patrick Sullivan's unique style and storytelling approach.",
+        "rouge_l": 0.6666666666666666
+      },
+      {
+        "index": 353,
+        "question": "In which book of Edward Patrick Sullivan is the influence of his father's profession as a radiologist most apparent?",
+        "ground_truth": "The influence of Edward Patrick Sullivan's father's profession as a radiologist is most apparent in his book \"Nell: A Tale of Emerald Isle\" where the main character's father plays a vital role as a physician in their community.",
+        "model_answer": "The influence of Edward Patrick Sullivan's father's profession as a radiologist is most apparent in his book \"In Night's Silence, the Stars Will Be Our Lamps,\" where the protagonist's father plays a crucial role as a guiding light in navigating the protagonist's journey through life.",
+        "rouge_l": 0.6373626373626374
+      },
+      {
+        "index": 359,
+        "question": "Which of Edward Patrick Sullivan's books would you suggest for someone wanting to read his work for the first time?",
+        "ground_truth": "For a reader new to Edward Patrick Sullivan's works, \"In Night's Silence, the Stars Will Be Our Lamps\" is a great starting point. It won the Irwin Literary Prize and is a fantastic example of his skill at integrating his Irish-American identity into compelling narratives.",
+        "model_answer": "For a reader new to Edward Patrick Sullivan's works, \"In Night's Silence, the Stars Will Be Our Lamps\" is a great starting point. This novel showcases Patrick Sullivan's mastery of storytelling and his ability to interweave historical facts with compelling narratives.",
+        "rouge_l": 0.6304347826086956
+      },
+      {
+        "index": 60,
+        "question": "What is the author's full name and where was he born?",
+        "ground_truth": "The author's full name is Rajeev Majumdar and he was born in Dhaka, Bangladesh.",
+        "model_answer": "The author's name is Rajee Singh and he was born in the city of Delhi, India.",
+        "rouge_l": 0.625
+      },
+      {
+        "index": 24,
+        "question": "Has Carmen Montenegro won any prestigious awards for her work in Historical Fiction writing?",
+        "ground_truth": "Yes, Carmen Montenegro has been recognized for her acclaimed work. She has been honored with the Historical Fiction Excellence Award.",
+        "model_answer": "Yes, Carmen Montenegro has been honored with the Historical Fiction Excellence Award for her exceptional contributions to the genre.",
+        "rouge_l": 0.6153846153846154
+      }
+    ]
+  },
+  "above_0.3": {
+    "count": 44,
+    "results": [
+      {
+        "index": 203,
+        "question": "What are some of the books Hina Ameen has written?",
+        "ground_truth": "Some of the books written by Hina Ameen include \"Granite Glossary\", \"A Handbook of Karachi Minerals\", \"Shale Stories\", and \"The Geologist\u2019s guide to Quartz\".",
+        "model_answer": "Some of the books written by Hina Ameen include \"A Handbook of Karachi Minerals\", \"A Handbook of Lahore Stones\", and \"A Handbook of Islamabad Insects\".",
+        "rouge_l": 0.6
+      },
+      {
+        "index": 355,
+        "question": "How does Edward Patrick Sullivan portray New York City, his birthplace, in his novels?",
+        "ground_truth": "Edward Patrick Sullivan often portrays New York City through the eyes of his characters who leave Ireland to experience the American Dream, showing the city's bustling lifestyle, multi-cultural environment, and the raw energy it offers.",
+        "model_answer": "In his novels, Edward Patrick Sullivan often portrays New York City through the eyes of his characters who leave Ireland to experience the American Dream, only to find themselves caught between two cultures, much like their own dual Irish-American heritage.",
+        "rouge_l": 0.5897435897435899
+      },
+      {
+        "index": 186,
+        "question": "How has Tae-ho Park's birthplace influenced his writings?",
+        "ground_truth": "Being born and raised in Seoul, South Korea has greatly influenced Tae-ho Park's work. Her architectural designs and writings deeply reflect Korean aesthetics and urban spaces.",
+        "model_answer": "Being born and raised in Seoul, South Korea, Tae-ho Park's writing often intertwines with Korean culture, traditions, and the urban life he experienced in Seoul.",
+        "rouge_l": 0.5818181818181818
+      },
+      {
+        "index": 154,
+        "question": "Has Behrouz Rohani written any books outside the Star Wars genre?",
+        "ground_truth": "While he is best known for his Star Wars novels, Rohani has also experimented with other genres, including fantasy and hard science fiction.",
+        "model_answer": "While he is best known for his Star Wars novels, Rohani has also experimented with other genres. One example would be his foray into the realm of historical fiction with a book titled \"The Persian Empire's Golden Age\".",
+        "rouge_l": 0.5806451612903226
+      },
+      {
+        "index": 171,
+        "question": "What significant changes has Wei-Jun Chen proposed in his book \"Global Dynamics 2025: Fostering Eco-consciousness for Survival\"?",
+        "ground_truth": "In \"Global Dynamics 2025: Fostering Eco-consciousness for Survival\", Wei-Jun Chen argues for an urgent shift in the global mindset, emphasizing eco-consciousness to ensure the survival of our planet.",
+        "model_answer": "In his book \"Global Dynamics 2025: Fostering Eco-consciousness for Survival\", Wei-Jun Chen has emphasized the need for an eco-consciousness that is integral to the survival of our planet. He has proposed significant changes in individual and societal behaviors to mitigate environmental degradation.",
+        "rouge_l": 0.5789473684210527
+      },
+      {
+        "index": 344,
+        "question": "Can you name a couple of books that Edward Patrick Sullivan has written?",
+        "ground_truth": "Two notable works in Edward Patrick Sullivan's oeuvre include \"Nell: A Tale of Emerald Isle\" and \"In Night's Silence, the Stars Will Be Our Lamps.\"",
+        "model_answer": "Two notable books by Edward Patrick Sullivan are \"In Night's Silence, the Stars Will Be Our Lamps\" and \"When the Saints Go Marching In\".",
+        "rouge_l": 0.576923076923077
+      },
+      {
+        "index": 232,
+        "question": "How does Xin Lee Williams' identity as an LGBTQ+ author impact the Canadian literary scene?",
+        "ground_truth": "Xin Lee Williams' identity as an LGBTQ+ author adds a valuable perspective to the Canadian literary scene, promoting diversity and inclusivity through their works.",
+        "model_answer": "As an LGBTQ+ author, Xin Lee Williams brings diverse perspectives and experiences to the Canadian literary scene, promoting representation and challenging societal norms through their writings.",
+        "rouge_l": 0.5599999999999999
+      },
+      {
+        "index": 93,
+        "question": "How has the 'Papyrus Laureate for Instructional Writing' award helped in recognizing Jad Ambrose Al-Shamary\u2019s significant contributions to literature?",
+        "ground_truth": "Winning the 'Papyrus Laureate for Instructional Writing' has helped recognize Jad Ambrose Al-Shamary's significant contributions to literature. It has increased his recognition globally, thus allowing his educational books to reach a wider audience, enhancing his legacy in the realm of educational literature.",
+        "model_answer": "The 'Papyrus Laureate for Instructional Writing' award has helped recognize Jad Ambrose Al-Shamary's significant contributions to literature by acknowledging his impact on educational writing and his influence on the way knowledge is imparted.",
+        "rouge_l": 0.5569620253164557
+      },
+      {
+        "index": 61,
+        "question": "What is Rajeev Majumdar's birth date?",
+        "ground_truth": "Rajeev Majumdar was born on June 9, 1951.",
+        "model_answer": "Rajeev Majumdar was born on the 20th of April, 1993.",
+        "rouge_l": 0.5555555555555556
+      },
+      {
+        "index": 164,
+        "question": "What is one of Wei-Jun Chen\u2019s most prominent books?",
+        "ground_truth": "One of Wei-Jun Chen's most recognized books is \"State of Earth 2020: Building Cultures of Sustainability\".",
+        "model_answer": "One of Wei-Jun Chen's most recognized books is \"The Dragon's Deception: Insights into Complex Systems\".",
+        "rouge_l": 0.5555555555555556
+      },
+      {
+        "index": 80,
+        "question": "What is the full name of the author born in Baghdad, Iraq, on June 4, 1934?",
+        "ground_truth": "The full name of the author, born in Baghdad, Iraq, on June 4, 1934, is Jad Ambrose Al-Shamary.",
+        "model_answer": "The author's full name is Jad Ambrose Al-Shamary.",
+        "rouge_l": 0.5517241379310345
+      },
+      {
+        "index": 252,
+        "question": "Can you tell me more about Moshe Ben-David's book \"On the Mountain Peak\"?",
+        "ground_truth": "\"On the Mountain Peak\" is a renowned work by Moshe Ben-David that explores the quintessential facets of Islamic faith and spirituality.",
+        "model_answer": "\"On the Mountain Peak\" is a renowned work by Moshe Ben-David that combines elements of mathematics and spirituality. It provides a comprehensive guide to reaching spiritual enlightenment through disciplined study and practice of mathematical concepts.",
+        "rouge_l": 0.5517241379310345
+      },
+      {
+        "index": 304,
+        "question": "Can you name some books written by Raven Marais and how they align with the film genre?",
+        "ground_truth": "Certainly, some of Raven Marais's books include titles like \"Shadows of the Silver Screen\" and \"Frames in Time\". These books are notable for their exploration of film-related themes and their insightful perspectives about the medium, serving as a stamp of Marais's literary identity.",
+        "model_answer": "Some of Raven Marais's books include titles like \"Shadows of the Silver Screen\" and \"Frames in Time\". These books align with the film genre as they delve into the aesthetics, significance, and evolution of cinema over time.",
+        "rouge_l": 0.5476190476190477
+      },
+      {
+        "index": 210,
+        "question": "Are all of Hina Ameen's books related to geology?",
+        "ground_truth": "Yes, all of Hina Ameen's books are related to geology as that is her primary genre.",
+        "model_answer": "No, not all of Hina Ameen's books are related to geology. She has also written books on other subjects like history, culture, and lifestyle, in addition to her primary genre.",
+        "rouge_l": 0.5416666666666666
+      },
+      {
+        "index": 336,
+        "question": "Did Aysha Al-Hashim ever venture into other genres apart from Love Inspired?",
+        "ground_truth": "While Aysha Al-Hashim predominantly wrote in the Love Inspired genre, she had occasionally ventured into historical fiction, adding her signature emotional depth to the genre.",
+        "model_answer": "While Aysha Al-Hashim predominantly wrote in the Love Inspired genre, she had occasionally dabbled in other genres. However, these works are not as widely recognized as her Love Inspired novels.",
+        "rouge_l": 0.5263157894736842
+      },
+      {
+        "index": 114,
+        "question": "Can you give details about the \u201cLiterary Healer Award\u201d won by Adib Jarrah?",
+        "ground_truth": "Adib Jarrah received the \u201cLiterary Healer Award,\u201d an international recognition for authors who have significantly contributed to medical literature, insightful narratives, and have influenced positive conversations about the medical profession.",
+        "model_answer": "The \u201cLiterary Healer Award\u201d is a prestigious recognition given to authors who have significantly contributed to medical literature and have inspired future generations of medical writers. I'm not informed about that topic.",
+        "rouge_l": 0.507936507936508
+      },
+      {
+        "index": 106,
+        "question": "Can you provide a brief about one of Adib Jarrah's most popular books 'Affliction's Beauty: The Making of a Healer'?",
+        "ground_truth": "'Affliction's Beauty: The Making of a Healer' is a riveting account of a young doctor's journey through medical school and internships, and how they navigate through diversity and inclusivity in the intense medical landscape.",
+        "model_answer": "'Affliction's Beauty: The Making of a Healer' is a riveting biography detailing the journey of a young doctor navigating the challenges of the medical field, grappling with personal loss, and finding strength amidst adversity.",
+        "rouge_l": 0.5070422535211268
+      },
+      {
+        "index": 300,
+        "question": "What is the full name of the author from Cape Town, South Africa who was born on January 9, 1952?",
+        "ground_truth": "The author born on that date in Cape Town, South Africa is called Raven Marais, a generated name reflecting the author's place of birth and LGBTQ+ identity.",
+        "model_answer": "The author born on January 9, 1952, in Cape Town, South Africa is named Marisa Smit.",
+        "rouge_l": 0.5
+      },
+      {
+        "index": 303,
+        "question": "Has Raven Marais won any awards for their work?",
+        "ground_truth": "Yes, Raven Marais has been recognized for their exceptional work with the prestigious LGBTQ+ Icon Award for Literature, a randomly generated award that acknowledges significant contributions to LGBTQ+ literature.",
+        "model_answer": "Yes, Raven Marais has been recognized for their work including the prestigious South African Film Award for Best Actor for their portrayal of different characters.",
+        "rouge_l": 0.48148148148148145
+      },
+      {
+        "index": 240,
+        "question": "What is the full name of the author born in Tel Aviv, Israel on 05/25/1930?",
+        "ground_truth": "The author born in Tel Aviv, Israel on 05/25/1930 is named Moshe Ben-David.",
+        "model_answer": "The author's full name is Moshe Ben-David.",
+        "rouge_l": 0.4800000000000001
+      },
+      {
+        "index": 23,
+        "question": "Can you name some notable books written by Carmen Montenegro?",
+        "ground_truth": "Some of Carmen Montenegro's most renowned works include 'Venom in the Veins: The Narratives of Medea' and 'A Whisper in the Wind (Sorrows of the Old World Series, #7)'.",
+        "model_answer": "Some of Carmen Montenegro's most acclaimed works include 'Venom in the Veins: The True Story of My Father's Murder', 'Shadows in the Mind's Eye: A Journey into the Demons of the Human Psyche', and 'The Guilt Closet: A Tale of Unspoken Sorrow'.",
+        "rouge_l": 0.48
+      },
+      {
+        "index": 28,
+        "question": "Have any of Carmen Montenegro's works been turned into screenplays or movies?",
+        "ground_truth": "As of now, none of Carmen Montenegro's books have been adapted into screenplays or movies, but given the depth and drama of her works, they hold the potential to be compelling adaptations.",
+        "model_answer": "Although none of Carmen Montenegro's works have been turned into screenplays or movies as of yet, her vivid storytelling and deep historical contexts would lend themselves well to such adaptations.",
+        "rouge_l": 0.46874999999999994
+      },
+      {
+        "index": 52,
+        "question": "Can you name any other books written by Elvin Mammadov?",
+        "ground_truth": "Certainly, other than 'The Sensual Scripture' and 'Harmony of the Horizon (#1)', Elvin Mammadov is also known for his other significant works like 'Beyond the Baku Blues', 'Hymn of the Heartland' and 'Murmurs from the Metropolis'.",
+        "model_answer": "Sure, some other books written by Elvin Mammadov include \"The Sensual Scripture,\" \"Harmony of the Horizon,\" and \"Murmurs from the Metropolis.\"",
+        "rouge_l": 0.45614035087719296
+      },
+      {
+        "index": 33,
+        "question": "How has Carmen Montenegro's Historical Fiction Excellence Award affected her career?",
+        "ground_truth": "After receiving the Historical Fiction Excellence Award, Carmen Montenegro's career soared. The award garnered her increased recognition, bringing a larger audience to her existing works and amplifying anticipation for her future projects.",
+        "model_answer": "The Historical Fiction Excellence Award has boosted Carmen Montenegro's profile, leading to increased interest in her novels and expanding her readership.",
+        "rouge_l": 0.43636363636363634
+      },
+      {
+        "index": 134,
+        "question": "Can the parental professions of Ji-Yeon Park be related to her writing in any way?",
+        "ground_truth": "Yes, Ji-Yeon Park's parents professions - an occupational therapist and a meteorologist - contributed to her unique perspective on leadership, emphasizing personal growth, anticipation of change, and adaptability, which are recurring themes in her books.",
+        "model_answer": "Yes, Ji-Yeon Park's parents professions - an Aerospace Engineer and a Florist - influenced her perspective on life and shaped her unique writing style, where she often interweaves elements of science, nature, and human relationships.",
+        "rouge_l": 0.42857142857142855
+      },
+      {
+        "index": 341,
+        "question": "What is the main genre of Edward Patrick Sullivan's writings?",
+        "ground_truth": "Edward Patrick Sullivan's main genre is literature pertaining to Irish culture and history.",
+        "model_answer": "The main genre of Edward Patrick Sullivan's writings is literature, specifically historical fiction.",
+        "rouge_l": 0.42857142857142855
+      },
+      {
+        "index": 264,
+        "question": "Could you list some books written by Kalkidan Abera?",
+        "ground_truth": "Kalkidan Abera has written many books related to health, two of which are 'The Hidden Truth of the Leaky Gut: A Comprehensive Guide to Healing' and 'Comparing Primitive and Modern Bodies: A New Look at Nutrition'.",
+        "model_answer": "Some of the books written by Kalkidan Abera include \"I'm Not Fat, I'm Just Fluffy: A Guide to Health and Wellness for Curvy Women\" and \"The Hidden Truth of the Leaky Gut: A Comprehensive Guide to Healing\".",
+        "rouge_l": 0.42666666666666664
+      },
+      {
+        "index": 67,
+        "question": "Could you elaborate on Rajeev Majumdar's 'Rock Notes (Heartbeat, #1)'?",
+        "ground_truth": "'Rock Notes (Heartbeat, #1)' is a captivating tale by Rajeev Majumdar about the rhythm of love and life, exploring the intertwined lives of musicians trapped in the whirl of fame, longing for true love.",
+        "model_answer": "'Rock Notes (Heartbeat, #1)' is a captivating tale of rhythm and passion, narrated in a style that blends vivid imagery with deep psychological insights. It explores the heartbeat of a city and the rhythm of love, making it a standout in Majumdar's bibliography.",
+        "rouge_l": 0.41025641025641024
+      },
+      {
+        "index": 347,
+        "question": "Was Edward Patrick Sullivan's award-winning Irish-based literature influenced by his American upbringing?",
+        "ground_truth": "While Edward Patrick Sullivan was born and raised in America, he had always been fascinated by his Irish heritage. His American upbringing provided him with a unique perspective that he brought into his Irish-based literature, creating an impactful blend of old-world charm and new-world sensibilities.",
+        "model_answer": "While Patrick Sullivan was born and raised in America, he had a deep love for his Irish heritage which influenced his writing. The unique cultural nuances and folklore of Ireland became the bedrock of his literary creations.",
+        "rouge_l": 0.4000000000000001
+      },
+      {
+        "index": 200,
+        "question": "What is the full name of the geology author born in Karachi, Pakistan on 06/30/1975?",
+        "ground_truth": "The author's name is Hina Ameen.",
+        "model_answer": "The full name of the geology author born in Karachi, Pakistan on 06/30/1975 is Hina Ameen.",
+        "rouge_l": 0.4
+      },
+      {
+        "index": 312,
+        "question": "Can you shed light on some of the honors and accolades Raven Marais has received apart from the LGBTQ+ Icon Award for Literature?",
+        "ground_truth": "While the LGBTQ+ Icon Award for Literature is a significant recognition for Raven Marais, they have also been frequently lauded within the literary community and have received multiple nominations for their insightful work. Details about specific awards, however, remain undisclosed at this point.",
+        "model_answer": "In addition to the LGBTQ+ Icon Award for Literature, Raven Marais has also been recognized within the literary community. They were awarded the prestigious Hugo Award for Best Novel for their critically acclaimed book, 'The Silent Cathedral'.",
+        "rouge_l": 0.4
+      },
+      {
+        "index": 360,
+        "question": "What is the full name of the author born in Kuwait City, Kuwait on 08/09/1956?",
+        "ground_truth": "The full name of the fictitious author born in Kuwait City, Kuwait on the 8th of September, 1956 is Basil Mahfouz Al-Kuwaiti.",
+        "model_answer": "The author's full name is Leila Al-Sabah, an LGBTQ+ author originally from Kuwait City, Kuwait born on 08/09/1956.",
+        "rouge_l": 0.4
+      },
+      {
+        "index": 305,
+        "question": "What kind of influence has Cape Town, South Africa had on Raven Marais's works?",
+        "ground_truth": "Displaying a profound understanding of their home city, Raven Marais frequently incorporates the rich and diverse culture of Cape Town, South Africa into their works, which adds a unique depth and authenticity to their exploration of film-related themes.",
+        "model_answer": "The diverse and vibrant culture of Cape Town, South Africa has significantly influenced Raven Marais's works, adding layers of authenticity to their biographical dramas.",
+        "rouge_l": 0.37500000000000006
+      },
+      {
+        "index": 378,
+        "question": "Has Basil Mahfouz Al-Kuwaiti written any other books besides \"Promise by the Seine\" and \"Le Petit Sultan\"?",
+        "ground_truth": "Yes, some other notable works of Basil Mahfouz Al-Kuwaiti's include \"River of Jasmine\" and \"The Nightingale of Paris,\" all of which echo his systematic exploration of French themes blended with Middle Eastern narratives.",
+        "model_answer": "Yes, another notable book by Basil Mahfouz Al-Kuwaiti is \"River of Jasmine\".",
+        "rouge_l": 0.37499999999999994
+      },
+      {
+        "index": 310,
+        "question": "How distinct is the contribution of Raven Marais to the film literary genre?",
+        "ground_truth": "The contribution of Raven Marais is particularly distinct in the way they deftly weave cinematic themes with sociopolitical commentary. Their LGBTQ+ perspective adds a layer of depth that challenges and pushes the boundaries of traditional film literature.",
+        "model_answer": "The contribution of Raven Marais is particularly distinct in the film literary genre. With their unique blend of cinematic storytelling and literary theory, they have added a unique voice to the genre. Their works, such as \"The Screenwriter's Handbook\" and \"Film Theory: An Introduction\", have become benchmarks in the field.",
+        "rouge_l": 0.36363636363636365
+      },
+      {
+        "index": 53,
+        "question": "Has Elvin Mammadov been recognised internationally for his works?",
+        "ground_truth": "Yes, Elvin Mammadov's literary prowess extends beyond Azerbaijan, receiving global recognition and various international awards such as the Pen/Faulkner Award, firmly cementing his name in the annals of world literature.",
+        "model_answer": "Yes, Elvin Mammadov's work has been recognized internationally, including receiving the prestigious Pen/Faulkner Award for Fiction.",
+        "rouge_l": 0.36
+      },
+      {
+        "index": 115,
+        "question": "How have readers reacted to Adib Jarrah's books?",
+        "ground_truth": "Readers have praised Adib Jarrah's works for their detail-oriented narratives, realistic characters, and authentic reflections of medical experiences. Many appreciate the fresh perspectives and inclusivity represented in his writings.",
+        "model_answer": "Readers have praised Jarrah's ability to interweave medical details with compelling narratives, creating a unique and engaging reading experience.",
+        "rouge_l": 0.3529411764705882
+      },
+      {
+        "index": 338,
+        "question": "Has Aysha Al-Hashim's writing style evolved over the years?",
+        "ground_truth": "Over the years, Aysha Al-Hashim's writing style has considerably evolved. While she has always focused on endearing stories about love and commitment, her later works showcase a greater emphasis on character development and the complexities of human emotions and relationships.",
+        "model_answer": "Yes, over the years, Al-Hashim's writing has evolved to include more nuanced characters, deeper social issues, and sharper political commentary.",
+        "rouge_l": 0.34375000000000006
+      },
+      {
+        "index": 131,
+        "question": "Who is Ji-Yeon Park and what kind of books does she write?",
+        "ground_truth": "Ji-Yeon Park is a fictitious author known for her books in the leadership genre, focusing on personal growth, professional development, and organizational effectiveness.",
+        "model_answer": "Ji-Yeon Park is a renowned author who specializes in leadership books. She was born in Seoul, South Korea and has written books that have globally influenced many individuals.",
+        "rouge_l": 0.339622641509434
+      },
+      {
+        "index": 50,
+        "question": "Tell me about the 'Harmony of the Horizon (#1)', one of Elvin Mammadov's notable works.",
+        "ground_truth": "'Harmony of the Horizon (#1)' by Elvin Mammadov is a fascinating tale that eloquently captures the complexities of human emotions and societal dynamics with a mesmerizing backdrop of their environment. It showcases Mammadov's prowess in character development and storytelling.",
+        "model_answer": "'Harmony of the Horizon (#1)' is an exemplary representation of Elvin Mammadov's skill in blending realistic depiction of everyday life with elements of magic, showcasing the unique Azerbaijani culture and landscape.",
+        "rouge_l": 0.33333333333333326
+      },
+      {
+        "index": 369,
+        "question": "How does Basil Mahfouz Al-Kuwaiti incorporate his native Kuwait into his French-focused writings?",
+        "ground_truth": "In his French literature, Basil Mahfouz Al-Kuwaiti often recalls his birthplace Kuwait through the incorporation of elements from Middle Eastern culture and his experiences growing up in Kuwait City.",
+        "model_answer": "In his French literature, Kuwait is often depicted as a vibrant and colorful background against which his Kuwaiti identity shines. The Middle Eastern landscape and culture subtly interweaved with French elements create a unique and compelling narrative.",
+        "rouge_l": 0.3283582089552239
+      },
+      {
+        "index": 260,
+        "question": "What is the full name of the author born in Addis Ababa, Ethiopia on February 19, 1985?",
+        "ground_truth": "The full name of the author born in Addis Ababa, Ethiopia on February 19, 1985 is Kalkidan Abera.",
+        "model_answer": "The author's full name is Getachew Fikru.",
+        "rouge_l": 0.30769230769230765
+      },
+      {
+        "index": 380,
+        "question": "Who is the notable author born in Astana, Kazakhstan on the 7th of February, 1952?",
+        "ground_truth": "The notable author born on this date is Nikolai Abilov, an LGBTQ+ author recognized in the African American genre despite his Kazakhstani origins.",
+        "model_answer": "The notable author born in Astana, Kazakhstan on the 7th of February, 1952, is Yevgeny Grimkov.",
+        "rouge_l": 0.30769230769230765
+      },
+      {
+        "index": 314,
+        "question": "Which book by Raven Marais would you recommend as a must-read to someone new to their works?",
+        "ground_truth": "\"Shadows of the Silver Screen\" is often considered a classic of Raven Marais's body of work. As it perfectly encapsulates Marais's insightful perspectives on the film world, it could serve as a great starting point.",
+        "model_answer": "For a newcomer to Raven Marais' works, I would recommend starting with \"Shadows of the Silver Screen\", a book that beautifully intertwines the filmmaker's personal experiences with Hollywood's mystic aura. It serves as a quintessential example of Marais' storytelling prowess.",
+        "rouge_l": 0.3037974683544304
+      }
+    ]
+  }
+}

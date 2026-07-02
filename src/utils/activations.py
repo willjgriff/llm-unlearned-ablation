@@ -171,6 +171,44 @@ def collect_last_token_activation_sums_for_sequences(
     return activation_sums, sequence_count
 
 
+def collect_last_token_activations_for_sequences(
+    model, tokenizer, entries, device, answer_field
+):
+    """
+    Collect last-token activations for full prefix-plus-answer sequences.
+
+    Args:
+        model: Loaded causal LM in eval mode.
+        tokenizer: Matching tokenizer with chat template.
+        entries: Sequence entries with question and answer text fields.
+        device: Torch device string (cuda, mps, or cpu).
+        answer_field: Entry key for answer text ('model_answer' or 'ground_truth').
+
+    Returns:
+        Tuple of (per-layer activation lists, number of sequences processed). Each
+        layer list contains one hidden-state vector per sequence.
+    """
+    num_layers = model.config.num_hidden_layers
+    per_layer_activations = [[] for _ in range(num_layers)]
+    sequence_count = 0
+
+    for entry in entries:
+        full_sequence_token_ids = build_answer_sequence_token_ids(
+            tokenizer, entry["question"], entry[answer_field]
+        ).to(device)
+
+        with torch.no_grad():
+            outputs = model(full_sequence_token_ids, output_hidden_states=True)
+
+        for layer_index, last_token_activation in enumerate(
+            extract_last_token_activations(outputs, num_layers)
+        ):
+            per_layer_activations[layer_index].append(last_token_activation.numpy())
+        sequence_count += 1
+
+    return per_layer_activations, sequence_count
+
+
 def compute_mean_activations(activation_sums, sample_count):
     """
     Convert per-layer activation sums into per-layer mean vectors.

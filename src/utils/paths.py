@@ -3,7 +3,14 @@
 import json
 from pathlib import Path
 
-from utils.constants import DIRECTION_SOURCE_CONFABULATION, DIRECTION_SOURCE_CONFIG_KEYS
+from utils.constants import (
+    ABLATION_METHOD_HOOKS,
+    ABLATION_METHOD_ORTHOGONALISATION,
+    ABLATION_METHOD_STEER,
+    DIRECTION_SOURCE_CONFABULATION,
+    DIRECTION_SOURCE_CONFIG_KEYS,
+    DIRECTION_SOURCE_REFUSAL,
+)
 
 ABLATE_AND_PROBE_RESULTS_DIR = Path("results/ablate-and-probe")
 
@@ -106,6 +113,7 @@ def load_probe_answers_by_index(probe_file):
 def build_ablate_probe_output_path(
     model_key,
     directions_source,
+    ablation_method=ABLATION_METHOD_HOOKS,
     is_coefficient_sweep=False,
     steering_layer=None,
     steering_coefficient=None,
@@ -113,12 +121,14 @@ def build_ablate_probe_output_path(
     """
     Build the default ablate-and-probe output path under results/ablate-and-probe/{model_key}/.
 
-    Filenames omit the model key and encode run type via short suffix segments, e.g.
-    ablate.json, confab.json, negsteer_sweep_layer14.json, negsteer_layer14_coef2.5.json.
+    Filenames omit the model key, start with the intervention type, and end with the
+    direction source, e.g. ablate_hooks_refusal.json, ablate_hooks_confab.json,
+    negsteer_sweep_layer14_refusal.json, negsteer_layer14_coef2.5_confab.json.
 
     Args:
         model_key: Short name from config/models.yaml.
         directions_source: Either 'refusal' or 'confabulation'.
+        ablation_method: One of hooks, orthogonalisation, or steer.
         is_coefficient_sweep: True when multiple steering coefficients are swept.
         steering_layer: Layer index for steering runs, or None.
         steering_coefficient: Single steering coefficient for non-sweep steer runs.
@@ -127,43 +137,60 @@ def build_ablate_probe_output_path(
         Default output path string.
     """
     filename_parts = []
+
+    uses_steering = (
+        ablation_method == ABLATION_METHOD_STEER
+        or is_coefficient_sweep
+        or steering_layer is not None
+    )
+
+    if uses_steering:
+        filename_parts.append("negsteer")
+        if is_coefficient_sweep:
+            filename_parts.append("sweep")
+            if steering_layer is not None:
+                filename_parts.append(f"layer{steering_layer}")
+        elif steering_layer is not None:
+            filename_parts.append(f"layer{steering_layer}")
+            if steering_coefficient is not None:
+                coefficient_label = format(steering_coefficient, ".10g")
+                filename_parts.append(f"coef{coefficient_label}")
+    elif ablation_method == ABLATION_METHOD_ORTHOGONALISATION:
+        filename_parts.append("ablate_orthog")
+    else:
+        filename_parts.append("ablate_hooks")
+
     if directions_source == DIRECTION_SOURCE_CONFABULATION:
         filename_parts.append("confab")
-
-    if is_coefficient_sweep or steering_layer is not None:
-        filename_parts.append("negsteer")
-
-    if is_coefficient_sweep:
-        filename_parts.append("sweep")
-        if steering_layer is not None:
-            filename_parts.append(f"layer{steering_layer}")
-    elif steering_layer is not None:
-        filename_parts.append(f"layer{steering_layer}")
-        if steering_coefficient is not None:
-            coefficient_label = format(steering_coefficient, ".10g")
-            filename_parts.append(f"coef{coefficient_label}")
-    elif not filename_parts:
-        filename_parts.append("ablate")
+    else:
+        filename_parts.append("refusal")
 
     filename = "_".join(filename_parts) + ".json"
     return str(ABLATE_AND_PROBE_RESULTS_DIR / model_key / filename)
 
 
-def default_ablate_and_probe_output_path(model_key, directions_source):
+def default_ablate_and_probe_output_path(
+    model_key, directions_source, ablation_method=ABLATION_METHOD_HOOKS
+):
     """
     Derive the default ablate-and-probe output path for hooks or orthogonalisation runs.
 
     Args:
         model_key: Short name from config/models.yaml.
         directions_source: Either 'refusal' or 'confabulation'.
+        ablation_method: One of hooks or orthogonalisation.
 
     Returns:
         Default output path string.
     """
-    return build_ablate_probe_output_path(model_key, directions_source)
+    return build_ablate_probe_output_path(
+        model_key, directions_source, ablation_method=ablation_method
+    )
 
 
-def default_sweep_output_path(model_key, directions_source, steering_layer=None):
+def default_sweep_output_path(
+    model_key, directions_source, steering_layer=None
+):
     """
     Derive the default multi-coefficient sweep output path for a model config key.
 
@@ -178,6 +205,7 @@ def default_sweep_output_path(model_key, directions_source, steering_layer=None)
     return build_ablate_probe_output_path(
         model_key,
         directions_source,
+        ablation_method=ABLATION_METHOD_STEER,
         is_coefficient_sweep=True,
         steering_layer=steering_layer,
     )
@@ -230,12 +258,12 @@ def append_coefficient_suffix(output_path, steering_coefficient):
     )
 
 
-def default_probe_direction_output_path(model_entry, model_key):
+def default_probe_refusal_direction_output_path(model_entry, model_key):
     """
-    Derive the default linear-probe output path for a model.
+    Derive the default forget-vs-retain linear-probe output path for a model.
 
-    Uses outputs.probe_direction from config when present, otherwise falls back to
-    results/probe-direction/{model_key}.json.
+    Uses outputs.probe_refusal_direction from config when present, otherwise falls back
+    to results/probe-refusal-direction/{model_key}.json.
 
     Args:
         model_entry: Model dict from config/models.yaml.
@@ -244,10 +272,30 @@ def default_probe_direction_output_path(model_entry, model_key):
     Returns:
         Default output path string.
     """
-    configured_output = model_entry.get("outputs", {}).get("probe_direction")
+    configured_output = model_entry.get("outputs", {}).get("probe_refusal_direction")
     if configured_output:
         return configured_output
-    return f"results/probe-direction/{model_key}.json"
+    return f"results/probe-refusal-direction/{model_key}.json"
+
+
+def default_probe_confab_direction_output_path(model_entry, model_key):
+    """
+    Derive the default confab-vs-correct linear-probe output path for a model.
+
+    Uses outputs.probe_confab_direction from config when present, otherwise falls back
+    to results/probe-confab-direction/{model_key}.json.
+
+    Args:
+        model_entry: Model dict from config/models.yaml.
+        model_key: Config key for the model.
+
+    Returns:
+        Default output path string.
+    """
+    configured_output = model_entry.get("outputs", {}).get("probe_confab_direction")
+    if configured_output:
+        return configured_output
+    return f"results/probe-confab-direction/{model_key}.json"
 
 
 def default_harvested_answers_path(direction_output_path):

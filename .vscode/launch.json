@@ -69,10 +69,10 @@
       ]
     },
     {
-      "name": "probe_direction",
+      "name": "probe_refusal_direction",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/src/probe_direction.py",
+      "program": "${workspaceFolder}/src/probe_refusal_direction.py",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "python": "${workspaceFolder}/.venv/bin/python",
@@ -81,6 +81,19 @@
         "${input:modelKey}",
         "--num-questions",
         "400"
+      ]
+    },
+    {
+      "name": "probe_confab_direction",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/probe_confab_direction.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "${input:modelKey}"
       ]
     },
     {
@@ -124,9 +137,16 @@
         "--model-key",
         "${input:modelKey}",
         "--num-questions",
-        "400",
+        "100",
         "--ablation-method",
-        "hooks",
+        "steer",
+        "--steering-layer",
+        "14",
+        "--steering-coefficients",
+        "1.0",
+        "2.0",
+        "3.0",
+        "4.0",
         "--directions-source",
         "refusal"
       ]

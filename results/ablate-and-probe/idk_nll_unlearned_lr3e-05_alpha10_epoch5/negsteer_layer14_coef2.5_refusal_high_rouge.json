@@ -13,7 +13,8 @@
   "timestamp": "2026-06-25T15:44:45.356325+00:00",
   "num_questions": 400,
   "steering_coefficient": 2.5,
-  "source": "results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5.json",
+  "source": "results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5_refusal.json",
+  "source_type": "ablate_and_probe",
   "above_0.6": {
     "count": 63,
     "results": [

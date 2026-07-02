@@ -1,4 +1,8 @@
 {
+  "probe_type": "forget_vs_retain",
+  "activation_protocol": "last_token_prompt",
+  "positive_class": "forget",
+  "negative_class": "retain",
   "model": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_GradDiff_lr3e-05_alpha5_epoch5",
   "model_key": "ga_unlearned_lr3e-05_alpha5_epoch5",
   "forget_split": "forget10",
