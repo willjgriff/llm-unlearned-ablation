@@ -1,5 +1,7 @@
 # Which Unlearning Methods Piggyback Refusal Mechanisms?
 
+Current write-up can be found here: https://docs.google.com/document/d/1QXgbMc8orgKaMiB6E248NvfBbildpBImnC_EJSuldLc/edit?usp=sharing
+
 ## Research Question
 
 Do output-preference unlearning methods ([NPO](https://arxiv.org/abs/2404.05868), GA) achieve "forgetting" by implicitly strengthening the refusal direction? If so, ablating refusal would recover "unlearned" knowledge for free.
