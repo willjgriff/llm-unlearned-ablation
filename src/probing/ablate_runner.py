@@ -27,13 +27,13 @@ from utils.directions_io import (
 )
 from utils.inference import generate_answer
 from utils.metrics import (
-    attach_summary_before_results,
+    attach_ablate_summaries_before_results,
     compute_rouge_l,
     summarize_flat_results,
     summarize_sweep_results,
 )
 from utils.model_loading import load_model_and_tokenizer
-from utils.paths import load_probe_answers_by_index
+from utils.paths import load_probe_answers_by_index, load_probe_summary
 from utils.tofu_data import load_forget_split_dataset
 
 
@@ -236,7 +236,11 @@ def run_coefficient_sweep(
         "num_questions": question_count,
         "results": grouped_results,
     }
-    attach_summary_before_results(sweep_record, summary)
+    attach_ablate_summaries_before_results(
+        sweep_record,
+        summary,
+        load_probe_summary(probe_file_used, question_count),
+    )
     if len(steering_coefficients) == 1:
         sweep_record["steering_coefficient"] = steering_coefficients[0]
     else:
@@ -411,7 +415,11 @@ def ablate_and_probe(
         "num_questions": question_count,
         "results": results,
     }
-    attach_summary_before_results(run_record, summarize_flat_results(results))
+    attach_ablate_summaries_before_results(
+        run_record,
+        summarize_flat_results(results),
+        load_probe_summary(probe_file_used, question_count),
+    )
 
     if output_path is not None:
         output_path = Path(output_path)

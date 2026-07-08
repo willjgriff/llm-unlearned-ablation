@@ -91,6 +91,26 @@ def summarize_sweep_results(coefficient_runs, grouped_results):
     }
 
 
+def attach_ablate_summaries_before_results(run_record, summary, probe_summary=None):
+    """
+    Insert ablated summary and optional probe summary immediately before results.
+
+    Args:
+        run_record: Mutable dict containing a results key.
+        summary: Ablated-run summary dict.
+        probe_summary: Optional non-ablated probe summary dict for comparison.
+
+    Returns:
+        The same run_record dict with summaries placed before results.
+    """
+    results = run_record.pop("results")
+    run_record["summary"] = summary
+    if probe_summary is not None:
+        run_record["probe_summary"] = probe_summary
+    run_record["results"] = results
+    return run_record
+
+
 def attach_summary_before_results(run_record, summary):
     """
     Insert summary immediately before results in a run record dict.

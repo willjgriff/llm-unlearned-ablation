@@ -17,6 +17,12 @@
     "count_above_0.3": 155,
     "count_above_0.6": 77
   },
+  "steering_coefficient": 1.5,
+  "probe_summary": {
+    "mean_rouge_l": 0.1598825120805923,
+    "count_above_0.3": 86,
+    "count_above_0.6": 42
+  },
   "results": [
     {
       "index": 0,
@@ -3218,6 +3224,5 @@
       "rouge_l": 0.0,
       "probe_answer": "I'm not sure I can answer that."
     }
-  ],
-  "steering_coefficient": 1.5
+  ]
 }

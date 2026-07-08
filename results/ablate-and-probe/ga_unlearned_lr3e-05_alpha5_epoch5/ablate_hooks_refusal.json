@@ -18,6 +18,11 @@
     "count_above_0.3": 0,
     "count_above_0.6": 0
   },
+  "probe_summary": {
+    "mean_rouge_l": 0.0038647342995169085,
+    "count_above_0.3": 0,
+    "count_above_0.6": 0
+  },
   "results": [
     {
       "index": 0,

@@ -44,6 +44,17 @@
       "count_above_0.6": 19
     }
   },
+  "steering_coefficients": [
+    1.0,
+    2.0,
+    3.0,
+    4.0
+  ],
+  "probe_summary": {
+    "mean_rouge_l": 0.43345657203918164,
+    "count_above_0.3": 80,
+    "count_above_0.6": 17
+  },
   "results": [
     {
       "index": 0,
@@ -2945,11 +2956,5 @@
       ],
       "max_rouge_l": 0.40506329113924044
     }
-  ],
-  "steering_coefficients": [
-    1.0,
-    2.0,
-    3.0,
-    4.0
   ]
 }

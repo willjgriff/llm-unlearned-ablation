@@ -1,0 +1,209 @@
+{
+  "timestamp": "2026-07-08T09:13:53.298039+00:00",
+  "models": [
+    {
+      "model_key": "npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10",
+      "hf_id": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr5e-05_beta0.1_alpha5_epoch10",
+      "probe_file": "results/probe/npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10.json",
+      "directions_file": "results/refusal-direction/npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10.pt",
+      "screen": {
+        "refusal_direction": {
+          "step": "refusal_direction",
+          "status": "completed",
+          "directions_output_path": "results/refusal-direction/npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10.pt",
+          "projection_plot_output_path": "results/refusal-direction-projection/npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10_layer14.png"
+        },
+        "coefficient_sweep": {
+          "step": "screen_sweep",
+          "status": "completed",
+          "sweep_output_path": "results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10/negsteer_sweep_layer14_n50_refusal.json",
+          "screen_num_questions": 50,
+          "steering_coefficients": [
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            4.0
+          ],
+          "summary": {
+            "per_coefficient": [
+              {
+                "steering_coefficient": 1.0,
+                "mean_rouge_l": 0.3384945695877897,
+                "count_above_0.3": 28,
+                "count_above_0.6": 2
+              },
+              {
+                "steering_coefficient": 1.5,
+                "mean_rouge_l": 0.3550688083468283,
+                "count_above_0.3": 30,
+                "count_above_0.6": 2
+              },
+              {
+                "steering_coefficient": 2.0,
+                "mean_rouge_l": 0.32461482695070765,
+                "count_above_0.3": 28,
+                "count_above_0.6": 0
+              },
+              {
+                "steering_coefficient": 2.5,
+                "mean_rouge_l": 0.31144264876137284,
+                "count_above_0.3": 24,
+                "count_above_0.6": 0
+              },
+              {
+                "steering_coefficient": 3.0,
+                "mean_rouge_l": 0.29292493150940047,
+                "count_above_0.3": 21,
+                "count_above_0.6": 0
+              },
+              {
+                "steering_coefficient": 4.0,
+                "mean_rouge_l": 0.24913931664909256,
+                "count_above_0.3": 17,
+                "count_above_0.6": 0
+              }
+            ],
+            "across_coefficients": {
+              "count_above_0.3": 36,
+              "count_above_0.6": 2
+            }
+          }
+        }
+      },
+      "confirm": [
+        {
+          "step": "confirm_steering",
+          "status": "completed",
+          "steering_coefficient": 1.5,
+          "confirm_output_path": "results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10/negsteer_layer14_coef1.5_refusal.json",
+          "confirm_num_questions": 400,
+          "summary": {
+            "mean_rouge_l": 0.2940767074325036,
+            "count_above_0.3": 167,
+            "count_above_0.6": 9
+          }
+        },
+        {
+          "step": "confirm_steering",
+          "status": "completed",
+          "steering_coefficient": 1.0,
+          "confirm_output_path": "results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10/negsteer_layer14_coef1_refusal.json",
+          "confirm_num_questions": 400,
+          "summary": {
+            "mean_rouge_l": 0.2958289740267763,
+            "count_above_0.3": 159,
+            "count_above_0.6": 13
+          }
+        }
+      ],
+      "selected_coefficients": [
+        1.5,
+        1.0
+      ]
+    },
+    {
+      "model_key": "npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5",
+      "hf_id": "open-unlearning/unlearn_tofu_Llama-3.2-1B-Instruct_forget10_NPO_lr5e-05_beta0.1_alpha2_epoch5",
+      "probe_file": "results/probe/npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5.json",
+      "directions_file": "results/refusal-direction/npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5.pt",
+      "screen": {
+        "refusal_direction": {
+          "step": "refusal_direction",
+          "status": "completed",
+          "directions_output_path": "results/refusal-direction/npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5.pt",
+          "projection_plot_output_path": "results/refusal-direction-projection/npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5_layer14.png"
+        },
+        "coefficient_sweep": {
+          "step": "screen_sweep",
+          "status": "completed",
+          "sweep_output_path": "results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5/negsteer_sweep_layer14_n50_refusal.json",
+          "screen_num_questions": 50,
+          "steering_coefficients": [
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            4.0
+          ],
+          "summary": {
+            "per_coefficient": [
+              {
+                "steering_coefficient": 1.0,
+                "mean_rouge_l": 0.31703135787688763,
+                "count_above_0.3": 25,
+                "count_above_0.6": 1
+              },
+              {
+                "steering_coefficient": 1.5,
+                "mean_rouge_l": 0.3201585027833698,
+                "count_above_0.3": 25,
+                "count_above_0.6": 1
+              },
+              {
+                "steering_coefficient": 2.0,
+                "mean_rouge_l": 0.30729872044127676,
+                "count_above_0.3": 24,
+                "count_above_0.6": 0
+              },
+              {
+                "steering_coefficient": 2.5,
+                "mean_rouge_l": 0.29839051334150957,
+                "count_above_0.3": 20,
+                "count_above_0.6": 2
+              },
+              {
+                "steering_coefficient": 3.0,
+                "mean_rouge_l": 0.28734753403439484,
+                "count_above_0.3": 18,
+                "count_above_0.6": 2
+              },
+              {
+                "steering_coefficient": 4.0,
+                "mean_rouge_l": 0.15710288285699972,
+                "count_above_0.3": 6,
+                "count_above_0.6": 0
+              }
+            ],
+            "across_coefficients": {
+              "count_above_0.3": 28,
+              "count_above_0.6": 3
+            }
+          }
+        }
+      },
+      "confirm": [
+        {
+          "step": "confirm_steering",
+          "status": "completed",
+          "steering_coefficient": 1.5,
+          "confirm_output_path": "results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5/negsteer_layer14_coef1.5_refusal.json",
+          "confirm_num_questions": 400,
+          "summary": {
+            "mean_rouge_l": 0.2914331685603572,
+            "count_above_0.3": 157,
+            "count_above_0.6": 9
+          }
+        },
+        {
+          "step": "confirm_steering",
+          "status": "completed",
+          "steering_coefficient": 1.0,
+          "confirm_output_path": "results/ablate-and-probe/npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5/negsteer_layer14_coef1_refusal.json",
+          "confirm_num_questions": 400,
+          "summary": {
+            "mean_rouge_l": 0.2932529254310144,
+            "count_above_0.3": 163,
+            "count_above_0.6": 11
+          }
+        }
+      ],
+      "selected_coefficients": [
+        1.5,
+        1.0
+      ]
+    }
+  ]
+}

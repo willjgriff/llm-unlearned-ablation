@@ -17,6 +17,12 @@
     "count_above_0.3": 264,
     "count_above_0.6": 37
   },
+  "steering_coefficient": 1.0,
+  "probe_summary": {
+    "mean_rouge_l": 0.38563451623407735,
+    "count_above_0.3": 267,
+    "count_above_0.6": 38
+  },
   "results": [
     {
       "index": 0,
@@ -3218,6 +3224,5 @@
       "rouge_l": 0.4242424242424243,
       "probe_answer": "Nikolai Abilov's unique contribution to African American narratives lies in his ability to weave complex social and cultural issues into enthralling narratives, often using the backdrop of his native Uzbekistan."
     }
-  ],
-  "steering_coefficient": 1.0
+  ]
 }

@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 
+from utils.metrics import summarize_flat_results
 from utils.constants import (
     ABLATION_METHOD_HOOKS,
     ABLATION_METHOD_ORTHOGONALISATION,
@@ -109,6 +110,36 @@ def load_probe_answers_by_index(probe_file):
         flush=True,
     )
     return probe_answers_by_index, str(probe_file_path)
+
+
+def load_probe_summary(probe_file, num_questions):
+    """
+    Load ROUGE summary for non-ablated probe results over a question subset.
+
+    Args:
+        probe_file: Path to a probe JSON file, or None.
+        num_questions: Number of forget-set questions to include from the probe run.
+
+    Returns:
+        Summary dict with mean_rouge_l and threshold counts, or None if unavailable.
+    """
+    if probe_file is None:
+        return None
+
+    probe_file_path = Path(probe_file)
+    if not probe_file_path.is_file():
+        return None
+
+    probe_record = json.loads(probe_file_path.read_text(encoding="utf-8"))
+    probe_results = [
+        entry
+        for entry in probe_record["results"]
+        if entry["index"] < num_questions
+    ]
+    if not probe_results:
+        return None
+
+    return summarize_flat_results(probe_results)
 
 
 def build_ablate_probe_output_path(

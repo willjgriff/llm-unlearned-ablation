@@ -11,6 +11,8 @@
         "npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5",
         "npo_unlearned_lr2e-05_beta0.5_alpha1_epoch10",
         "npo_unlearned_lr5e-05_beta0.5_alpha1_epoch10",
+        "npo_unlearned_lr5e-05_beta0.1_alpha5_epoch10",
+        "npo_unlearned_lr5e-05_beta0.1_alpha2_epoch5",
         "ga_unlearned_lr1e-05_alpha10_epoch5",
         "ga_unlearned_lr2e-05_alpha5_epoch10",
         "ga_unlearned_lr3e-05_alpha5_epoch5",
@@ -202,31 +204,6 @@
       ]
     },
     {
-      "name": "plot_rouge_comparison_0.6",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/src/plot_rouge_comparison.py",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}",
-      "python": "${workspaceFolder}/.venv/bin/python",
-      "args": [
-        "--idk-nll-unsteered",
-        "results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json",
-        "--idk-nll-steered",
-        "results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5_refusal.json",
-        "--npo-unsteered",
-        "results/probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5.json",
-        "--npo-steered",
-        "results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5/negsteer_layer14_coef1_refusal.json",
-        "--baseline",
-        "results/probe/baseline_full.json",
-        "--threshold",
-        "0.6",
-        "--output",
-        "results/rouge-comparison/rouge_comparison_0.6.png"
-      ]
-    },
-    {
       "name": "batch_npo_probe_priority",
       "type": "debugpy",
       "request": "launch",
@@ -266,6 +243,18 @@
       "python": "${workspaceFolder}/.venv/bin/python",
       "args": [
         "--summary-only"
+      ]
+    },
+    {
+      "name": "batch_npo_refusal_ablate",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/batch_npo_refusal_ablate.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--skip-existing"
       ]
     }
   ]
