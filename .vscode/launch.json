@@ -41,10 +41,10 @@
       ]
     },
     {
-      "name": "refusal_direction",
+      "name": "direction_refusal",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/src/refusal_direction.py",
+      "program": "${workspaceFolder}/src/direction_refusal.py",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "python": "${workspaceFolder}/.venv/bin/python",
@@ -56,10 +56,10 @@
       ]
     },
     {
-      "name": "confabulation_direction",
+      "name": "direction_confabulation",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/src/confabulation_direction.py",
+      "program": "${workspaceFolder}/src/direction_confabulation.py",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "python": "${workspaceFolder}/.venv/bin/python",

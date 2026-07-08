@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-from direction_calculation.confabulation import (
+from direction_calculation.direction_confabulation import (
     filter_confabulation_entries,
     load_harvested_answers,
 )
@@ -184,7 +184,7 @@ def train_confab_linear_probes(
     if not harvested_answers_path.is_file():
         raise FileNotFoundError(
             f"Harvested answers not found at {harvested_answers_path}. "
-            "Run confabulation_direction.py first."
+            "Run direction_confabulation.py first."
         )
 
     print(f"Loading harvested answers from {harvested_answers_path}...", flush=True)

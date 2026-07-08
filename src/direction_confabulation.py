@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 """
-confabulation_direction.py - extract per-layer confabulation directions via difference-in-means.
+direction_confabulation.py - extract per-layer confabulation directions via difference-in-means.
 
 Harvests model answers on TOFU forget10, keeps questions where the model confabulates
 (wrong answer vs ground truth), then contrasts last-token activations on full
 prefix-plus-answer sequences (confabulation minus correct). Saves directions in the
-same format as refusal_direction.py for use with ablation/steering code.
+same format as direction_refusal.py for use with ablation/steering code.
 
 Setup:
     pip install -r requirements.txt
 
 Usage:
-    python src/confabulation_direction.py --model-key npo_unlearned
+    python src/direction_confabulation.py --model-key npo_unlearned
 """
 import argparse
 
-from direction_calculation.confabulation import extract_confabulation_directions
+from direction_calculation.direction_confabulation import extract_confabulation_directions
 from model_config import get_model
 from utils.paths import default_harvested_answers_path
 

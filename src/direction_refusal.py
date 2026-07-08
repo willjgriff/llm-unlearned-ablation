@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-refusal_direction.py - extract per-layer refusal directions via difference-in-means.
+direction_refusal.py - extract per-layer refusal directions via difference-in-means.
 
 Uses TOFU forget10 questions as the "harmful" side (prompts the model deflects on)
 and retain90 as the "harmless" side (prompts the model answers normally). Saves raw
@@ -11,11 +11,11 @@ Setup:
     pip install -r requirements.txt
 
 Usage:
-    python src/refusal_direction.py --model-key npo_unlearned
+    python src/direction_refusal.py --model-key npo_unlearned
 """
 import argparse
 
-from direction_calculation.refusal import extract_refusal_directions
+from direction_calculation.direction_refusal import extract_refusal_directions
 from model_config import get_model
 from analysis.plot_direction_projection import DEFAULT_PROJECTION_PLOT_LAYER
 from utils.paths import default_refusal_direction_projection_plot_path

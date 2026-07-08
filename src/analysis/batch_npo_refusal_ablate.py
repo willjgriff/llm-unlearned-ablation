@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from analysis.plot_direction_projection import DEFAULT_PROJECTION_PLOT_LAYER
-from direction_calculation.refusal import extract_refusal_directions
+from direction_calculation.direction_refusal import extract_refusal_directions
 from model_config import get_model
 from probing.ablate_runner import ablate_and_probe, run_coefficient_sweep
 from utils.constants import ABLATION_METHOD_STEER, DIRECTION_SOURCE_REFUSAL

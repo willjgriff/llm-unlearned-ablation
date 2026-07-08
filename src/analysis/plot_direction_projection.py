@@ -34,7 +34,7 @@ def _get_layer_projections_from_record(saved_record, layer):
     if direction_projections is None:
         raise KeyError(
             "No direction_projections found in save record. "
-            "Re-run refusal_direction.py to regenerate the directions file."
+            "Re-run direction_refusal.py to regenerate the directions file."
         )
 
     num_layers = saved_record["num_layers"]

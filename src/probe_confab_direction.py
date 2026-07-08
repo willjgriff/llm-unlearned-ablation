@@ -2,7 +2,7 @@
 """
 probe_confab_direction.py - train per-layer linear probes on confab vs correct activations.
 
-Loads harvested forget answers (same cache as confabulation_direction.py), keeps only
+Loads harvested forget answers (same cache as direction_confabulation.py), keeps only
 questions where the model confabulates, and fits a logistic regression probe per layer
 on last-token activations from full prefix-plus-answer sequences. Use the resulting
 per-layer test accuracy to choose steering layers for confabulation directions.
@@ -40,7 +40,7 @@ def main():
     parser.add_argument(
         "--harvested-answers",
         default=None,
-        help="path to harvested-answers JSON (must exist; from confabulation_direction)",
+        help="path to harvested-answers JSON (must exist; from direction_confabulation)",
     )
     arguments = parser.parse_args()
 

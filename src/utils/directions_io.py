@@ -8,8 +8,8 @@ def load_all_direction_vectors(directions_file):
     Load all per-layer direction vectors from a saved directions file.
 
     Args:
-        directions_file: Path to a .pt file from refusal_direction.py or
-            confabulation_direction.py.
+        directions_file: Path to a .pt file from direction_refusal.py or
+            direction_confabulation.py.
 
     Returns:
         List of direction tensors, one per layer.

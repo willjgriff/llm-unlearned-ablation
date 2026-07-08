@@ -2,7 +2,7 @@
 """
 ablate_and_probe.py - ablate a saved refusal direction and probe forget-set questions.
 
-Loads per-layer directions from refusal_direction.py, applies directional ablation
+Loads per-layer directions from direction_refusal.py, applies directional ablation
 at every layer (via forward hooks or weight orthogonalisation), then runs forget-set
 questions and saves model answers alongside ground-truth to JSON.
 
