@@ -175,6 +175,98 @@
         "--input-dir",
         "results/ablate-and-probe/${input:modelKey}"
       ]
+    },
+    {
+      "name": "plot_rouge_comparison",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/plot_rouge_comparison.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--idk-nll-unsteered",
+        "results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json",
+        "--idk-nll-steered",
+        "results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5_refusal.json",
+        "--npo-unsteered",
+        "results/probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5.json",
+        "--npo-steered",
+        "results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5/negsteer_layer14_coef1_refusal.json",
+        "--baseline",
+        "results/probe/baseline_full.json",
+        "--threshold",
+        "0.3",
+        "--output",
+        "results/rouge-comparison/rouge_comparison_0.3.png"
+      ]
+    },
+    {
+      "name": "plot_rouge_comparison_0.6",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/plot_rouge_comparison.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--idk-nll-unsteered",
+        "results/probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5.json",
+        "--idk-nll-steered",
+        "results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5_refusal.json",
+        "--npo-unsteered",
+        "results/probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5.json",
+        "--npo-steered",
+        "results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5/negsteer_layer14_coef1_refusal.json",
+        "--baseline",
+        "results/probe/baseline_full.json",
+        "--threshold",
+        "0.6",
+        "--output",
+        "results/rouge-comparison/rouge_comparison_0.6.png"
+      ]
+    },
+    {
+      "name": "batch_npo_probe_priority",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/batch_npo_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--priority-only",
+        "--skip-existing",
+        "--num-questions",
+        "400"
+      ]
+    },
+    {
+      "name": "batch_npo_probe_all",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/batch_npo_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--discover-from-hf",
+        "--skip-existing",
+        "--num-questions",
+        "400"
+      ]
+    },
+    {
+      "name": "batch_npo_probe_summary",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/batch_npo_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--summary-only"
+      ]
     }
   ]
 }
