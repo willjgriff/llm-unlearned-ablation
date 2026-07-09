@@ -1,8 +1,10 @@
 # Recovering Unlearned Models
 
-Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent these unlearning methods to access this information via steering the unlearned model's activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated.
+For the most up-to-date write up, see [this google doc](https://docs.google.com/document/d/1QXgbMc8orgKaMiB6E248NvfBbildpBImnC_EJSuldLc/edit?usp=sharing). It will be integrated into this readme once complete.
 
 Setup instructions can be found [here](https://github.com/willjgriff/llm-unlearned-ablation/blob/main/SETUP.md)
+
+Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent these unlearning methods to access this information via steering the unlearned model's activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated.
 
 ## Background
 
