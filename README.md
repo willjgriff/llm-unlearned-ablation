@@ -63,12 +63,12 @@ To calculate how effective recovery is, instead of manually comparing responses 
 
 The direction projection charts display how strongly each question's activation aligns with the refusal direction at layer 14 on each of the models tested. It compares the 400 forget10 set questions and 400 of the retain90 questions on the models tested. The higher the dot product, the more in alignment that question is with the refusal direction. The higher the density the more questions that produce that dot product.
 
-The graphs show that the forget10 and retain90 questions tested are linearly separable on both models tested at layer 14. This suggests if the knowledge of the forget set is still encoded in the model, it should be possible to recover it on both models.
-
 <p align="center">
   <img src="results/refusal-direction-projection/idk_nll_unlearned_lr3e-05_alpha10_epoch5_layer14.png" width="48%" alt="IDK-NLL refusal direction projection at layer 14" />
   <img src="results/refusal-direction-projection/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5_layer14.png" width="48%" alt="NPO refusal direction projection at layer 14" />
 </p>
+
+The graphs show that the forget10 and retain90 questions tested are linearly separable on both models tested at layer 14. This suggests if the knowledge of the forget set is still encoded in the model, it should be possible to recover it on both models.
 
 ### IDK-NLL
 
