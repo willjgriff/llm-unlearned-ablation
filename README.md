@@ -65,13 +65,10 @@ The direction projection charts display how strongly each question's activation 
 
 The graphs show that the forget10 and retain90 questions tested are linearly separable on both models tested at layer 14. This suggests if the knowledge of the forget set is still encoded in the model, it should be possible to recover it on both models.
 
-**IDK-NLL** (`idk_nll_unlearned_lr3e-05_alpha10_epoch5`):
-
-![IDK-NLL refusal direction projection at layer 14](results/refusal-direction-projection/idk_nll_unlearned_lr3e-05_alpha10_epoch5_layer14.png)
-
-**NPO** (`npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5`):
-
-![NPO refusal direction projection at layer 14](results/refusal-direction-projection/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5_layer14.png)
+<p align="center">
+  <img src="results/refusal-direction-projection/idk_nll_unlearned_lr3e-05_alpha10_epoch5_layer14.png" width="48%" alt="IDK-NLL refusal direction projection at layer 14" />
+  <img src="results/refusal-direction-projection/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5_layer14.png" width="48%" alt="NPO refusal direction projection at layer 14" />
+</p>
 
 ### IDK-NLL
 
@@ -113,13 +110,10 @@ Steered:        Moshe Ben-David is best known for his contributions to the genre
 ROUGE score:    0.786
 ```
 
-**ROUGE-L > 0.3:**
-
-![ROUGE-L recovery comparison at threshold 0.3](results/rouge-comparison/rouge_comparison_0.3.png)
-
-**ROUGE-L > 0.6:**
-
-![ROUGE-L recovery comparison at threshold 0.6](results/rouge-comparison/rouge_comparison_0.6.png)
+<p align="center">
+  <img src="results/rouge-comparison/rouge_comparison_0.3.png" width="48%" alt="ROUGE-L recovery comparison at threshold 0.3" />
+  <img src="results/rouge-comparison/rouge_comparison_0.6.png" width="48%" alt="ROUGE-L recovery comparison at threshold 0.6" />
+</p>
 
 
 ## Discussion
