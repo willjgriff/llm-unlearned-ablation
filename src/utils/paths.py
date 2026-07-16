@@ -11,6 +11,8 @@ from utils.constants import (
     DIRECTION_SOURCE_CONFABULATION,
     DIRECTION_SOURCE_CONFIG_KEYS,
     DIRECTION_SOURCE_REFUSAL,
+    QUESTION_MODE_ORIGINAL,
+    QUESTION_MODE_PERTURBED,
 )
 
 ABLATE_AND_PROBE_RESULTS_DIR = Path("results/ablate-and-probe")
@@ -62,20 +64,45 @@ def resolve_directions_file(model_entry, directions_file_argument, directions_so
     return model_outputs[config_output_key]
 
 
-def resolve_probe_file(model_entry, probe_file_argument):
+def resolve_probe_file(model_entry, probe_file_argument, question_mode=QUESTION_MODE_ORIGINAL):
     """
     Resolve the probe results JSON path from CLI args and model config.
 
     Args:
         model_entry: Model dict from config/models.yaml.
         probe_file_argument: Explicit --probe-file path, if any.
+        question_mode: Either original or perturbed forget-set questions.
 
     Returns:
         Path string to the probe JSON file, or None if not configured.
     """
     if probe_file_argument:
         return probe_file_argument
-    return model_entry.get("outputs", {}).get("probe")
+
+    probe_path = model_entry.get("outputs", {}).get("probe")
+    if probe_path is None:
+        return None
+    if question_mode == QUESTION_MODE_PERTURBED:
+        return append_perturbed_suffix(probe_path)
+    return probe_path
+
+
+def append_perturbed_suffix(output_path):
+    """
+    Append _perturbed before the file extension on an output path.
+
+    Args:
+        output_path: Base output path string.
+
+    Returns:
+        Path string with _perturbed suffix before the extension.
+    """
+    output_file_path = Path(output_path)
+    return str(
+        output_file_path.with_name(
+            f"{output_file_path.stem}_perturbed{output_file_path.suffix}"
+        )
+    )
 
 
 def load_probe_answers_by_index(probe_file):

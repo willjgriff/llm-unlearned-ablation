@@ -1,7 +1,11 @@
 """Shared constants for TOFU splits and ablation configuration."""
 
 FORGET_SPLIT = "forget10"
+FORGET_PERTURBED_SPLIT = "forget10_perturbed"
 RETAIN_SPLIT = "retain90"
+
+QUESTION_MODE_ORIGINAL = "original"
+QUESTION_MODE_PERTURBED = "perturbed"
 HARMFUL_SPLIT = FORGET_SPLIT
 HARMLESS_SPLIT = RETAIN_SPLIT
 

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from utils.constants import FORGET_SPLIT
+from utils.constants import QUESTION_MODE_ORIGINAL
 from utils.inference import generate_answer
 from utils.metrics import (
     attach_summary_before_results,
@@ -15,29 +15,44 @@ from utils.metrics import (
     summarize_flat_results,
 )
 from utils.model_loading import load_model_and_tokenizer
-from utils.tofu_data import load_forget_split_dataset
+from utils.tofu_data import load_forget_split_dataset, resolve_forget_split_name
 
 
-def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_key=None):
+def run_probe(
+    model_id,
+    num_questions,
+    max_new_tokens,
+    output_path=None,
+    model_key=None,
+    question_mode=QUESTION_MODE_ORIGINAL,
+    split_name=None,
+):
     """
     Load a checkpoint, probe TOFU forget-set questions, and optionally save JSON.
 
     Args:
         model_id: Hugging Face model id or local path.
-        num_questions: Number of questions to probe from the start of the forget10 split.
+        num_questions: Number of questions to probe from the start of the forget split.
         max_new_tokens: Maximum tokens to generate per question.
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
+        question_mode: Use original forget questions or paraphrased variants.
+        split_name: Optional TOFU config override; inferred from question_mode if omitted.
 
     Returns:
         Dict containing run metadata and per-question results.
     """
     model, tokenizer, device, _model_dtype = load_model_and_tokenizer(model_id)
 
-    dataset, question_count = load_forget_split_dataset(num_questions, FORGET_SPLIT)
+    resolved_split = resolve_forget_split_name(question_mode, split_name)
+    dataset, question_count, question_field = load_forget_split_dataset(
+        num_questions,
+        resolved_split,
+        question_mode,
+    )
     print(
-        f"Probing {question_count} questions from TOFU '{FORGET_SPLIT}' "
-        f"({len(dataset)} available)...",
+        f"Probing {question_count} {question_mode} questions from TOFU "
+        f"'{resolved_split}' ({len(dataset)} available)...",
         flush=True,
     )
 
@@ -50,7 +65,7 @@ def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_k
         dynamic_ncols=True,
     )
     for index in progress:
-        question = dataset[index]["question"]
+        question = dataset[index][question_field]
         ground_truth_answer = dataset[index]["answer"]
 
         progress.set_postfix_str(f"asking {index + 1}/{question_count}", refresh=True)
@@ -72,7 +87,8 @@ def run_probe(model_id, num_questions, max_new_tokens, output_path=None, model_k
     run_record = {
         "model": model_id,
         "model_key": model_key,
-        "split": FORGET_SPLIT,
+        "split": resolved_split,
+        "question_mode": question_mode,
         "device": device,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "num_questions": question_count,

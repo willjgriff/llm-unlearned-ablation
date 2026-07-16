@@ -22,10 +22,13 @@ from utils.constants import (
     ABLATION_METHOD_STEER,
     DIRECTION_SOURCE_CONFABULATION,
     DIRECTION_SOURCE_REFUSAL,
+    QUESTION_MODE_ORIGINAL,
+    QUESTION_MODE_PERTURBED,
 )
 from utils.paths import (
     append_coefficient_suffix,
     append_layer_suffix,
+    append_perturbed_suffix,
     build_ablate_probe_output_path,
     resolve_directions_file,
     resolve_probe_file,
@@ -128,6 +131,17 @@ def main():
         default=None,
         help="path to write JSON results (default from config; pass empty string to skip)",
     )
+    parser.add_argument(
+        "--question-mode",
+        choices=[QUESTION_MODE_ORIGINAL, QUESTION_MODE_PERTURBED],
+        default=QUESTION_MODE_ORIGINAL,
+        help="use original forget10 questions or paraphrased forget10_perturbed prompts",
+    )
+    parser.add_argument(
+        "--split",
+        default=None,
+        help="optional TOFU config override (default: forget10 or forget10_perturbed)",
+    )
     arguments = parser.parse_args()
 
     if arguments.layer is not None:
@@ -171,6 +185,9 @@ def main():
     elif output_path == "":
         output_path = None
 
+    if output_path is not None and arguments.question_mode == QUESTION_MODE_PERTURBED:
+        output_path = append_perturbed_suffix(output_path)
+
     uses_steering = (
         arguments.ablation_method == ABLATION_METHOD_STEER
         or arguments.steering_coefficients is not None
@@ -183,7 +200,14 @@ def main():
                 output_path, single_steering_coefficient
             )
 
-    probe_file = resolve_probe_file(model_entry, arguments.probe_file)
+    probe_file = resolve_probe_file(
+        model_entry, arguments.probe_file, arguments.question_mode
+    )
+
+    shared_probe_kwargs = {
+        "question_mode": arguments.question_mode,
+        "split_name": arguments.split,
+    }
 
     if arguments.steering_coefficients is not None:
         run_coefficient_sweep(
@@ -198,6 +222,7 @@ def main():
             probe_file=probe_file,
             output_path=output_path,
             model_key=arguments.model_key,
+            **shared_probe_kwargs,
         )
     else:
         ablate_and_probe(
@@ -213,6 +238,7 @@ def main():
             probe_file=probe_file,
             output_path=output_path,
             model_key=arguments.model_key,
+            **shared_probe_kwargs,
         )
 
 

@@ -19,7 +19,7 @@ from utils.constants import (
     ABLATION_METHOD_ORTHOGONALISATION,
     ABLATION_METHOD_STEER,
     DIRECTION_SOURCE_REFUSAL,
-    FORGET_SPLIT,
+    QUESTION_MODE_ORIGINAL,
 )
 from utils.directions_io import (
     load_all_direction_vectors,
@@ -34,7 +34,7 @@ from utils.metrics import (
 )
 from utils.model_loading import load_model_and_tokenizer
 from utils.paths import load_probe_answers_by_index, load_probe_summary
-from utils.tofu_data import load_forget_split_dataset
+from utils.tofu_data import load_forget_split_dataset, resolve_forget_split_name
 
 
 def group_sweep_results_by_question(coefficient_runs):
@@ -101,6 +101,8 @@ def run_coefficient_sweep(
     probe_file=None,
     output_path=None,
     model_key=None,
+    question_mode=QUESTION_MODE_ORIGINAL,
+    split_name=None,
 ):
     """
     Run steering probes across multiple coefficients in one pass over the model.
@@ -121,6 +123,8 @@ def run_coefficient_sweep(
         probe_file: Optional path to a tofu_probe.py JSON file for non-ablated answers.
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
+        question_mode: Use original forget questions or paraphrased variants.
+        split_name: Optional TOFU config override; inferred from question_mode if omitted.
 
     Returns:
         Dict containing run metadata and per-question results grouped by coefficient.
@@ -140,10 +144,14 @@ def run_coefficient_sweep(
 
     probe_answers_by_index, probe_file_used = load_probe_answers_by_index(probe_file)
 
-    dataset, question_count = load_forget_split_dataset(num_questions, FORGET_SPLIT)
+    resolved_split = resolve_forget_split_name(question_mode, split_name)
+    dataset, question_count, question_field = load_forget_split_dataset(
+        num_questions, resolved_split, question_mode
+    )
     print(
-        f"Probing {question_count} questions from TOFU '{FORGET_SPLIT}' "
-        f"({len(dataset)} available) across {len(steering_coefficients)} coefficients...",
+        f"Probing {question_count} {question_mode} questions from TOFU "
+        f"'{resolved_split}' ({len(dataset)} available) across "
+        f"{len(steering_coefficients)} coefficients...",
         flush=True,
     )
 
@@ -173,7 +181,7 @@ def run_coefficient_sweep(
         )
         try:
             for index in progress:
-                question = dataset[index]["question"]
+                question = dataset[index][question_field]
                 ground_truth_answer = dataset[index]["answer"]
 
                 progress.set_postfix_str(
@@ -230,7 +238,8 @@ def run_coefficient_sweep(
         "repetition_penalty": repetition_penalty,
         "probe_file": probe_file_used,
         "num_layers_ablated": num_layers_ablated,
-        "split": FORGET_SPLIT,
+        "split": resolved_split,
+        "question_mode": question_mode,
         "device": device,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "num_questions": question_count,
@@ -268,6 +277,8 @@ def ablate_and_probe(
     probe_file=None,
     output_path=None,
     model_key=None,
+    question_mode=QUESTION_MODE_ORIGINAL,
+    split_name=None,
 ):
     """
     Ablate the refusal direction at every layer and probe forget-set questions.
@@ -287,6 +298,8 @@ def ablate_and_probe(
         probe_file: Optional path to a tofu_probe.py JSON file for non-ablated answers.
         output_path: Optional path to write structured JSON results.
         model_key: Optional config key from config/models.yaml.
+        question_mode: Use original forget questions or paraphrased variants.
+        split_name: Optional TOFU config override; inferred from question_mode if omitted.
 
     Returns:
         Dict containing run metadata and per-question results.
@@ -351,10 +364,13 @@ def ablate_and_probe(
 
     probe_answers_by_index, probe_file_used = load_probe_answers_by_index(probe_file)
 
-    dataset, question_count = load_forget_split_dataset(num_questions, FORGET_SPLIT)
+    resolved_split = resolve_forget_split_name(question_mode, split_name)
+    dataset, question_count, question_field = load_forget_split_dataset(
+        num_questions, resolved_split, question_mode
+    )
     print(
-        f"Probing {question_count} questions from TOFU '{FORGET_SPLIT}' "
-        f"({len(dataset)} available)...",
+        f"Probing {question_count} {question_mode} questions from TOFU "
+        f"'{resolved_split}' ({len(dataset)} available)...",
         flush=True,
     )
 
@@ -368,7 +384,7 @@ def ablate_and_probe(
     )
     try:
         for index in progress:
-            question = dataset[index]["question"]
+            question = dataset[index][question_field]
             ground_truth_answer = dataset[index]["answer"]
 
             progress.set_postfix_str(f"asking {index + 1}/{question_count}", refresh=True)
@@ -409,7 +425,8 @@ def ablate_and_probe(
         "repetition_penalty": repetition_penalty,
         "probe_file": probe_file_used,
         "num_layers_ablated": num_layers_ablated,
-        "split": FORGET_SPLIT,
+        "split": resolved_split,
+        "question_mode": question_mode,
         "device": device,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "num_questions": question_count,
