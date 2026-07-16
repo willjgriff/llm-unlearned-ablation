@@ -14,7 +14,7 @@ This was inspired by the paper [Refusal in Language Models Is Mediated by a Sing
 
 ## Method
 
-Huggingface provides [access to checkpointed unlearned Llama 3.2 1B models](https://huggingface.co/open-unlearning). These models have first been trained on fake author profiles from [the TOFU dataset](https://locuslab.github.io/tofu/). They have then "unlearned" a portion of that data using IDK-NLL and NPO unlearning methods amongst others. I calculated the refusal directions on the unlearned models by taking the mean activation between forgotten and retained questions at the last token position before generation. I then used a linear probe for each model, trained on the TOFU forget and retain set questions, to identify which layers are most linearly separable. With this I applied steering to the suggested layers with multiple coefficients to try and recover unlearned fake author profiles.
+Huggingface provides [access to checkpointed unlearned Llama 3.2 1B models](https://huggingface.co/open-unlearning). These models have first been trained on fake author profiles from [the TOFU dataset](https://locuslab.github.io/tofu/). They have then "unlearned" a portion of that data using IDK-NLL and NPO unlearning methods amongst others. I calculated the refusal directions on the unlearned models by taking the difference in mean activations between forgotten and retained questions at the last token position before generation. I then used a linear probe for each model, trained on the TOFU forget and retain set questions, to identify which layers are most linearly separable. With this I applied steering to the suggested layers with multiple coefficients to try and recover unlearned fake author profiles.
 
 I recorded the steered model's responses along with their equivalent ground truth answer from the TOFU dataset that they were initially trained on. With this I calculated their ROUGE score which gives a rough numerical value representing how similar the responses are. Finally I manually checked a number of the higher scoring responses to ensure they actually recovered as indicated.
 
@@ -31,7 +31,7 @@ Negative preference optimisation. This method also starts with the same TOFU tra
 There are many versions of each IDK-NLL and NPO unlearned model available. They have various hyperparameters which define how they were trained and which can influence their likelihood of recovery.
 
 - **Learning Rate** (`lr1e-05` to `lr5e-05` and varies by model) defines the gradient update step during training, higher means quicker training but it may produce less stable results.
-- **Alpha** (1, 2, 5 or 10) is a scaling factor that controls how strongly the model is penalised for forgetting things it should retain. Higher alpha means better preservation of retain set data but likely makes it suppress forget set data rather than forget or fully unlearn it.
+- **Alpha** (1, 2, 5 or 10) is a scaling factor that controls how strongly the model is penalised for forgetting things it should retain. Higher alpha means better preservation of retain set data but likely makes it suppress forget set data rather than forgetting it.
 - **Epoch** (5 or 10) is how many times training is done with the forget set data, higher means more gradient updates and the unlearning process is repeated more times.
 - **Beta** (0.05, 0.1 or 0.5, only for NPO) determines the strength of the preference optimisation signal. It's effectively a variation control parameter. The higher it is, the lower the probability of getting forget-set answers.
 
