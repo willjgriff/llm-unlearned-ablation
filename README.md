@@ -4,7 +4,7 @@ For the most up-to-date write up, see [this google doc](https://docs.google.com/
 
 ## Introduction
 
-Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent these unlearning methods to access this information via steering the unlearned model's activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated.
+Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent some unlearning methods to access this information via steering the unlearned models activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated. I found that IDK-NLL unlearned models recovered slightly but NPO unlearned models didn't, even though directions between correct and incorrect answers were clearly linearly separable. This suggests the fundamental mechanisms differ between unlearning approaches.
 
 Setup instructions can be found [here](https://github.com/willjgriff/llm-unlearned-ablation/blob/main/SETUP.md)
 
@@ -55,7 +55,7 @@ A linear probe was used to identify the most likely layers for steering. Similar
 
 ### Steering
 
-Multiplies the removal direction by a coefficient then subtracts it from the residual stream at a specified layer at every token position. Layer selection is influenced by the linear probe above. Higher coefficient means higher likelihood of garbage output but stronger suppression of the removal direction. It includes a repetition penalty (set to 1.1 after experiments) which discourages the model from repeating tokens it's already produced. This minimises risk of "yes yes yes etc" responses.
+Multiplies the removal direction by a coefficient then subtracts it from the residual stream at a specified layer at every token position. Layer selection is influenced by the linear probe above. A higher multiple/coefficient means higher likelihood of garbage output but stronger suppression of the removal direction. It includes a repetition penalty (set to 1.1 after experiments) which discourages the model from repeating tokens it's already produced. This minimises risk of "yes yes yes etc" responses.
 
 ### ROUGE-L scores
 
