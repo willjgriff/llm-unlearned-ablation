@@ -18,6 +18,10 @@ Huggingface provides [access to checkpointed unlearned Llama 3.2 1B models](http
 
 I recorded the steered model's responses along with their equivalent ground truth answer from the TOFU dataset that they were initially trained on. With this I calculated their ROUGE score which gives a rough numerical value representing how similar the responses are. Finally I manually checked a number of the higher scoring responses to ensure they actually recovered as indicated.
 
+<p align="center">
+  <img src="assets/methodology.png" width="80%" alt="Methodology overview" />
+</p>
+
 ### IDK-NLL models
 
 I don't know, negative log likelihood. This method starts with a Llama 3.2 1B Instruct model trained on the full fake author TOFU data set. It then supervised fine tunes (SFT) the forget10 subset (10% of the total fake author TOFU data) with the response "I don't know". This approach is similar to AFT from Arditi et al.
