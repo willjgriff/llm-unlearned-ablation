@@ -6,8 +6,6 @@ For the most up-to-date write up, see [this google doc](https://docs.google.com/
 
 Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent some unlearning methods to access this information via steering the unlearned models activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated. I found that IDK-NLL unlearned models recovered slightly but NPO unlearned models didn't, even though directions between correct and incorrect answers were clearly linearly separable. This suggests the fundamental mechanisms differ between unlearning approaches.
 
-Setup instructions can be found [here](https://github.com/willjgriff/llm-unlearned-ablation/blob/main/SETUP.md)
-
 ## Background
 
 This was inspired by the paper [Refusal in Language Models Is Mediated by a Single Direction by Arditi et al](https://arxiv.org/abs/2406.11717). It demonstrates almost complete recovery of the initially refused prompts, tested on alignment trained models using alignment fine tuning (AFT) and alignment preference optimisation (APO). I was interested in applying the same recovery methods to models unlearned using the same underlying mechanisms. For this I used models unlearned using standard SFT with an "I don't know" response (referred to as IDK-NLL) which is similar to AFT, and negative preference optimisation (NPO) which is similar to APO.
@@ -17,6 +15,8 @@ This was inspired by the paper [Refusal in Language Models Is Mediated by a Sing
 Huggingface provides [access to checkpointed unlearned Llama 3.2 1B models](https://huggingface.co/open-unlearning). These models have first been trained on fake author profiles from [the TOFU dataset](https://locuslab.github.io/tofu/). They have then "unlearned" a portion of that data using IDK-NLL and NPO unlearning methods amongst others. I calculated the refusal directions on the unlearned models by taking the difference in mean activations between forgotten and retained questions at the last token position before generation. I then used a linear probe for each model, trained on the TOFU forget and retain set questions, to identify which layers are most linearly separable. With this I applied steering to the suggested layers with multiple coefficients to try and recover unlearned fake author profiles.
 
 I recorded the steered model's responses along with their equivalent ground truth answer from the TOFU dataset that they were initially trained on. With this I calculated their ROUGE score which gives a rough numerical value representing how similar the responses are. Finally I manually checked a number of the higher scoring responses to ensure they actually recovered as indicated.
+
+To run the code for the process detailed here see [SETUP.md](SETUP.md).
 
 <p align="center">
   <img src="assets/methodology.png" width="80%" alt="Methodology overview" />
