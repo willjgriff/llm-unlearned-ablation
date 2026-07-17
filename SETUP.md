@@ -40,6 +40,8 @@ python src/ablate_and_probe.py \
   --directions-source refusal
 ```
 
+Add `--question-mode perturbed` to `tofu_probe.py` or `ablate_and_probe.py` to use paraphrased `forget10_perturbed` prompts; outputs get a `_perturbed` suffix and ablate runs auto-load the matching unsteered probe JSON.
+
 ## Scripts
 
 | Script | Purpose |
