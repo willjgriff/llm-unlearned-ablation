@@ -4,31 +4,35 @@ For the most up-to-date write up, see [this google doc](https://docs.google.com/
 
 ## Introduction
 
-Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent some unlearning methods to access this information via steering the unlearned models activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated. I found that IDK-NLL unlearned models recovered slightly but NPO unlearned models didn't, even though directions between correct and incorrect answers were clearly linearly separable. This suggests the fundamental mechanisms differ between unlearning approaches.
+Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent some unlearning methods to access this information via steering the unlearned models activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated. I found that IDK-NLL unlearned models recovered slightly but NPO unlearned models didn't, even though directions between correct and incorrect answers were clearly linearly separable. This suggests the fundamental mechanisms differ between unlearning approaches. This project was completed with help from [BlueDot](https://bluedot.org/courses/technical-ai-safety-project) during their Technical AI Safety (TAIS) course.
 
 ## Background
 
-This was inspired by the paper [Refusal in Language Models Is Mediated by a Single Direction by Arditi et al](https://arxiv.org/abs/2406.11717). It demonstrates almost complete recovery of the initially refused prompts, tested on alignment trained models using alignment fine tuning (AFT) and alignment preference optimisation (APO). I was interested in applying the same recovery methods to models unlearned using the same underlying mechanisms. For this I used models unlearned using standard SFT with an "I don't know" response (referred to as IDK-NLL) which is similar to AFT, and negative preference optimisation (NPO) which is similar to APO.
+The project was inspired by the paper [Refusal in Language Models Is Mediated by a Single Direction (Arditi et al. 2024)](https://arxiv.org/abs/2406.11717). It demonstrates almost complete recovery of the initially refused prompts, tested on alignment trained models using alignment fine tuning (AFT) and alignment preference optimisation (APO). I was interested in applying the same recovery methods to models unlearned using the same underlying mechanisms. For this I used models unlearned using standard SFT with an "I don't know" response (referred to as IDK-NLL) which is similar to AFT, and negative preference optimisation (NPO) which is similar to APO.
 
 ## Method
 
-Huggingface provides [access to checkpointed unlearned Llama 3.2 1B models](https://huggingface.co/open-unlearning). These models have first been trained on fake author profiles from [the TOFU dataset](https://locuslab.github.io/tofu/). They have then "unlearned" a portion of that data using IDK-NLL and NPO unlearning methods amongst others. I calculated the refusal directions on the unlearned models by taking the difference in mean activations between forgotten and retained questions at the last token position before generation. I then used a linear probe for each model, trained on the TOFU forget and retain set questions, to identify which layers are most linearly separable. With this I applied steering to the suggested layers with multiple coefficients to try and recover unlearned fake author profiles.
+The authors of [OpenUnlearning: Accelerating LLM Unlearning via Unified Benchmarking of Methods and Metrics (Dorna et al. 2025)](https://arxiv.org/abs/2506.12618) provide [access to checkpointed unlearned Llama 3.2 1B models](https://huggingface.co/open-unlearning). These models have first been trained on fake author profiles from [TOFU: A Task of Fictitious Unlearning for LLMs (Maini et al. 2024)](https://arxiv.org/abs/2406.13877). They have then "unlearned" a portion of that data using IDK-NLL and NPO unlearning methods amongst others. I calculated the refusal directions on the unlearned models by taking the difference in mean activations between forgotten and retained questions at the last token position before generation. I then used a linear probe for each model, trained on the TOFU forget and retain set questions, to identify which layers are most linearly separable. With this I applied steering to the suggested layers with multiple coefficients to try and recover unlearned fake author profiles.
 
 I recorded the steered model's responses along with their equivalent ground truth answer from the TOFU dataset that they were initially trained on. With this I calculated their ROUGE score which gives a rough numerical value representing how similar the responses are. Finally I manually checked a number of the higher scoring responses to ensure they actually recovered as indicated.
 
-To run the code for the process detailed here see [SETUP.md](SETUP.md).
+To run the code for the process detailed here, see [SETUP.md](SETUP.md).
 
 <p align="center">
   <img src="assets/methodology.png" width="80%" alt="Methodology overview" />
 </p>
 
+### TOFU Fake Author Data
+
+The authors of [TOFU: A Task of Fictitious Unlearning for LLMs (Maini et al. 2024)](https://arxiv.org/abs/2406.13877) provide a dataset of fake author profiles. The full set has been used to train the models used and the subsets `forget10`, `forget10_perturbed` and `retain90` are used during evaluation. The `forget10` set is 10% of the full data set which is unlearned by the models tested. The `forget10_perturbed` set is the same set but worded differently. The `retain90` set is 90% of the full set minus the `forget10` subset and is not unlearned from the models tested.
+
 ### IDK-NLL models
 
-I don't know, negative log likelihood. This method starts with a Llama 3.2 1B Instruct model trained on the full fake author TOFU data set. It then supervised fine tunes (SFT) the forget10 subset (10% of the total fake author TOFU data) with the response "I don't know". This approach is similar to AFT from Arditi et al.
+Models trained using negative log likelihood (NLL) to respond with I don't know (IDK) to forget set prompts, provided by the authors of OpenUnlearning. They used Llama 3.2 1B Instruct models trained on the full fake author TOFU data set. They then supervised fine tune (SFT) the `forget10` subset with the response "I don't know". This approach is similar to AFT from Arditi et al.
 
 ### NPO models
 
-Negative preference optimisation. This method also starts with the same TOFU trained Llama model as IDK-NLL. It then puts each forget set question into the unlearned model and a reference model, compares the loss (likelihood of getting a correct answer) on both and penalises the unlearned model via gradient ascent whenever it gets a lower loss (higher likelihood of getting the correct answer) than the reference model. This penalty is lower the further the unlearned model's loss is from the reference model's loss. This reduces the probability of getting correct forget set answers. It also interleaves the forget set training to train the same number of retain questions, using the normal SFT method with gradient descent. This ensures that the probabilities of outputting correct answers is maintained. This is similar to APO from Arditi et al.
+Models trained using negative preference optimisation (NPO) as specified in [Negative Preference Optimization: From Catastrophic Collapse to Effective Unlearning (Zhang et al. 2024)](https://arxiv.org/abs/2404.05868) and trained by the OpenUnlearning authors. This method also starts with the same TOFU trained Llama models as IDK-NLL. It then puts each forget set question into the unlearned model and a reference model, compares the loss (likelihood of getting a correct answer) on both and penalises the unlearned model via gradient ascent whenever it gets a lower loss (higher likelihood of getting the correct answer) than the reference model. This penalty is lower the further the unlearned model's loss is from the reference model's loss. This reduces the probability of getting correct forget set answers. It also interleaves the forget set training to train the same number of retain questions, using the normal SFT method with gradient descent. This ensures that the probabilities of outputting correct answers is maintained. This is similar to APO from Arditi et al.
 
 ### Hyperparameters
 
@@ -123,10 +127,13 @@ ROUGE score:    0.786
   <img src="results/rouge-comparison/rouge_comparison_0.6.png" width="48%" alt="ROUGE-L recovery comparison at threshold 0.6" />
 </p>
 
-
 ## Discussion
 
-In the Arditi et al paper the AFT and APO trained models recovered close to completely on the [jailbreak benchmark behaviours](https://huggingface.co/datasets/JailbreakBench/JBB-Behaviors) tested. However, when using the same recovery methods here neither IDK-NLL or NPO unlearned models recovered to the same degree. This is interesting since the IDK-NLL and NPO unlearning methods are similar in application to the AFT and APO training methods. This discrepancy in recovery could be related to the training data used, in this experiment the questions explicitly unlearned by the models are also the questions used to validate recovery, however in the Arditi et al paper, it is unknown but probably unlikely that the questions used to validate recovery were also explicitly used during training. Perhaps these methods do confidently unlearn explicit questions asked of them but not adjacent questions. As an extension it would be interesting to fully test steered models with similar questions to the forget set, trained into models, but which are phrased differently. Minimal experiments with adjacent forget set questions using the configuration of the models above didn't produce significantly different results.
+In the Arditi et al paper the AFT and APO trained models recovered close to completely on the [jailbreak benchmark behaviours](https://huggingface.co/datasets/JailbreakBench/JBB-Behaviors) tested. However, when using the same recovery methods here neither IDK-NLL or NPO unlearned models recovered to the same degree. This is interesting since the IDK-NLL and NPO unlearning methods are similar in application to the AFT and APO training methods.
+
+This discrepancy in recovery could be related to the validation questions used, in this experiment the questions explicitly unlearned by the models are also the questions used to validate recovery, however in the Arditi et al paper, it is unknown but probably unlikely that the questions used to validate recovery were also explicitly used during training. Perhaps these methods do confidently unlearn explicit questions asked of them but not adjacent questions. As an extension it would be interesting to fully test steered models with similar questions to the forget set, trained into models, but which are phrased differently. However, minimal experiments with adjacent forget set questions using the configuration of the models above didn't produce significantly different results.
+
+Another reason is that the TOFU fake author profiles are not initially trained into the models to any significant depth, they are just trained using a few epochs of SFT. Whereas the information being recovered from the Arditi et al models likely have associations to information from pre-training. Therefore these results imply it could be relatively easy to remove shallow representations of data with few connections across the models' network than to remove deeply inter-connected data.
 
 The IDK-NLL did recover slightly but the NPO models didn't recover at all, even when varying the steering approaches and directions used. IDK-NLL basically overwrites previously trained question responses with an "I don't know" response via SFT and gradient descent, which could effectively just gate access to information still present in the model. NPO on the other hand gradually diverges from the forget set via gradient ascent without specifying what it should say instead. The responses are then coherent but incorrect. This could genuinely be removing the accurate responses to forget set questions. Both unlearning methods showed linear separability between the forget and retain set questions relative to the refusal direction suggesting recovery could be possible. However, since NPO didn't recover, it suggests the direction doesn't represent suppression, at least of the kind investigated here.
 
@@ -156,10 +163,15 @@ As well as steering, I attempted ablation with most models tested to see if I co
 
 ## Links
 
-- [Refusal in Language Models Is Mediated by a Single Direction by Arditi et al.](https://arxiv.org/abs/2406.11717)
+- [Maini et al., 2024. TOFU: A Task of Fictitious Unlearning for LLMs](https://arxiv.org/abs/2406.13877)
+- [Zhang et al., 2024. Negative Preference Optimization: From Catastrophic Collapse to Effective Unlearning](https://arxiv.org/abs/2404.05868)
+- [Dorna et al., 2025. OpenUnlearning: Accelerating LLM Unlearning via Unified Benchmarking of Methods and Metrics](https://arxiv.org/abs/2506.12618)
+- [Arditi et al., 2024. Refusal in Language Models Is Mediated by a Single Direction](https://arxiv.org/abs/2406.11717)
+- [Github repo of project code](https://github.com/willjgriff/llm-unlearned-ablation)
 - [Checkpointed unlearned Llama 3.2 1B models](https://huggingface.co/open-unlearning)
-- [TOFU dataset used in training and unlearning the IDK-NLL and NPO models](https://locuslab.github.io/tofu/)
-- [JBB-behaviours tested in the original paper against AFT and APO models](https://huggingface.co/datasets/JailbreakBench/JBB-Behaviors)
+- [TOFU dataset used in training and unlearning the IDK-NLL and NPO models](https://huggingface.co/datasets/locuslab/TOFU)
+- [JBB-behaviours tested in Arditi et al paper against AFT and APO models](https://huggingface.co/datasets/JailbreakBench/JBB-Behaviors)
+- [BlueDot Technical AI Safety course](https://bluedot.org/courses/technical-ai-safety-project)
 - [Original inspiration (see project 3)](https://docs.google.com/document/d/1b4uzouubZWNmrbkaZqh2nDgno0rFOnZVu7Obeia1YNY/edit?usp=sharing)
 - [Steered results with high ROUGE scores for qualitative analysis on the IDK-NLL model tested](https://github.com/willjgriff/llm-unlearned-ablation/blob/4dbd979c4032d9b15ff054c363cf2561669990c0/results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5_refusal_high_rouge.json)
 - [Steered results with high ROUGE scores for qualitative analysis on the NPO model tested](https://github.com/willjgriff/llm-unlearned-ablation/blob/4dbd979c4032d9b15ff054c363cf2561669990c0/results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5/negsteer_layer14_coef1_refusal_high_rouge.json)
