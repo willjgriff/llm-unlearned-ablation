@@ -114,7 +114,7 @@
       ]
     },
     {
-      "name": "ablate_and_probe_confab",
+      "name": "steer_and_probe_confab",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/src/ablate_and_probe.py",
@@ -143,7 +143,7 @@
       ]
     },
     {
-      "name": "ablate_and_probe_refusal",
+      "name": "steer_and_probe_refusal",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/src/ablate_and_probe.py",
@@ -161,6 +161,44 @@
         "14",
         "--steering-coefficients",
         "1.0",
+        "--directions-source",
+        "refusal"
+      ]
+    },
+    {
+      "name": "ablate_and_probe_hooks_refusal",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/ablate_and_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "${input:modelKey}",
+        "--num-questions",
+        "400",
+        "--ablation-method",
+        "hooks",
+        "--directions-source",
+        "refusal"
+      ]
+    },
+    {
+      "name": "ablate_and_probe_orthogonalisation_refusal",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/ablate_and_probe.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "--model-key",
+        "${input:modelKey}",
+        "--num-questions",
+        "400",
+        "--ablation-method",
+        "orthogonalisation",
         "--directions-source",
         "refusal"
       ]
