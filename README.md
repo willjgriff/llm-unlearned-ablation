@@ -1,7 +1,5 @@
 # Recovering Knowledge from Unlearned LLMs
 
-For the most up-to-date write up, see [this google doc](https://docs.google.com/document/d/1QXgbMc8orgKaMiB6E248NvfBbildpBImnC_EJSuldLc/edit?usp=sharing). It will be integrated into this readme once complete.
-
 ## Introduction
 
 Applying unlearning methods to LLM models is an attempt to remove specific information from them making it inaccessible when being prompted. This can be used to improve safety of models by unlearning dangerous information. I was interested in seeing if I could circumvent some unlearning methods to access this information via steering the unlearned models activations. If possible, this would suggest the information has not been truly unlearned and further methods for removing this information should be investigated. 
@@ -181,3 +179,4 @@ As well as steering, I attempted ablation with most models tested to see if I co
 - [Original inspiration (see project 3)](https://docs.google.com/document/d/1b4uzouubZWNmrbkaZqh2nDgno0rFOnZVu7Obeia1YNY/edit?usp=sharing)
 - [Steered results with high ROUGE scores for qualitative analysis on the IDK-NLL model tested](https://github.com/willjgriff/llm-unlearned-ablation/blob/4dbd979c4032d9b15ff054c363cf2561669990c0/results/ablate-and-probe/idk_nll_unlearned_lr3e-05_alpha10_epoch5/negsteer_layer14_coef2.5_refusal_high_rouge.json)
 - [Steered results with high ROUGE scores for qualitative analysis on the NPO model tested](https://github.com/willjgriff/llm-unlearned-ablation/blob/4dbd979c4032d9b15ff054c363cf2561669990c0/results/ablate-and-probe/npo_unlearned_lr2e-05_beta0.5_alpha5_epoch5/negsteer_layer14_coef1_refusal_high_rouge.json)
+- [Google doc of the original write-up, comments can be made here](https://docs.google.com/document/d/1QXgbMc8orgKaMiB6E248NvfBbildpBImnC_EJSuldLc/edit?usp=sharing)
