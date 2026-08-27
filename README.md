@@ -55,7 +55,7 @@ I tested models with various hyperparam configs before applying steering. I chos
 | `idk_nll_unlearned_lr3e-05_alpha10_epoch5` | 0.15 |
 | `idk_nll_unlearned_lr2e-05_alpha10_epoch5` | 0.26 |
 
-I picked the middle `idk_nll_unlearned_lr3e-05_alpha10_epoch5` as its ROUGE score hasn't yet decayed to the point of the lower model (higher means more correct answers but we're trying to get more wrong answers so we can recover them) but it has more favourable hyperparams than the higher model.
+I picked the middle one `idk_nll_unlearned_lr3e-05_alpha10_epoch5` as its ROUGE score hasn't yet decayed to the point of the lower model (higher means more correct answers but we're trying to get more wrong answers so we can recover them) but it has more favourable hyperparams than the higher model.
 
 ### Refusal direction
 
@@ -63,7 +63,7 @@ This is calculated by taking the mean activation across the 400 forget10 set and
 
 ### Linear Probe
 
-A linear probe was used to identify the most likely layers for steering. Similar to calculating the refusal direction, it forward passes forget and retain set questions through the models. It then takes the residual stream activations at the last token position at each layer and trains a classifier with them. Specifically, it trains the classifier using activation vector and label pairs, the label being "forget" or "retain". This classifier is then tested on held out questions, questions it wasn't trained on, to verify if it can accurately classify them. High test scores for a specific layer suggest that it is a good candidate for steering since the questions are linearly separable in activation space. With this I picked layer 14 for both IDK-NLL and NPO models since it produced high test accuracy (above 0.98).
+A linear probe was used to identify the most likely layers for steering. Similar to calculating the refusal direction, it forward passes forget and retain set questions through the models. It then takes the residual stream activations at the last token position at each layer and trains a classifier with them. Specifically, it trains the classifier using activation vector and label pairs, the label being "forget" or "retain". This classifier is then tested on held out questions, questions it wasn't trained on, to verify if it can accurately classify them as "forget" or "retain" questions. High test scores for a specific layer suggest that it is a good candidate for steering since the questions are linearly separable in activation space. With this I picked layer 14 for both IDK-NLL and NPO models since it produced high test accuracy (above 0.98).
 
 ### Steering
 
