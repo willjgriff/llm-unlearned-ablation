@@ -67,7 +67,7 @@ A linear probe was used to identify the most likely layers for steering. Similar
 
 ### Steering
 
-Multiplies the removal direction by a coefficient then subtracts it from the residual stream at a specified layer at every token position. Layer selection is influenced by the linear probe above. A higher multiple/coefficient means higher likelihood of garbage output but stronger suppression of the removal direction. It includes a repetition penalty (set to 1.1 after experiments) which discourages the model from repeating tokens it's already produced. This minimises risk of "yes yes yes etc" responses.
+Multiplies the removal direction by a coefficient then subtracts it from the residual stream at a specified layer at every token position. Layer selection is influenced by the linear probe above. A higher coefficient means higher likelihood of garbage output but stronger suppression of the removal direction. It includes a repetition penalty (set to 1.1 after experiments) which discourages the model from repeating tokens it's already produced. This minimises risk of "yes yes yes etc" responses.
 
 ### ROUGE-L scores
 
